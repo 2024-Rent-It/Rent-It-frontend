@@ -16,8 +16,6 @@ const RowContainer = styled.View`
   margin-top: 10px;
 `;
 
-//justify-content: space-between; 
-//flex-direction: row;
 const IconContainer = styled.View`
   margin-right: 3%; 
   margin-left: 3%;
