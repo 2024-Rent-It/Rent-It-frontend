@@ -1,40 +1,37 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Text, Pressable,TextInput } from "react-native";
 
 const LocationSetting = ({ navigation }) => {
     return (
-        <View>
-            <View
-                style={{ backgroundColor: '#ECECEC'}}>
-                <Text style={styles.t1}>지역 검색</Text>
-
-                <View style={styles.input_field}>
-                    <View style={styles.horizon} width={"100%"}>
-                        <Pressable style={styles._button2} width={'47%'}>
-                            <Text style={styles.buttonText}>🔎 내 위치로 검색</Text>
-                        </Pressable>
-                        <Pressable style={styles._button2} width={'47%'}>
-                            <Text style={styles.buttonText}>🧭 지역 검색</Text>
-                        </Pressable>
-                    </View>
-                </View>
+        <View
+            style={{ backgroundColor: '#ECECEC', height: '100%' }}>
+            <Text style={styles.t1}>💡변경하려는 지역을 선택해주세요</Text>
+            <View>
+                <TextInput />
             </View>
-
-            <View
-            style={{ backgroundColor: '#ECECEC'}}>
-            <Text style={styles.t1}>선택된 지역</Text>
 
             <View style={styles.input_field}>
+
                 <View style={styles.horizon} width={"100%"}>
-                    <Pressable style={styles._button2} width={'47%'}>
-                        <Text style={styles.buttonText}>🔎 내 위치로 검색</Text>
-                    </Pressable>
-                    <Pressable style={styles._button2} width={'47%'}>
-                        <Text style={styles.buttonText}>🧭 지역 검색</Text>
+                    <TextInput
+                        style={styles.input}
+                        width={'60%'}
+                        placeholder="~~기존 주소~~"
+                        maxLength={10}
+                    //value={nickName}
+                    />
+                    <Pressable
+                        style={styles._button}
+                        width={"34%"}
+                        onPress={() => {
+                            alert('sss')
+                        }}
+                    >
+                        <Text style={styles.h2}>🧭 지역 검색</Text>
                     </Pressable>
                 </View>
             </View>
-        </View>
+
         </View>
 
 
@@ -49,49 +46,22 @@ const LocationSetting = ({ navigation }) => {
 export default LocationSetting;
 
 const styles = StyleSheet.create({
-    buttonText: {
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    t1: {
+    t1: {  //질문 (~~을 입력해주세요)
         fontSize: 20,
-        margin: '2%',
-        marginBottom: '2%',
+        margin: 10,
+        marginBottom: 0,
         fontWeight: 'bold'
     },
-    container: {
-        flex: 1,
-        marginTop: "10%",
-        marginHorizontal: "5%",
-    },
     input_field: {
-        paddingTop: '5%',
-        paddingBottom: '5%',
-        marginBottom: "5%",
-        backgroundColor: 'white',
-    },
-    container_title: {
         marginBottom: "5%",
     },
-    h1: {
-        fontSize: 30,
-        fontWeight: "bold",
-        marginBottom: "5%",
-    },
-    h2: {
-        fontSize: 18,
-    },
-    h3: {
-        fontSize: 14,
-    },
-    error: {
-        color: "red",
+    h2: {  //중복확인
+        fontSize: 16,
     },
     horizon: {
         flexDirection: "row",
-        margin: '2%',
     },
-    input: {
+    input: {  //입력
         height: 60,
         borderRadius: 16,
         borderColor: "#ffffff",
@@ -101,24 +71,16 @@ const styles = StyleSheet.create({
         paddingVertical: 18,
         marginBottom: 10,
         backgroundColor: "#ffffff",
-        marginRight: "6%",
+        marginLeft: "4%",
+        marginRight: "4%",
     },
     _button: {
         backgroundColor: "#CDCDCD",
         alignItems: "center",
-        padding: "5%",
+        paddingTop:"5%",
         borderRadius: 16,
         height: 60,
-    },
-    _button2: {
-        backgroundColor: "#A7C8E7",
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 20,
-        borderRadius: 16,
-        marginRight: "6%",
-        width: '45%',
+        width: '29%',
     },
 
 });
