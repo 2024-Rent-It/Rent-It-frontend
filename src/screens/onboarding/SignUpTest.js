@@ -6,13 +6,15 @@ import axios from 'axios';
 const SignUpTest = () => {
     const navigation = useNavigation();
     const route = useRoute();
+    const { city } = route.params || {}; // 동네 정보(city)를 받아옴
 
-    const [userName, setUserName] = useState('');
-    const [password1, setPassword1] = useState('');
+    const [account, setAccount] = useState('');
+    const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
-    const [nickName, setNickName] = useState("");
-    const [location, setLocation] = useState(null);
+    const [nickname, setNickname] = useState("");
+    // const [city, setCity] = useState("");
+    // const [location, setLocation] = useState(null);
 
 
 
@@ -22,20 +24,21 @@ const SignUpTest = () => {
     
 
     /** 회원가입 백엔드 전달 함수 */
-    const signUp = async () => {
+    const handleSignUp = async () => {
         try {
-          if (password1 !== password2) {
+          if (password !== password2) {
             Alert.alert('비밀번호 오류', '비밀번호가 일치하지 않습니다.');
             return;
           }
 
  
-          const response = await axios.post('http://localhost:8080/user/signup', {
-            username: userName,
-            password1: password1,
+          const response = await axios.post('http://localhost:8080/sign-up', {
+            account: account,
+            password: password,
             password2: password2,
+            nickname: nickname,
             email: email,
-            nickname: nickName,
+            location: city,
           },{
             headers: {
               'Content-Type': 'application/json' // JSON 형식으로 요청을 보냄
@@ -53,11 +56,11 @@ const SignUpTest = () => {
         // Axios 에러 객체에서 세부 정보 추출
         if (error.response) {
           // 서버가 응답한 경우
-          console.error('응답 데이터:', error.response.data);
+          console.error('응답 데이터:', error.response.data.message);
           console.error('응답 상태 코드:', error.response.status);
         } else if (error.request) {
           // 요청이 만들어졌지만 응답을 받지 못한 경우
-          console.error("데이터 확인",userName, password1,password2, email, nickName)
+          console.error("데이터 확인",account, password, password2, nickname,email)
 
           console.error('요청이 만들어졌지만 응답을 받지 못했습니다.', error.request);
         } else {
@@ -92,16 +95,16 @@ const SignUpTest = () => {
                                     width={'60%'}
                                     placeholder="아이디 입력"
                                     maxLength={10}
-                                    value={userName}
+                                    value={account}
                                     onChangeText={(text) => {
-                                        setUserName(text);
+                                        setAccount(text);
                                     }}
                                 />
                                 <Pressable
                                     style={styles._button}
                                     width={"34%"}
                                     onPress={() => {
-                                        checkNickname(userName);
+                                        checkNickname(account);
                                     }}
                                 >
                                     <Text style={styles.h2}>중복확인</Text>
@@ -119,8 +122,8 @@ const SignUpTest = () => {
                                 width={'100%'}
                                 placeholder="비밀번호 입력"
                                 maxLength={15}
-                                value={password1}
-                                onChangeText={(text) => setPassword1(text)}
+                                value={password}
+                                onChangeText={(text) => setPassword(text)}
                                 secureTextEntry={true}
                             />
                         </View>
@@ -151,16 +154,16 @@ const SignUpTest = () => {
                                     width={'60%'}
                                     placeholder="닉네임 입력"
                                     maxLength={10}
-                                    value={nickName}
+                                    value={nickname}
                                     onChangeText={(text) => {
-                                        setNickName(text); //console.log(text)
+                                        setNickname(text); //console.log(text)
                                     }}
                                 />
                                 <Pressable
                                     style={styles._button }
                                     width={"34%"}
                                     onPress={() => {
-                                        checkNickname(nickName);
+                                        checkNickname(nickname);
                                     }}
                                 >
                                     <Text style={styles.h2}>중복확인</Text>
@@ -194,28 +197,58 @@ const SignUpTest = () => {
                                 </Pressable>
                             </View>
                         </View>
-
-                        {/* 위치 가져오기 */}
+                        {/* 아이디 입력 */}
                         <View style={styles.input_field}>
                             <View style={styles.label_fields}>
                                 <Text>지역 설정</Text>
                             </View>
-                            <View style={styles.horizon} width={"100%"}>
-                                <Pressable style={styles._button2}  width={'47%'}>
+                            <View style={styles.horizon}>
+                                <TextInput
+                                    style={styles.input}
+                                    width={'60%'}
+                                    placeholder="지역 입력"
+                                    maxLength={10}
+                                    value={city || ''}
+                                    editable={false} // 수정 불가능하도록 설정
+                                    // onChangeText={(text) => {
+                                    //     setAccount(text);
+                                    // }}
+                                />
+                                <Pressable
+                                    style={styles._button}
+                                    width={"34%"}
+                                    onPress={() => {
+                                        navigation.navigate('AddressScreen');
+                                        // checkNickname(account);
+
+                                    }}
+                                >
+                                    <Text style={styles.h2}>🧭 지역 검색</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                        {/* 위치 가져오기 */}
+                        {/* <View style={styles.input_field}>
+                            <View style={styles.label_fields}>
+                                <Text>지역 설정</Text>
+                            </View>
+                            <View style={styles.horizon} width={"100%"}> */}
+                                
+                                {/* <Pressable style={styles._button2}  width={'47%'}>
                                     <Text style={styles.loctext}>🔎 내 위치로 검색</Text>
                                 </Pressable>
                                 <Pressable style={styles._button2}  width={'47%'}>
                                     <Text style={styles.loctext}>🧭 지역 검색</Text>
-                                </Pressable>
-                            </View>
-                        </View>
+                                </Pressable> */}
+                            {/* </View>
+                        </View> */}
                     </View>
                     {/* 회원가입 버튼 */}
                     <View>
                         <Pressable
                             style={styles._button3} backgroundColor={"#A7C8E7"}
                             onPress={() =>{
-                                signUp();
+                                handleSignUp();
                                 navigation.navigate("Root")
                             }
                             //     {

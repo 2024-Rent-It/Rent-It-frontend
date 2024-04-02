@@ -6,6 +6,8 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
+import { AuthProvider } from '../../contexts/AuthContext';
+
 
 import MyFav from "../../screens/myPage/MyFav";
 import Writing from "../../screens/userTrans/Writing";
@@ -26,6 +28,8 @@ import ChangeEmail from "../../screens/myPage/Edit/ChangeEmail";
 import LocationSetting from "../../screens/myPage/Edit/LocationSetting";
 import Onboarding from "../../screens/onboarding/Onboarding";
 import SignUpTest from "../../screens/onboarding/SignUpTest";
+import LoginScreen from "../../screens/onboarding/LoginScreen";
+import AddressScreen from "../../screens/onboarding/AddressScreen";
 
 
 
@@ -100,6 +104,7 @@ function RootNavigator() {
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
             {/* <Stack.Screen name='회원가입스크린' component={SignUpScreen} /> */}
             <Stack.Screen name='회원가입테스트' component={SignUpTest} />
+            <Stack.Screen name='로그인' component={LoginScreen} />
 
             <Stack.Screen name="MyFav" component={MyFav} />
             <Stack.Screen name="MyRent" component={MyRent} />
@@ -114,6 +119,7 @@ function RootNavigator() {
             <Stack.Screen name="ChangePw" component={ChangePw} />
             <Stack.Screen name="ChangeEmail" component={ChangeEmail} />
             <Stack.Screen name="LocationSetting" component={LocationSetting} />
+            <Stack.Screen name="AddressScreen" component={AddressScreen} />
         </Stack.Navigator>
     );
 }
@@ -121,7 +127,9 @@ function RootNavigator() {
 export default function Navigation() {
     return (
         <NavigationContainer>
+        <AuthProvider>
             <RootNavigator />
+        </AuthProvider>
         </NavigationContainer>
     );
 }

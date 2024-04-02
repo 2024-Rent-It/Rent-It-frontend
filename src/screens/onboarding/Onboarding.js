@@ -37,7 +37,7 @@ const DATA = [
 ];
 
 
-export default function Onboarding(navigation) {
+export default function Onboarding({navigation}) {
   const scrollX = new Animated.Value(0);
   const animation = React.useRef(null);
 
@@ -51,6 +51,7 @@ export default function Onboarding(navigation) {
   const handleLogin = () => {
     // 로그인 버튼이 클릭되었을 때 실행되는 함수
     console.log("로그인 버튼이 클릭되었습니다.");
+    navigation.navigate("로그인");
   };
   const renderItem = ({ item, index }) => {
     if (item.title != "YOU CAN RENT EVERYTHING") {
