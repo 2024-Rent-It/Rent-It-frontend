@@ -78,7 +78,7 @@ const Home = () => {
     </RowContainer>
   );
 
-  // 이미지를 눌렀을 때 동작할 함수
+  // 이미지를 눌렀을 때 동작할 함수 handleImagePress
   const handleImagePress = () => {
     navigation.navigate('Product');
   };
