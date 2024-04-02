@@ -1,12 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { Image, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, Text, Alert} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import krr from "/Users/jeongabae/Downloads/rentit99/assets/images/k.png";
 import { View } from "react-native";
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
 const MyPage = ({ navigation }) => {
-    
+    const { logout } = useAuth(); // 로그아웃 함수 가져오기
+    const { userNickname } = useAuth();
+
+    const handleLogout = () => {
+    logout(); // 로그아웃 함수 호출
+    Alert.alert('로그아웃 성공', '로그아웃되었습니다.');
+    navigation.navigate('Onboarding')
+  };
+
     return (
         <View style={{ height: '100%',backgroundColor: 'white', padding: 30 }} >
 
@@ -18,7 +27,7 @@ const MyPage = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <StyledText style={{ flex: 1 }}>
-                    케로로
+                    {userNickname}
                 </StyledText>
 
                 <TouchableOpacity onPress={() => navigation.navigate('EditInfo')}
@@ -121,7 +130,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyRent')}
+                <TouchableOpacity onPress={handleLogout}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
