@@ -16,8 +16,6 @@ const RowContainer = styled.View`
   margin-top: 10px;
 `;
 
-//justify-content: space-between; 
-//flex-direction: row;
 const IconContainer = styled.View`
   margin-right: 3%; 
   margin-left: 3%;
@@ -80,7 +78,7 @@ const Home = () => {
     </RowContainer>
   );
 
-  // 이미지를 눌렀을 때 동작할 함수
+  // 이미지를 눌렀을 때 동작할 함수 handleImagePress
   const handleImagePress = () => {
     navigation.navigate('Product');
   };
