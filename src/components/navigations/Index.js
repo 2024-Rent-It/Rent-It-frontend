@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { AuthProvider } from '../../contexts/AuthContext';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 import MyFav from "../../screens/myPage/MyFav";
@@ -32,6 +33,7 @@ import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
 import Product from "../../screens/Product.js"
 import EmailLogin from "../../screens/onboarding/EmailLogin.js"
+import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
 
 
 
@@ -58,7 +60,7 @@ function BottomTabNavigator() {
                 component={Writing}
                 options={{
                     tabBarIcon: () => (
-                        <FontAwesome6 name="pencil" size={24} color="grey" />
+                        <SimpleLineIcons name="pencil" size={24} color="grey" />
                     ),
                 }}
             />
@@ -124,8 +126,9 @@ function RootNavigator() {
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            <Stack.Screen name="ChangePW2" component={ChangePw2} />
         </Stack.Navigator>
-    );
+    );1
 }
 
 export default function Navigation() {
