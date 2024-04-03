@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     },
     horizon: {
         flexDirection: "row",
+        marginBottom:"140%",
     },
     input: {  //입력
         height: 60,
@@ -38,6 +39,16 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         height: 60,
         width: '27%',
+    },
+    _button3: {
+        backgroundColor: "#A7C8E7",
+        alignItems: "center",
+        padding: 20,
+        borderRadius: 16,
+        height: 60,
+        marginBottom: "6%",
+        width:"90%",
+        marginLeft:'5%',
     },
 
 });
@@ -73,6 +84,15 @@ const ChangeEmail = ({ navigation }) => {
                     </Pressable>
                 </View>
             </View>
+
+            <Pressable
+                    style={styles._button3} backgroundColor={"#A7C8E7"}
+                    onPress={() => {
+                        //navigation.navigate("Root")
+                    }}
+                >
+                    <Text style={styles.h2}>변경</Text>
+                </Pressable>
 
         </View>
     );

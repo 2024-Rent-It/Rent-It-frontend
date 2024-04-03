@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput,Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 
 
 const ChangeNickName = ({ navigation }) => {
@@ -7,9 +7,7 @@ const ChangeNickName = ({ navigation }) => {
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
             <Text style={styles.t1}>💡변경하려는 닉네임을 입력해주세요</Text>
-            <View>
-                <TextInput />
-            </View>
+           
 
             <View style={styles.input_field}>
 
@@ -19,7 +17,7 @@ const ChangeNickName = ({ navigation }) => {
                         width={'60%'}
                         placeholder="닉네임 입력"
                         maxLength={10}
-                        //value={nickName}
+                    //value={nickName}
                     />
                     <Pressable
                         style={styles._button}
@@ -31,6 +29,15 @@ const ChangeNickName = ({ navigation }) => {
                         <Text style={styles.h2}>중복확인</Text>
                     </Pressable>
                 </View>
+
+                <Pressable
+                    style={styles._button3} backgroundColor={"#A7C8E7"}
+                    onPress={() => {
+                        //navigation.navigate("Root")
+                    }}
+                >
+                    <Text style={styles.h2}>변경</Text>
+                </Pressable>
             </View>
 
         </View>
@@ -40,13 +47,14 @@ const ChangeNickName = ({ navigation }) => {
 export default ChangeNickName;
 
 const styles = StyleSheet.create({
-    t1:{
+    t1: {
         fontSize: 20,
         margin: 10,
-        marginBottom: 0, 
+        marginBottom: 0,
         fontWeight: 'bold'
     },
     input_field: {
+        marginTop:"3%",
         marginBottom: "5%",
     },
     h2: {
@@ -54,6 +62,7 @@ const styles = StyleSheet.create({
     },
     horizon: {
         flexDirection: "row",
+        marginBottom:"140%",
     },
     input: {
         height: 60,
@@ -65,7 +74,7 @@ const styles = StyleSheet.create({
         paddingVertical: 18,
         marginBottom: 10,
         backgroundColor: "#ffffff",
-        marginLeft:"4%",
+        marginLeft: "4%",
         marginRight: "6%",
     },
     _button: {
@@ -74,7 +83,17 @@ const styles = StyleSheet.create({
         padding: "5%",
         borderRadius: 16,
         height: 60,
-        width:'27%',
+        width: '27%',
+    },
+    _button3: {
+        backgroundColor: "#A7C8E7",
+        alignItems: "center",
+        padding: 20,
+        borderRadius: 16,
+        height: 60,
+        marginBottom: "6%",
+        width:"90%",
+        marginLeft:'5%',
     },
 
 });
