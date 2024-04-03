@@ -30,6 +30,8 @@ import Onboarding from "../../screens/onboarding/Onboarding";
 import SignUpTest from "../../screens/onboarding/SignUpTest";
 import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
+import Product from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/Product.js"
+import EmailLogin from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/onboarding/EmailLogin.js"
 
 
 
@@ -120,6 +122,8 @@ function RootNavigator() {
             <Stack.Screen name="ChangeEmail" component={ChangeEmail} />
             <Stack.Screen name="LocationSetting" component={LocationSetting} />
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
+            <Stack.Screen name="Product" component={Product} />
+            <Stack.Screen name="EmailLogin" component={EmailLogin} />
         </Stack.Navigator>
     );
 }

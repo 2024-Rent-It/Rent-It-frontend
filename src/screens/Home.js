@@ -2,38 +2,9 @@ import React from "react";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from '@react-navigation/native';
-import PickerComponent from "/Users/heojuwon/Downloads/rentit99/src/components/image.js";
-import HomeIcon from "/Users/heojuwon/Downloads/rentit99/src/components/HomeIcon.js";
+import PickerComponent from "/Users/heojuwon/Downloads/Rent-It-frontend/src/components/image.js";
+import HomeIcon from "/Users/heojuwon/Downloads/Rent-It-frontend/src/components/HomeIcon.js";
 
-const Container = styled.View`
-  flex: 1;
-`;
-
-const RowContainer = styled.View`
-  flex-direction: row;
-  justify-content: center; 
-  margin-bottom: 10px;
-  margin-top: 10px;
-`;
-
-const IconContainer = styled.View`
-  margin-right: 3%; 
-  margin-left: 3%;
-  flex: 1;
-`;
-
-const ImageContainer = styled.TouchableOpacity`
-  margin: 5px;
-`;
-
-
-const Image = styled.Image`
-  width: 90px;
-  height: 100px;
-  margin-right: 65%;
-  margin-top: 10%;
-  border-radius: 10px;
-`;
 
 const Home = () => {
   const navigation = useNavigation();
@@ -78,26 +49,36 @@ const Home = () => {
     </RowContainer>
   );
 
-  // 이미지를 눌렀을 때 동작할 함수 handleImagePress
-  const handleImagePress = () => {
-    navigation.navigate('Product');
-  };
 
   return (
     <ScrollView>
-      <Container>
+
         <PickerComponent />
         {chunkedItems.map(renderItem)}
-        {/* 이미지 렌더링 */}
-        <RowContainer>
-          <ImageContainer onPress={handleImagePress}>
-            <Image source={{ uri: "/Users/heojuwon/Downloads/rentit99/assets/images/tree.jpg" }} />
-            <Image source={{ uri: "/Users/heojuwon/Downloads/rentit99/assets/images/tree.jpg" }} />
-          </ImageContainer>
-        </RowContainer>
-      </Container>
+        
     </ScrollView>
   );
 };
+
+const RowContainer = styled.View`
+  flex-direction: row;
+  justify-content: center; 
+  margin-bottom: 8px;
+  margin-top: 10px;
+`;
+
+const IconContainer = styled.View`
+  flex: 1;
+`;
+
+/*
+const Image = styled.Image`
+  width: 90px;
+  height: 100px;
+  margin-right: 65%;
+  margin-top: 10%;
+  border-radius: 10px;
+`;
+*/
 
 export default Home;

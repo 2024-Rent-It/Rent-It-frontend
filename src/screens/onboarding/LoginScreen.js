@@ -1,55 +1,3 @@
-// // React Native에서의 로그인 예제
-
-// import React, { useState } from 'react';
-// import { View, TextInput, Button, Alert } from 'react-native';
-
-// const LoginScreen = (navigation) => {
-//   const [account, setAccount] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleLogin = async () => {
-//     try {
-//       const response = await fetch('http://localhost:8080/sign-in', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ account: account, password }),
-//       });
-//       const data = await response.json();
-//       if (response.ok) {
-//         Alert.alert('로그인 성공', data.message);
-//         // 로그인 성공
-//         // 토큰을 저장하고 다음 화면으로 이동하는 등의 작업 수행
-//       } else {
-//         // 로그인 실패
-//         Alert.alert('로그인 실패', data.message);
-//       }
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   };
-
-//   return (
-//     <View>
-//       <TextInput
-//         placeholder="사용자 이름"
-//         value={account}
-//         onChangeText={setAccount}
-//       />
-//       <TextInput
-//         placeholder="비밀번호"
-//         secureTextEntry
-//         value={password}
-//         onChangeText={setPassword}
-//       />
-//       <Button title="로그인" onPress={handleLogin} />
-//     </View>
-//   );
-// };
-
-// export default LoginScreen;
-
 import React, { useState } from 'react';
 import { View, Pressable, StyleSheet, Text, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // React Navigation의 useNavigation 훅 가져오기
@@ -62,11 +10,11 @@ const LoginScreen = () => {
   const { login } = useAuth();
   const { userNickname } = useAuth();
 
-  // const handleLoginPress = () => {
-  //   navigation.navigate('Root'); // LoginPage로 이동
-  // };
+  const handleForgetPassword = () => {
+    navigation.navigate('EmailLogin'); // EmailLogin 화면으로 이동
+  };
 
-    const handleLogin = async () => {
+  const handleLogin = async () => {
     try {
       const response = await fetch('http://localhost:8080/sign-in', {
         method: 'POST',
@@ -77,21 +25,12 @@ const LoginScreen = () => {
       });
       const responseData = await response.json(); 
       if (response.ok) {
-        // const authToken = data.data.token;
-        // const name= data.data.name;
         const { name, token } = responseData.data;
 
         login(token, name); // 로그인 함수 호출하여 토큰 저장
         Alert.alert('로그인 성공', responseData.message);
-        console.log(responseData)
-        console.log(name)
-        console.log(token)
-
-        // 로그인 성공
-        // 토큰을 저장하고 다음 화면으로 이동
-        navigation.navigate('Root'); // LoginPage로 이동
+        navigation.navigate('Root'); // Root 화면으로 이동
       } else {
-        // 로그인 실패
         Alert.alert('로그인 실패', responseData.message);
       }
     } catch (error) {
@@ -101,11 +40,11 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.container_title}>
-                    <Text style={styles.h1}>안녕하세요!👋</Text>
-                    <Text style={styles.h2}>등록된 정보로 로그인해주세요!😍</Text>
-                    <Text style={styles.h3}>회원님의 정보는 안전하게 보관됩니다.</Text>
-                </View>
+      <View style={styles.container_title}>
+        <Text style={styles.h1}>안녕하세요!👋</Text>
+        <Text style={styles.h2}>등록된 정보로 로그인해주세요!😍</Text>
+        <Text style={styles.h3}>회원님의 정보는 안전하게 보관됩니다.</Text>
+      </View>
       <TextInput
         style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="아이디 입력"
@@ -125,6 +64,7 @@ const LoginScreen = () => {
       >
         <Text style={styles.buttonText}>로그인 하기</Text>
       </Pressable>
+      <Text style={styles.h4} onPress={handleForgetPassword}>비밀번호를 잊으셨나요?</Text>
     </View>
   );
 };
@@ -132,13 +72,11 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 100,
     alignItems: 'center',
     backgroundColor: '#ECECEC', // 전체 화면 색상 변경
   },
   container_title:{
     marginTop: 100,
-
   },
   input: {
     height: 60,
@@ -170,19 +108,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   h1: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: "2%",
-},
-h2: {
-    fontSize: 18,
+    fontSize: '37%',
+    fontWeight: 'bold',
+    marginBottom: '2%',
+    marginRight: '32%',
+  },
+  h2: {
+    fontSize: '25%',
+    fontWeight: 'bold',
+    marginBottom: '10%',
+  },
+  h3: {
+    fontSize: '17%',
     marginBottom: "5%",
-    marginRight: "20%",
-},
-h3: {
+    maginLeft: '10',
+  },
+  h4: {
     fontSize: 15,
-    marginBottom: "5%",
-},
+    marginTop: "5%",
+    textDecorationLine: 'underline',
+  },
 });
 
 export default LoginScreen;
