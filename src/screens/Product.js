@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
-import tree from '/Users/heojuwon/Downloads/Rent-It-frontend/assets/images/tree.jpg';
+import tree from '/Users/sw/pm/Rent-It-frontend/assets/images/tree.jpg';
 
 
 /**<Image source={roro} style={styles.roroImage} />  */

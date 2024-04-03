@@ -2,8 +2,8 @@ import React from "react";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from '@react-navigation/native';
-import PickerComponent from "/Users/heojuwon/Downloads/Rent-It-frontend/src/components/image.js";
-import HomeIcon from "/Users/heojuwon/Downloads/Rent-It-frontend/src/components/HomeIcon.js";
+import PickerComponent from "../../src/components/image.js";
+import HomeIcon from "../../src/components/HomeIcon";
 
 
 const Home = () => {

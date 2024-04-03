@@ -30,8 +30,8 @@ import Onboarding from "../../screens/onboarding/Onboarding";
 import SignUpTest from "../../screens/onboarding/SignUpTest";
 import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
-import Product from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/Product.js"
-import EmailLogin from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/onboarding/EmailLogin.js"
+import Product from "../../screens/Product.js"
+import EmailLogin from "../../screens/onboarding/EmailLogin.js"
 
 
 
