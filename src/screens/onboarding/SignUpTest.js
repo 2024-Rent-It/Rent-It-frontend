@@ -2,10 +2,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { Alert, StyleSheet, View, Text, TextInput, ScrollView, Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+
 
 const SignUpTest = () => {
     const navigation = useNavigation();
     const route = useRoute();
+    const { login } = useAuth();
     const { city } = route.params || {}; // 동네 정보(city)를 받아옴
 
     const [account, setAccount] = useState('');
@@ -13,66 +16,171 @@ const SignUpTest = () => {
     const [password2, setPassword2] = useState('');
     const [email, setEmail] = useState('');
     const [nickname, setNickname] = useState("");
-    // const [city, setCity] = useState("");
-    // const [location, setLocation] = useState(null);
+
+    const [isAccountDuplicateChecked, setIsAccountDuplicateChecked] = useState(false);
+    const [isNicknameDuplicateChecked, setIsNicknameDuplicateChecked] = useState(false);
+    const [isEmailDuplicateChecked, setIsEmailDuplicateChecked] = useState(false);
 
 
 
-    /** 이메일 중복검사 함수 */
-    /** 닉네임 중복검사 함수 */
     /** 비밀번호 유효성 검사 함수 */
-    
+
+    /** 아이디 중복 검사 함수 */
+    const checkAccount = async (account) => {
+        try {
+            const response = await axios.post('http://localhost:8080/check-account', account, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+            Alert.alert(response.data);
+            if (response.data == "사용 가능한 아이디입니다.") {
+                setIsAccountDuplicateChecked(true);
+            }
+            console.log(response);
+            console.log(account)
+        } catch (error) {
+            console.error('아이디 중복 확인 실패:', error);
+            Alert.alert('알림', '중복 확인에 실패했습니다.');
+        }
+    };
+
+    /** 닉네임 중복 검사 함수 */
+    const checkNickname = async (nickname) => {
+        try {
+            const response = await axios.post('http://localhost:8080/check-nickname', nickname, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+            Alert.alert(response.data);
+            if (response.data == "사용 가능한 닉네임입니다.") {
+                setIsNicknameDuplicateChecked(true);
+            }
+        } catch (error) {
+            console.error('닉네임 중복 확인 실패:', error);
+            Alert.alert('알림', '중복 확인에 실패했습니다.');
+        }
+    };
+
+    /** 이메일 중복 검사 함수 */
+    const checkEmail = async (email) => {
+        try {
+            const response = await axios.post('http://localhost:8080/check-email', email, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+            Alert.alert(response.data);
+            if (response.data == "사용 가능한 이메일입니다.") {
+                setIsEmailDuplicateChecked(true);
+            }
+            console.log(response);
+            console.log(email);
+        } catch (error) {
+            console.error('이메일 중복 확인 실패:', error);
+            Alert.alert('알림', '중복 확인에 실패했습니다.');
+        }
+    };
+
+
 
     /** 회원가입 백엔드 전달 함수 */
     const handleSignUp = async () => {
         try {
-          if (password !== password2) {
-            Alert.alert('비밀번호 오류', '비밀번호가 일치하지 않습니다.');
-            return;
-          }
+            console.log(isAccountDuplicateChecked, isNicknameDuplicateChecked, isEmailDuplicateChecked);
 
- 
-          const response = await axios.post('http://localhost:8080/sign-up', {
-            account: account,
-            password: password,
-            password2: password2,
-            nickname: nickname,
-            email: email,
-            location: city,
-          },{
-            headers: {
-              'Content-Type': 'application/json' // JSON 형식으로 요청을 보냄
+            // 각 입력값이 비어 있는지 확인
+            if (!account || !password || !password2 || !nickname || !email || !city) {
+                Alert.alert('모든 필드를 입력해주세요.');
+                return;
             }
-          });
-          
-          Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
-        //   navigation.navigate('')
+            if (password !== password2) {
+                Alert.alert('비밀번호 오류', '비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            if (!isAccountDuplicateChecked) {
+                Alert.alert('아이디 중복 확인이 필요합니다.');
+                return;
+            }
 
-          // 로그인 화면으로 이동하는 코드 작성
+            if (!isNicknameDuplicateChecked) {
+                Alert.alert('닉네임 중복 확인이 필요합니다.');
+                return;
+            }
+
+            if (!isEmailDuplicateChecked) {
+                Alert.alert('이메일 중복 확인이 필요합니다.');
+                return;
+            }
+
+            const response = await axios.post('http://localhost:8080/sign-up', {
+                account: account,
+                password: password,
+                password2: password2,
+                nickname: nickname,
+                email: email,
+                location: city,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json' // JSON 형식으로 요청을 보냄
+                }
+            });
+            console.log(isAccountDuplicateChecked, isNicknameDuplicateChecked, isEmailDuplicateChecked);
+
+            Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
+            handleLogin();
+            navigation.navigate("Root")
+
+            //   navigation.navigate('')
+
+            // 로그인 화면으로 이동하는 코드 작성
         } catch (error) {
-          // 실패한 경우
-        console.error('회원가입 요청 실패:', error);
-    
-        // Axios 에러 객체에서 세부 정보 추출
-        if (error.response) {
-          // 서버가 응답한 경우
-          console.error('응답 데이터:', error.response.data.message);
-          console.error('응답 상태 코드:', error.response.status);
-        } else if (error.request) {
-          // 요청이 만들어졌지만 응답을 받지 못한 경우
-          console.error("데이터 확인",account, password, password2, nickname,email)
+            // 실패한 경우
+            console.error('회원가입 요청 실패:', error);
 
-          console.error('요청이 만들어졌지만 응답을 받지 못했습니다.', error.request);
-        } else {
-          // 요청을 설정하는 과정에서 오류가 발생한 경우
-          console.error('요청 설정 시 오류 발생:', error.message);
-        }
-    
-        // 추가적인 에러 처리 및 사용자에게 메시지 표시
-        Alert.alert('회원가입 실패', '다시 시도해주세요.');
-        }
-      };
+            // Axios 에러 객체에서 세부 정보 추출
+            if (error.response) {
+                // 서버가 응답한 경우
+                console.error('응답 데이터:', error.response.data.message);
+                console.error('응답 상태 코드:', error.response.status);
+            } else if (error.request) {
+                // 요청이 만들어졌지만 응답을 받지 못한 경우
+                console.error("데이터 확인", account, password, password2, nickname, email)
 
+                console.error('요청이 만들어졌지만 응답을 받지 못했습니다.', error.request);
+            } else {
+                // 요청을 설정하는 과정에서 오류가 발생한 경우
+                console.error('요청 설정 시 오류 발생:', error.message);
+            }
+
+            // 추가적인 에러 처리 및 사용자에게 메시지 표시
+            Alert.alert('회원가입 실패', '다시 시도해주세요.');
+        }
+    };
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/sign-in', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ account, password }),
+            });
+            const responseData = await response.json();
+            if (response.ok) {
+                const { id, nickname, email, location, token } = responseData.data;
+                login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
+                Alert.alert('로그인 성공', responseData.message);
+                navigation.navigate('Root'); // Root 화면으로 이동
+            } else {
+                Alert.alert('로그인 실패', responseData.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
     return (
         <View style={{ flex: 1, backgroundColor: '#ECECEC' }}>
             <View style={styles.container}>
@@ -104,7 +212,7 @@ const SignUpTest = () => {
                                     style={styles._button}
                                     width={"34%"}
                                     onPress={() => {
-                                        checkNickname(account);
+                                        checkAccount(account);
                                     }}
                                 >
                                     <Text style={styles.h2}>중복확인</Text>
@@ -118,7 +226,7 @@ const SignUpTest = () => {
                                 <Text style={styles.label}>비밀번호</Text>
                             </View>
                             <TextInput
-                                style={styles.input }
+                                style={styles.input}
                                 width={'100%'}
                                 placeholder="비밀번호 입력"
                                 maxLength={15}
@@ -148,7 +256,7 @@ const SignUpTest = () => {
                             <View style={styles.label_fields}>
                                 <Text>닉네임</Text>
                             </View>
-                            <View style={styles.horizon } width={"100%"}>
+                            <View style={styles.horizon} width={"100%"}>
                                 <TextInput
                                     style={styles.input}
                                     width={'60%'}
@@ -160,7 +268,7 @@ const SignUpTest = () => {
                                     }}
                                 />
                                 <Pressable
-                                    style={styles._button }
+                                    style={styles._button}
                                     width={"34%"}
                                     onPress={() => {
                                         checkNickname(nickname);
@@ -171,12 +279,12 @@ const SignUpTest = () => {
                             </View>
                         </View>
 
-                         {/* 이메일 입력 */}
-                         <View style={styles.input_field}>
+                        {/* 이메일 입력 */}
+                        <View style={styles.input_field}>
                             <View style={styles.label_fields}>
                                 <Text>이메일</Text>
                             </View>
-                            <View style={styles.horizon } width={"100%"}>
+                            <View style={styles.horizon} width={"100%"}>
                                 <TextInput
                                     style={styles.input}
                                     width={'60%'}
@@ -187,10 +295,10 @@ const SignUpTest = () => {
                                     }}
                                 />
                                 <Pressable
-                                    style={styles._button }
+                                    style={styles._button}
                                     width={"34%"}
                                     onPress={() => {
-                                        checkNickname(email);
+                                        checkEmail(email);
                                     }}
                                 >
                                     <Text style={styles.h2}>중복확인</Text>
@@ -210,9 +318,6 @@ const SignUpTest = () => {
                                     maxLength={10}
                                     value={city || ''}
                                     editable={false} // 수정 불가능하도록 설정
-                                    // onChangeText={(text) => {
-                                    //     setAccount(text);
-                                    // }}
                                 />
                                 <Pressable
                                     style={styles._button}
@@ -227,35 +332,16 @@ const SignUpTest = () => {
                                 </Pressable>
                             </View>
                         </View>
-                        {/* 위치 가져오기 */}
-                        {/* <View style={styles.input_field}>
-                            <View style={styles.label_fields}>
-                                <Text>지역 설정</Text>
-                            </View>
-                            <View style={styles.horizon} width={"100%"}> */}
-                                
-                                {/* <Pressable style={styles._button2}  width={'47%'}>
-                                    <Text style={styles.loctext}>🔎 내 위치로 검색</Text>
-                                </Pressable>
-                                <Pressable style={styles._button2}  width={'47%'}>
-                                    <Text style={styles.loctext}>🧭 지역 검색</Text>
-                                </Pressable> */}
-                            {/* </View>
-                        </View> */}
                     </View>
                     {/* 회원가입 버튼 */}
                     <View>
                         <Pressable
                             style={styles._button3} backgroundColor={"#A7C8E7"}
-                            onPress={() =>{
+                            onPress={() => {
                                 handleSignUp();
-                                navigation.navigate("Root")
+                                // navigation.navigate("Root")
                             }
-                            //     {
-                            //     // signUp();
-                                
-                            // }
-                        }
+                            }
                         >
                             <Text style={styles.h2}>회원가입</Text>
                         </Pressable>
@@ -272,7 +358,7 @@ const styles = StyleSheet.create({
         marginTop: "10%",
         marginHorizontal: "5%",
     },
-    input_field:{
+    input_field: {
         marginBottom: "5%",
     },
     container_title: {
