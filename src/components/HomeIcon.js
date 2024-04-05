@@ -9,7 +9,7 @@ const HomeIcon = ({ title, onPress, iconName }) => {
   return (
     <TouchableOpacity onPress={onPress} style={{ alignItems: 'center' }}>
       <View style={{ alignItems: 'center', marginTop: 30 }}>
-        <IconComponent name={iconName} size={37} color="black" /> 
+        <IconComponent name={iconName} size={33} color="black" /> 
         <Text style={{ color: 'black', fontSize: 10, marginTop: 5 }}>{title}</Text> 
       </View>
     </TouchableOpacity>

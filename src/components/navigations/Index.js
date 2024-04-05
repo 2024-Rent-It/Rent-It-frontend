@@ -32,7 +32,8 @@ import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
 import Product from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/Product.js"
 import EmailLogin from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/onboarding/EmailLogin.js"
-
+import ProductDetailPage from "../../screens/PicPage/ProductDetail.js";
+import ProductDetailPage2 from "../../screens/IconPage/ProductDetail2.js";
 
 
 const Stack = createNativeStackNavigator();
@@ -124,6 +125,9 @@ function RootNavigator() {
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
+            
         </Stack.Navigator>
     );
 }
