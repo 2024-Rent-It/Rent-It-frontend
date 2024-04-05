@@ -1,8 +1,61 @@
-import React from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import React, { useState} from "react";
+import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import axios from 'axios';
+import { useAuth } from '../../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
 
 const ChangeNickName = ({ navigation }) => {
+    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const [newNickname, setNewNickname] = useState("");
+    const [isNicknameDuplicateChecked, setIsNicknameDuplicateChecked] = useState(false);
+
+    /** 닉네임 중복 검사 함수 */
+    const checkNickname = async (newNickname) => {
+        try {
+            const response = await axios.post('http://localhost:8080/check-nickname', newNickname, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+            Alert.alert(response.data);
+            if (response.data == "사용 가능한 닉네임입니다.") {
+                setIsNicknameDuplicateChecked(true);
+            }
+        } catch (error) {
+            console.error('닉네임 중복 확인 실패:', error);
+            Alert.alert('알림', '중복 확인에 실패했습니다.');
+        }
+    };
+
+    const updateNickname = async (newNickname,token) => {
+        if (!isNicknameDuplicateChecked) {
+            Alert.alert('닉네임 중복 확인이 필요합니다.');
+            return;
+        }
+        // console.log(newNickname,token);
+
+        try {
+            const response = await axios.put('http://localhost:8080/member/update-nickname', null,
+            {params:{ nickname: newNickname },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    // "Content-Type": "application/json",
+                }
+            });
+            Alert.alert('변경되었습니다.');
+            navigation.navigate("Root")
+        } catch (error) {
+            console.error('닉네임 변경 실패:', error);
+            if (error.response) {
+                // 서버가 응답한 경우
+                console.error('응답 데이터:', error.response);
+                console.error('응답 상태 코드:', error.response.status);
+            }
+        }
+    }
+
+    
+
     return (
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
@@ -17,13 +70,16 @@ const ChangeNickName = ({ navigation }) => {
                         width={'60%'}
                         placeholder="닉네임 입력"
                         maxLength={10}
-                    //value={nickName}
+                        value={newNickname}
+                        onChangeText={(text) => {
+                            setNewNickname(text);
+                        }}
                     />
                     <Pressable
                         style={styles._button}
                         width={"34%"}
                         onPress={() => {
-                            alert('sss')
+                            checkNickname(newNickname);
                         }}
                     >
                         <Text style={styles.h2}>중복확인</Text>
@@ -33,6 +89,7 @@ const ChangeNickName = ({ navigation }) => {
                 <Pressable
                     style={styles._button3} backgroundColor={"#A7C8E7"}
                     onPress={() => {
+                      updateNickname(newNickname,token);
                         //navigation.navigate("Root")
                     }}
                 >

@@ -21,13 +21,13 @@ const LoginScreen = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ account: account, password }),
+        body: JSON.stringify({ account, password }),
       });
       const responseData = await response.json(); 
       if (response.ok) {
-        const { name, token } = responseData.data;
+        const { id, nickname, email, location, token } = responseData.data;
 
-        login(token, name); // 로그인 함수 호출하여 토큰 저장
+        login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
         Alert.alert('로그인 성공', responseData.message);
         navigation.navigate('Root'); // Root 화면으로 이동
       } else {
@@ -46,13 +46,13 @@ const LoginScreen = () => {
         <Text style={styles.h3}>회원님의 정보는 안전하게 보관됩니다.</Text>
       </View>
       <TextInput
-        style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF' }]} // 테두리 없애고 원하는 색상으로 변경
+        style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF', fontSize: '14%' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="아이디 입력"
         value={account}
         onChangeText={text => setAccount(text)} // 아이디 입력 시 상태 업데이트
       />
       <TextInput
-        style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF' }]} // 테두리 없애고 원하는 색상으로 변경
+        style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF', fontSize: '14%' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="비밀번호 입력"
         value={password}
         onChangeText={text => setPassword(text)} // 비밀번호 입력 시 상태 업데이트
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   input: {
-    height: 60,
+    height: '7%',
     width: '80%',
-    borderRadius: 16,
+    borderRadius: '16%',
     borderColor: "#ffffff",
     borderWidth: 1,
     fontSize: 18,
@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   button: {
-    height: 60,
+    height: '7%',
     width: '80%',
     fontSize: 18,
-    borderRadius: 16,
+    borderRadius: '16%',
     paddingHorizontal: 15,
     paddingVertical: 18,
     justifyContent: 'center',
@@ -104,23 +104,23 @@ const styles = StyleSheet.create({
   },
   buttonText: {  
     color: '#000000',
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   h1: {
-    fontSize: '37%',
+    fontSize: '33%',
     fontWeight: 'bold',
     marginBottom: '2%',
     marginRight: '32%',
   },
   h2: {
-    fontSize: '25%',
+    fontSize: '22%',
     fontWeight: 'bold',
-    marginBottom: '10%',
+    marginBottom: '7%',
   },
   h3: {
     fontSize: '17%',
-    marginBottom: "5%",
+    marginBottom: "15%",
     maginLeft: '10',
   },
   h4: {

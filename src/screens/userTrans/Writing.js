@@ -14,7 +14,7 @@ const WritePost = () => {
 
   return (
     <ScrollView style={{ padding: 20 }}>
-      <TouchableOpacity onPress={handlePhotoUpload} style={{ marginBottom: 20 }}>
+      <TouchableOpacity onPress={handlePhotoUpload} style={{ marginBottom: 20, borderBottomWidth: 1 }}>
         <Text style={{ fontSize: 20 }}>사진 등록</Text>
       </TouchableOpacity>
 
@@ -22,17 +22,21 @@ const WritePost = () => {
         placeholder="제목"
         value={title}
         onChangeText={setTitle}
-        style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: 'gray' }}
-      />
+        style={{ 
+          marginBottom: '10%',
+          padding: '5%',
+          borderBottomWidth: 1,
+          borderColor: 'gray',
+        }}/>
 
-      <View style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: 'gray' }}>
+      <View style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray' }}>
         <Text style={{ marginBottom: 5 }}>카테고리</Text>
         <ScrollView horizontal>
           <TouchableOpacity onPress={() => setCategory('애완용품')} style={{ marginRight: 10 }}>
-            <Text style={{ padding: 5, borderWidth: 1, borderRadius: 5 }}>{'애완용품'}</Text>
+            <Text style={{ padding: 5, borderBottomWidth: 1, borderRadius: 5 }}>{'애완용품'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCategory('유아용품')}>
-            <Text style={{ padding: 5, borderWidth: 1, borderRadius: 5 }}>{'유아용품'}</Text>
+            <Text style={{ padding: 5, borderBottomWidth: 1, borderRadius: 5 }}>{'유아용품'}</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -42,24 +46,37 @@ const WritePost = () => {
         value={price}
         onChangeText={setPrice}
         keyboardType="numeric"
-        style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: 'gray' }}
-      />
+        style={{
+          marginBottom: '10%',
+          padding: '5%',
+          borderBottomWidth: 1,
+          borderColor: 'gray',
+        }}/>
 
       <TextInput
         placeholder="대여 기간 (일)"
         value={duration}
         onChangeText={setDuration}
         keyboardType="numeric"
-        style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: 'gray' }}
-      />
+        style={{
+          marginBottom: '10%',
+          padding: '5%',
+          borderBottomWidth: 1,
+          borderColor: 'gray',
+        }}/>
 
       <TextInput
         placeholder="상품 설명"
         value={description}
         onChangeText={setDescription}
         multiline
-        style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: 'gray', minHeight: 100 }}
-      />
+        style={{
+          marginBottom: 20,
+          padding: 10,
+          borderBottomWidth: 1,
+          borderColor: 'gray',
+          minHeight: 200,
+        }}/>
     </ScrollView> 
   );
 };

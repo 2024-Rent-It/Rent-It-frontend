@@ -23,7 +23,7 @@ const Email = () => {
       <Text style={styles.subtitle}>이메일을 입력해주세요!😍</Text>
       <Text style={styles.info}>회원님의 이메일로 임시비밀번호를 보내드립니다.</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF', fontSize: '14%' }]}
         placeholder="이메일 입력"
         value={email}
         onChangeText={setEmail}
@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECECEC', // 전체 화면 배경 색상 변경
   },
   input: {
-    height: 60,
+    height: '7%',
     width: '80%',
-    borderRadius: 16,
+    borderRadius: '16%',
     borderColor: "#ffffff",
     borderWidth: 1,
     fontSize: 18,
@@ -56,10 +56,9 @@ const styles = StyleSheet.create({
     marginBottom: '6%',
   },
   button: {
-    height: 60,
+    height: '7%',
     width: '80%',
-    fontSize: 18,
-    borderRadius: 16,
+    borderRadius: '16%',
     paddingHorizontal: 15,
     paddingVertical: 18,
     justifyContent: 'center',
@@ -68,24 +67,24 @@ const styles = StyleSheet.create({
     marginBottom: '63%',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: '16%',
     fontWeight: 'bold',
     color: '#000000',
   },
   title: {
-    fontSize: '37%',
+    fontSize: '33%',
     fontWeight: 'bold',
     marginBottom: '2%',
     marginRight: '33%',
   },
   subtitle: {
-    fontSize: '25%',
+    fontSize: '22%',
     fontWeight: 'bold',
     marginBottom: '10%',
     marginRight: '22%',
   },
   info: {
-    fontSize: '18%',
+    fontSize: '16%',
     marginBottom: '15%',
   },
 });

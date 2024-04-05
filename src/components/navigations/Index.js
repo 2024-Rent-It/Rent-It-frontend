@@ -31,10 +31,11 @@ import Onboarding from "../../screens/onboarding/Onboarding";
 import SignUpTest from "../../screens/onboarding/SignUpTest";
 import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
+import ProductDetailPage from "../../screens/PicPage/ProductDetail.js";
+import ProductDetailPage2 from "../../screens/IconPage/ProductDetail2.js";
 import Product from "../../screens/Product.js"
 import EmailLogin from "../../screens/onboarding/EmailLogin.js"
 import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
-
 
 
 const Stack = createNativeStackNavigator();
@@ -126,6 +127,8 @@ function RootNavigator() {
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
         </Stack.Navigator>
     );1
