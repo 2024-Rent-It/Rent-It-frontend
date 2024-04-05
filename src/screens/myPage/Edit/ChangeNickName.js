@@ -3,6 +3,7 @@ import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-nativ
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
+
 const ChangeNickName = ({ navigation }) => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const [newNickname, setNewNickname] = useState("");
@@ -59,9 +60,7 @@ const ChangeNickName = ({ navigation }) => {
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
             <Text style={styles.t1}>💡변경하려는 닉네임을 입력해주세요</Text>
-            <View>
-                <TextInput />
-            </View>
+           
 
             <View style={styles.input_field}>
 
@@ -86,19 +85,16 @@ const ChangeNickName = ({ navigation }) => {
                         <Text style={styles.h2}>중복확인</Text>
                     </Pressable>
                 </View>
-                {/* 영서야 아래 내가 주석 단 부분이 테스트하려고 그냥 임의로 만들어놓은거얌. 스타일 이뿌게 해서 버튼 넣어죠(하트) */}
-                {/* <View>
-                        <Pressable
-                            style={styles._button3} backgroundColor={"#A7C8E7"}
-                            onPress={() => {
-                                updateNickname(newNickname,token);
-                                // navigation.navigate("Root")
-                            }
-                            }
-                        >
-                            <Text style={styles.h2}>회원가입</Text>
-                        </Pressable>
-                    </View> */}
+
+                <Pressable
+                    style={styles._button3} backgroundColor={"#A7C8E7"}
+                    onPress={() => {
+                      updateNickname(newNickname,token);
+                        //navigation.navigate("Root")
+                    }}
+                >
+                    <Text style={styles.h2}>변경</Text>
+                </Pressable>
             </View>
 
         </View>
@@ -115,6 +111,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     input_field: {
+        marginTop:"3%",
         marginBottom: "5%",
     },
     h2: {
@@ -122,6 +119,7 @@ const styles = StyleSheet.create({
     },
     horizon: {
         flexDirection: "row",
+        marginBottom:"140%",
     },
     input: {
         height: 60,
@@ -143,6 +141,16 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         height: 60,
         width: '27%',
+    },
+    _button3: {
+        backgroundColor: "#A7C8E7",
+        alignItems: "center",
+        padding: 20,
+        borderRadius: 16,
+        height: 60,
+        marginBottom: "6%",
+        width:"90%",
+        marginLeft:'5%',
     },
 
 });
