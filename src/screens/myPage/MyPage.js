@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image, TouchableOpacity, StyleSheet, Text, Alert} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import krr from "/Users/heojuwon/Downloads/Rent-It-frontend/assets/images/k.png";
+import krr from "../../../assets/images/k.png";
 import { View } from "react-native";
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 

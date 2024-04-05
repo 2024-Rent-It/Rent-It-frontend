@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { AuthProvider } from '../../contexts/AuthContext';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 import MyFav from "../../screens/myPage/MyFav";
@@ -30,10 +31,11 @@ import Onboarding from "../../screens/onboarding/Onboarding";
 import SignUpTest from "../../screens/onboarding/SignUpTest";
 import LoginScreen from "../../screens/onboarding/LoginScreen";
 import AddressScreen from "../../screens/onboarding/AddressScreen";
-import Product from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/Product.js"
-import EmailLogin from "/Users/heojuwon/Downloads/Rent-It-frontend/src/screens/onboarding/EmailLogin.js"
 import ProductDetailPage from "../../screens/PicPage/ProductDetail.js";
 import ProductDetailPage2 from "../../screens/IconPage/ProductDetail2.js";
+import Product from "../../screens/Product.js"
+import EmailLogin from "../../screens/onboarding/EmailLogin.js"
+import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
 
 
 const Stack = createNativeStackNavigator();
@@ -59,7 +61,7 @@ function BottomTabNavigator() {
                 component={Writing}
                 options={{
                     tabBarIcon: () => (
-                        <FontAwesome6 name="pencil" size={24} color="grey" />
+                        <SimpleLineIcons name="pencil" size={24} color="grey" />
                     ),
                 }}
             />
@@ -127,9 +129,9 @@ function RootNavigator() {
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
             <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
-            
+            <Stack.Screen name="ChangePW2" component={ChangePw2} />
         </Stack.Navigator>
-    );
+    );1
 }
 
 export default function Navigation() {

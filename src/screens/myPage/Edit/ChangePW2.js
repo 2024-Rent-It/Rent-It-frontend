@@ -2,14 +2,26 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 
 
-const ChangePw = ({ navigation }) => {
+const ChangePw2 = ({ navigation }) => {
     return (
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
-            <Text style={styles.t1}>👆🏻기존 비밀번호를 입력해주세요</Text>
-            <View>
-                <TextInput />
+            <Text style={styles.t1}>👆🏻새 비밀번호를 입력해주세요</Text>
+           
+            <View style={styles.input_field}>
+
+                <View style={styles.horizon} width={"100%"}>
+                    <TextInput
+                        style={styles.input}
+                        secureTextEntry={true}
+                        placeholder="비밀번호 입력"
+                        maxLength={10}
+                    //value={nickName}
+                    />
+                </View>
             </View>
+
+            <Text style={styles.t1}>✌🏻비밀번호 확인</Text>
 
             <View style={styles.input_field}>
 
@@ -27,17 +39,17 @@ const ChangePw = ({ navigation }) => {
             <Pressable
                 style={styles._button3} backgroundColor={"#A7C8E7"}
                 onPress={() => {
-                    navigation.navigate("ChangePW2")
+                    //navigation.navigate("Root")
                 }}
             >
-                <Text style={styles.h2}>확인</Text>
+                <Text style={styles.h2}>변경</Text>
             </Pressable>
 
         </View>
     )
 };
 
-export default ChangePw;
+export default ChangePw2;
 
 const styles = StyleSheet.create({
     t1: {  //질문 (~~을 입력해주세요)
@@ -47,6 +59,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     input_field: {
+        marginTop:"3%",
         marginBottom: "5%",
     },
     h2: {  

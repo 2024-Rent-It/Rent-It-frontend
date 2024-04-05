@@ -21,13 +21,13 @@ const LoginScreen = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ account: account, password }),
+        body: JSON.stringify({ account, password }),
       });
       const responseData = await response.json(); 
       if (response.ok) {
-        const { name, token } = responseData.data;
+        const { id, nickname, email, location, token } = responseData.data;
 
-        login(token, name); // 로그인 함수 호출하여 토큰 저장
+        login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
         Alert.alert('로그인 성공', responseData.message);
         navigation.navigate('Root'); // Root 화면으로 이동
       } else {

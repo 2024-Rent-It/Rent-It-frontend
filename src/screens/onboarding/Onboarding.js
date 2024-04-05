@@ -12,20 +12,20 @@ const DATA = [
     title: "RENT",
     description: "취향인 아이템, 마음껏 사용하세요!",
     plus: "나한테는 없는 아이템\n처분 걱정없는 일상\n마음껏 사용",
-    lottie: require("/Users/heojuwon/Downloads/Rent-It-frontend/assets/bed1.json"),
+    lottie: require("../../../assets/bed1.json"),
   },
   {
     title: "HOME",
     description: "내 집 앞에서, 바로 빌려보세요!",
     plus: "당장 필요한 아이템\n멀리갈 필요 없이\n집앞에서 거래",
-    lottie: require("/Users/heojuwon/Downloads/Rent-It-frontend/assets/monitor1.json"),
+    lottie: require("../../../assets/monitor1.json"),
 
   },
   {
     title: "TAKE",
     description: "마음에 든다면, 가질 수도 있어요!",
     plus: "직접 사용해본 후\n마음에 든다면\n소장하자",
-    lottie: require("/Users/heojuwon/Downloads/Rent-It-frontend/assets/phone.json"),
+    lottie: require("../../../assets/phone.json"),
   },
   {
     title: "YOU CAN RENT EVERYTHING",

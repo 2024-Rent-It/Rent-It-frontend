@@ -6,13 +6,17 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const [userNickname, setUserNickname] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userLocation, setUserLocation] = useState("");
+  const [userid, setUserID] = useState("");
 
-  const login = (authToken, loginUserNickname) => {
-    Alert.alert('로그인 하는 중~~');
+  const login = (authToken, loginUserNickname, loginUserID,loginUserEmail,loginUserLocation) => {
     setToken(authToken);
-    setUserNickname(loginUserNickname)
+    setUserNickname(loginUserNickname);
+    setUserID(loginUserID);
+    setUserEmail(loginUserEmail);
+    setUserLocation(loginUserLocation);
     // console.log(userNickname)
-    
   };
 
   const logout = () => {
@@ -24,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   }, [userNickname]);
 
   return (
-    <AuthContext.Provider value={{ token, userNickname, login, logout }}>
+    <AuthContext.Provider value={{ token, userNickname, userEmail,userLocation,login, logout }}>
       {children}
     </AuthContext.Provider>
   );
