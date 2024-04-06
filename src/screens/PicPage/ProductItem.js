@@ -1,19 +1,18 @@
-//이제 ProductItem.js 파일을 만들어서 ProductItem 컴포넌트를 정의하고, products 배열을 이용하여 각 상품을 렌더링.
-//ProductItem 컴포넌트는 상품 데이터를 받아와서 UI에 렌더링함.
-
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  margin-top: 40px;
+  align-items: center;
 `;
 
 const ImageContainer = styled.View`
-  width: 100%;
-  height: 200px;
+  width: 85%;
+  aspect-ratio: 2/3; /* 세로가 가로보다 약간 더 긴 직사각형 유지 */
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 10px; /* 이미지 간의 간격 조절 */
 `;
 
 const ProductImage = styled.Image`
@@ -23,13 +22,7 @@ const ProductImage = styled.Image`
 
 const ProductName = styled.Text`
   font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
-`;
-
-const ProductPrice = styled.Text`
-  font-size: 16px;
-  margin-top: 5px;
+  margin-top: 5px; /* 텍스트와 이미지 사이 간격 조절 */
 `;
 
 const ProductItem = ({ product, onPress }) => {
@@ -37,10 +30,9 @@ const ProductItem = ({ product, onPress }) => {
     <TouchableOpacity onPress={() => onPress(product)}>
       <Container>
         <ImageContainer>
-          <ProductImage source={product.pictures} />
+          <ProductImage source={product.pictures} resizeMode="cover" />
         </ImageContainer>
         <ProductName>{product.goodsName}</ProductName>
-        <ProductPrice>{product.price}</ProductPrice>
       </Container>
     </TouchableOpacity>
   );
