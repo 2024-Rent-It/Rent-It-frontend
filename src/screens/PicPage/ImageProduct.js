@@ -83,6 +83,7 @@ import coatImage from '../../../assets/images/coat.jpg';
 import dogwearImage from '../../../assets/images/dogwear.jpeg';
 import ladyImage from '../../../assets/images/lady.png';
 import plateImage from '../../../assets/images/plate.jpg';
+import macbook from '../../../assets/images/macbook.jpg';
 
 const products = [
   { id: 1, goodsName: "Tent", user: "User1", pictures: tentImage, description: "텐트입니다.", price: "50만원" },
@@ -96,9 +97,10 @@ const products = [
   { id: 9, goodsName: "Airdress", user: "User9", pictures: airdressImage, description: "This is an airdress", price: "$70" },
   { id: 10, goodsName: "Cat Tower", user: "User10", pictures: cattowerImage, description: "This is a cat tower", price: "$90" },
   { id: 11, goodsName: "Coat", user: "User11", pictures: coatImage, description: "This is a coat", price: "$60" },
-  { id: 12, goodsName: "Dog Wear", user: "User12", pictures: dogwearImage, description: "This is a dog wear", price: "$20" },
-  { id: 13, goodsName: "Lady", user: "User13", pictures: ladyImage, description: "This is a lady", price: "$200" },
-  { id: 14, goodsName: "Plate", user: "User14", pictures: plateImage, description: "This is a plate", price: "$5" }
+  { id: 12, goodsName: "Dog Wear", user: "User12", pictures: dogwearImage, description: "강아지옷", price: "5천원" },
+  { id: 13, goodsName: "Lady", user: "User13", pictures: ladyImage, description: "디올", price: "10만원" },
+  { id: 14, goodsName: "Plate", user: "User14", pictures: plateImage, description: "그릇", price: "만원" },
+  { id: 15, goodsName: "macbook", user: "User15", pictures: macbook, description: "맥북", price: "3만원" }
 ];
 
 export default products;
