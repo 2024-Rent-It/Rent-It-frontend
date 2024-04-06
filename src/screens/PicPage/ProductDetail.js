@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const ProductDetailPage = ({ route }) => {
@@ -7,17 +7,32 @@ const ProductDetailPage = ({ route }) => {
   const { product } = route.params;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-      <Image source={product.pictures} style={{ width: '100%', height: '50%' }} />
-      <View style={{ position: 'absolute', top: '51%', left: '2%', padding: 10 }}> 
-      <Ionicons name="person-circle-outline" size={50} color="black" />
+    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+      <Image source={product.pictures} style={{ width: '100%', height: '45%' }} />
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20 }}> 
+        <Ionicons name="person-circle-outline" size={50} color="black" />
+        <View style={{ marginLeft: 10 }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{product.user}</Text>
+          <Text style={{ fontSize: 16 }}>{product.Address}</Text>
+        </View>
       </View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', padding: 20 }}> 
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: '50%', marginTop: '1%' }}>{product.user}</Text>
-        <Text style={{ fontSize: 16, fontWeight: 'regular', marginRight: '47%'}}>{product.Address}</Text>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{product.goodsName}</Text>
-        <Text style={{ fontSize: 18, marginVertical: 5 }}>Price: {product.price}</Text>
-        <Text style={{ fontSize: 16, marginVertical: 5 }}>Description: {product.description}</Text>
+      <View style={{ alignItems: 'center', padding: 20 }}> 
+        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>{product.goodsName}</Text>
+    
+        <Text style={{ fontSize: 18, marginBottom: 5 }}>Price: {product.price}</Text>
+        <Text style={{ fontSize: 16, marginBottom: 5 }}>Description: {product.description}</Text>
+      </View>
+    
+      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#ECECEC', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name="heart" size={40} color="black" />
+            <Text style={{ fontSize: 24, color: 'black', marginLeft: '3%', marginTop: '1%' }}>{product.price}</Text>
+          </View>
+          <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 30, paddingVertical: 15, borderRadius: 30 }}>
+            <Text style={{ color: 'white', fontSize: 20 }}>채팅 보내기</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

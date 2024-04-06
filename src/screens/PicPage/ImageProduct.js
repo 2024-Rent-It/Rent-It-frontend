@@ -17,7 +17,7 @@ import macbook from '../../../assets/images/macbook.jpg';
 const products = [
   { id: 1, goodsName: "Tent", user: "나는 문어", Address: "강남구 대치동", pictures: tentImage, description: "텐트입니다.", price: "50만원" },
   { id: 2, goodsName: "Roller", user: "케로로", Address: "경기도 양평군", pictures: rollerImage, description: "폼롤러입니다.", price: "3만원" },
-  { id: 3, goodsName: "Bookshelf", user: "별이빛나는밤", Address: ",원주시 흥업면", pictures: bookshelfImage, description: "책장입니다.", price: "20만원" },
+  { id: 3, goodsName: "Bookshelf", user: "별이빛나는밤", Address: "원주시 흥업면", pictures: bookshelfImage, description: "책장입니다.", price: "20만원" },
   { id: 4, goodsName: "Golfdress", user: "홍해인", Address: "강남구 대치동", pictures: golfdressImage, description: "골프복입니다.", price: "셋트 60만원" },
   { id: 5, goodsName: "Hairband", user: "밥버거", Address: "강남구 대치동", pictures: hairbandImage, description: "This is a hairband", price: "$10" },
   { id: 6, goodsName: "Iphone", user: "배고픈 오리", Address: "강남구 대치동", pictures: iphoneImage, description: "This is an iphone", price: "$500" },
