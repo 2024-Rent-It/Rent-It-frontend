@@ -122,7 +122,7 @@ const MyPage = ({ navigation }) => {
 
             <View style={[styles.container,{ borderBottomWidth: 0 }]}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyRent')}
+                <TouchableOpacity onPress={() => navigation.navigate('Notice')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>

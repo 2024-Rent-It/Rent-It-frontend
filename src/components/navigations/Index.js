@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
-import { FontAwesome6 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
@@ -34,6 +33,7 @@ import AddressScreen from "../../screens/onboarding/AddressScreen";
 import Product from "../../screens/Product.js"
 import EmailLogin from "../../screens/onboarding/EmailLogin.js"
 import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
+import Notice from "../../screens/Notice.js";
 
 
 
@@ -127,6 +127,7 @@ function RootNavigator() {
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
+            <Stack.Screen name="Notice" component={Notice} />
         </Stack.Navigator>
     );1
 }
