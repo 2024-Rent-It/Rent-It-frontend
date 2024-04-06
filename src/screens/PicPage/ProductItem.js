@@ -9,10 +9,10 @@ const Container = styled.View`
 
 const ImageContainer = styled.View`
   width: 85%;
-  aspect-ratio: 2/3; /* 세로가 가로보다 약간 더 긴 직사각형 유지 */
+  aspect-ratio: 2/3; 
   overflow: hidden;
   border-radius: 10px;
-  margin-bottom: 10px; /* 이미지 간의 간격 조절 */
+  margin-bottom: 10px; 
 `;
 
 const ProductImage = styled.Image`
@@ -22,7 +22,7 @@ const ProductImage = styled.Image`
 
 const ProductName = styled.Text`
   font-size: 18px;
-  margin-top: 5px; /* 텍스트와 이미지 사이 간격 조절 */
+  margin-top: 5px; 
 `;
 
 const ProductItem = ({ product, onPress }) => {
