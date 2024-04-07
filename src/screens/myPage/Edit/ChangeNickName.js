@@ -1,11 +1,12 @@
 import React, { useState} from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
-import { useAuth } from '../../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import { useAuth } from '../../../contexts/AuthContext';
 
 
 const ChangeNickName = ({ navigation }) => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const { setUserNickname } = useAuth(); // setUserNickname 함수 가져오기
     const [newNickname, setNewNickname] = useState("");
     const [isNicknameDuplicateChecked, setIsNicknameDuplicateChecked] = useState(false);
 
@@ -42,7 +43,13 @@ const ChangeNickName = ({ navigation }) => {
                     // "Content-Type": "application/json",
                 }
             });
+
             Alert.alert('변경되었습니다.');
+            const updatedNickname = response.data.data.nickname; 
+            // console.log("업데이트 닉네임 확인",response.data.data.nickname)
+            setUserNickname(updatedNickname);
+            // console.log(response.data);
+            
             navigation.navigate("Root")
         } catch (error) {
             console.error('닉네임 변경 실패:', error);
