@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const ProductDetailPage = ({ route }) => {
@@ -30,8 +30,12 @@ const ProductDetailPage = ({ route }) => {
             <Text style={{ fontSize: 24, color: 'black', marginLeft: '3%', marginTop: '1%' }}>{product.price}</Text>
           </View>
           <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 30, paddingVertical: 15, borderRadius: 30 }}>
-            <Text style={{ color: 'white', fontSize: 20 }}>채팅 보내기</Text>
+            <Text style={{ color: '#FFF', fontSize: 20 }}>채팅 보내기</Text>
           </TouchableOpacity>
+        </View>
+        {/* 흰색 박스로 감싸진 '최대 2개월 가능' 텍스트 */}
+        <View style={{ paddingHorizontal: 10, backgroundColor: '#FFF', borderRadius: 20, marginTop: 10, marginLeft: 30, width: 135 }}>
+          <Text style={{ color: '#000', fontSize: 18, textAlign: 'left', paddingVertical: 5 }}>최대 2개월 가능</Text>
         </View>
       </View>
     </View>

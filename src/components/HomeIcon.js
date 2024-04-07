@@ -8,7 +8,7 @@ const HomeIcon = ({ title, onPress, iconName }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.iconContainer}>
-        <IconComponent name={iconName} size={33} color="black" />
+        <IconComponent name={iconName} size={37} color="black" />
         <Text style={styles.title}>{title}</Text>
       </View>
     </TouchableOpacity>
@@ -18,8 +18,8 @@ const HomeIcon = ({ title, onPress, iconName }) => {
 const styles = StyleSheet.create({
   iconContainer: {
     alignItems: 'center',
-    paddingHorizontal: 10, // 왼쪽 여백 추가
-    marginBottom: 15, // 아이콘들 사이의 간격 조절
+    paddingHorizontal: 10,
+    marginBottom: 15, 
   },
   title: {
     color: 'black',

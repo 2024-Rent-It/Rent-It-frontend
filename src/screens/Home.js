@@ -9,7 +9,7 @@ import PickerComponent from "../../src/components/image.js";
 
 const Home = () => {
   const navigation = useNavigation();
-
+//items -> categoty로 변경하기
   const items = [
     { id: 1, title: "인기렌탈" },
     { id: 2, title: "가구/인테리어" },
@@ -41,7 +41,7 @@ const Home = () => {
       {chunkedIcons.map((row, index) => (
         <RowContainer key={index}>
           {row.map((item, idx) => (
-            <TouchableOpacity key={item.id} style={{ marginHorizontal: 5, alignItems: 'center' }} onPress={() => navigation.navigate('ProductDetail2', { product: products[(index * 5) + idx] })}>
+            <TouchableOpacity key={item.id} style={{ marginHorizontal: 5, alignItems: 'center', marginTop: '3%', flex: 1 }} onPress={() => navigation.navigate('ProductDetail2', { product: products[(index * 5) + idx] })}>
               <HomeIcon title={item.title} onPress={() => navigation.navigate('ProductDetail2', { product: products[(index * 5) + idx] })} iconName={iconTypes[(index * 5) + idx]} />
             </TouchableOpacity>
           ))}
