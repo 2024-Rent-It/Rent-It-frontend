@@ -10,26 +10,40 @@ const ChangeEmail = ({ navigation }) => {
     const { setUserEmail } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const [newEmail, setNewEmail] = useState("");
     const [isEmailDuplicateChecked, setIsEmailDuplicateChecked] = useState(false);
+    // /** 이메일 중복 검사 함수 */
+    // const checkEmail = async (email) => {
+    //     try {
+    //         const response = await axios.post('http://localhost:8080/check-email', email, {
+    //             headers: {
+    //                 'Content-Type': 'text/plain'
+    //             }
+    //         });
+    //         Alert.alert(response.data);
+    //         if (response.data == "사용 가능한 이메일입니다.") {
+    //             setIsEmailDuplicateChecked(true);
+    //         }
+    //         console.log(response);
+    //         console.log(email);
+    //     } catch (error) {
+    //         console.error('이메일 중복 확인 실패:', error);
+    //         Alert.alert('알림', '중복 확인에 실패했습니다.');
+    //     }
+    // };
     /** 이메일 중복 검사 함수 */
-    const checkEmail = async (email) => {
-        try {
-            const response = await axios.post('http://localhost:8080/check-email', email, {
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            });
-            Alert.alert(response.data);
-            if (response.data == "사용 가능한 이메일입니다.") {
-                setIsEmailDuplicateChecked(true);
-            }
-            console.log(response);
-            console.log(email);
-        } catch (error) {
-            console.error('이메일 중복 확인 실패:', error);
-            Alert.alert('알림', '중복 확인에 실패했습니다.');
+const checkEmail = async (email) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/emails/${email}`);
+        Alert.alert(response.data);
+        if (response.data === "사용 가능한 이메일입니다.") {
+            setIsEmailDuplicateChecked(true);
         }
-    };
-
+        console.log(response);
+        console.log(email);
+    } catch (error) {
+        console.error('이메일 중복 확인 실패:', error);
+        Alert.alert('알림', '중복 확인에 실패했습니다.');
+    }
+};
     const updateEmail = async (newEmail,token) => {
         if (!isEmailDuplicateChecked) {
             Alert.alert('이메일 중복 확인이 필요합니다.');

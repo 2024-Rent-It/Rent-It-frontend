@@ -28,17 +28,13 @@ const SignUpTest = () => {
     /** 아이디 중복 검사 함수 */
     const checkAccount = async (account) => {
         try {
-            const response = await axios.post('http://localhost:8080/check-account', account, {
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            });
+            const response = await axios.get(`http://localhost:8080/accounts/${account}`);
             Alert.alert(response.data);
-            if (response.data == "사용 가능한 아이디입니다.") {
+            if (response.data === "사용 가능한 아이디입니다.") {
                 setIsAccountDuplicateChecked(true);
             }
             console.log(response);
-            console.log(account)
+            console.log(account);
         } catch (error) {
             console.error('아이디 중복 확인 실패:', error);
             Alert.alert('알림', '중복 확인에 실패했습니다.');
@@ -48,13 +44,9 @@ const SignUpTest = () => {
     /** 닉네임 중복 검사 함수 */
     const checkNickname = async (nickname) => {
         try {
-            const response = await axios.post('http://localhost:8080/check-nickname', nickname, {
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            });
+            const response = await axios.get(`http://localhost:8080/nicknames/${nickname}`);
             Alert.alert(response.data);
-            if (response.data == "사용 가능한 닉네임입니다.") {
+            if (response.data === "사용 가능한 닉네임입니다.") {
                 setIsNicknameDuplicateChecked(true);
             }
         } catch (error) {
@@ -66,13 +58,9 @@ const SignUpTest = () => {
     /** 이메일 중복 검사 함수 */
     const checkEmail = async (email) => {
         try {
-            const response = await axios.post('http://localhost:8080/check-email', email, {
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            });
+            const response = await axios.get(`http://localhost:8080/emails/${email}`);
             Alert.alert(response.data);
-            if (response.data == "사용 가능한 이메일입니다.") {
+            if (response.data === "사용 가능한 이메일입니다.") {
                 setIsEmailDuplicateChecked(true);
             }
             console.log(response);
@@ -82,7 +70,6 @@ const SignUpTest = () => {
             Alert.alert('알림', '중복 확인에 실패했습니다.');
         }
     };
-
 
 
     /** 회원가입 백엔드 전달 함수 */
@@ -171,7 +158,7 @@ const SignUpTest = () => {
             const responseData = await response.json();
             if (response.ok) {
                 const { id, nickname, email, location, token } = responseData.data;
-                login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
+                login(token, nickname, id, email, location); // 로그인 함수 호출하여 토큰 저장
                 Alert.alert('로그인 성공', responseData.message);
                 navigation.navigate('Root'); // Root 화면으로 이동
             } else {
