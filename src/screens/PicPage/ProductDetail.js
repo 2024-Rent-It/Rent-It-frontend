@@ -1,11 +1,15 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const ProductDetailPage = ({ route }) => {
   // route.params로부터 전달된 상품 데이터 가져오기
   const { product } = route.params;
 
+
+  /**<Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>{product.goodsName}</Text>
+    
+        <Text style={{ fontSize: 18, marginBottom: 5 }}>Price: {product.price}</Text> */
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Image source={product.pictures} style={{ width: '100%', height: '45%' }} />
@@ -17,10 +21,8 @@ const ProductDetailPage = ({ route }) => {
         </View>
       </View>
       <View style={{ alignItems: 'center', padding: 20 }}> 
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>{product.goodsName}</Text>
-    
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Price: {product.price}</Text>
-        <Text style={{ fontSize: 16, marginBottom: 5 }}>Description: {product.description}</Text>
+        
+        <Text style={{ fontSize: 16, marginBottom: 5 }}> {product.description}</Text>
       </View>
     
       <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#ECECEC', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
@@ -30,8 +32,12 @@ const ProductDetailPage = ({ route }) => {
             <Text style={{ fontSize: 24, color: 'black', marginLeft: '3%', marginTop: '1%' }}>{product.price}</Text>
           </View>
           <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 30, paddingVertical: 15, borderRadius: 30 }}>
-            <Text style={{ color: 'white', fontSize: 20 }}>채팅 보내기</Text>
+            <Text style={{ color: '#FFF', fontSize: 20 }}>채팅 보내기</Text>
           </TouchableOpacity>
+        </View>
+       
+        <View style={{ paddingHorizontal: 10, backgroundColor: '#FFF', borderRadius: 20, marginTop: 10, marginLeft: 30, width: 135 }}>
+          <Text style={{ color: '#000', fontSize: 18, textAlign: 'left', paddingVertical: 5 }}>최대 2개월 가능</Text>
         </View>
       </View>
     </View>

@@ -49,18 +49,18 @@ const LoginScreen = () => {
         style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="아이디 입력"
         value={account}
-        onChangeText={text => setAccount(text)} // 아이디 입력 시 상태 업데이트
+        onChangeText={text => setAccount(text)} 
       />
       <TextInput
         style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="비밀번호 입력"
         value={password}
-        onChangeText={text => setPassword(text)} // 비밀번호 입력 시 상태 업데이트
+        onChangeText={text => setPassword(text)} 
         secureTextEntry={true} // 비밀번호 숨기기
       />
       <Pressable
         style={styles.button}
-        onPress={handleLogin} // 로그인 버튼을 누를 때 handleLoginPress 함수 호출
+        onPress={handleLogin}
       >
         <Text style={styles.buttonText}>로그인 하기</Text>
       </Pressable>
@@ -108,23 +108,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   h1: {
-    // fontSize: '37%',
-    fontSize: 37,
+    fontSize: 33,
     fontWeight: 'bold',
     marginBottom: '2%',
     marginRight: '32%',
   },
   h2: {
-    // fontSize: '25%',
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: '10%',
   },
   h3: {
-    // fontSize: '17%',
     fontSize: 17,
-    marginBottom: "5%",
-    maginLeft: 10,
+    marginBottom: "15%",
+    maginLeft: '10',
   },
   h4: {
     fontSize: 15,
