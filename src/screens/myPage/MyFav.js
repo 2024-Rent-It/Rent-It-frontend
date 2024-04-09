@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   listContainer: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   itemContainer: {
     width: itemWidth,
