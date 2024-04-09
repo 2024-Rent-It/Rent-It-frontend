@@ -19,7 +19,7 @@ const AddressScreen = ({navigation}) => {
         const city = getCityFromAddress(data.address);
         console.log(`주소: ${data.address}, 우편번호: ${data.zonecode}, 동네: ${city}`);
 
-        navigation.navigate('회원가입테스트', { city: city})
+        navigation.navigate('회원가입', { city: city})
 
         setOpenPostcode(false);
     };

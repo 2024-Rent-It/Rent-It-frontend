@@ -1,10 +1,24 @@
-import React from "react";
+import React ,{ useEffect, useState }from "react";
 import { View, StyleSheet, Text } from "react-native";
-
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 
 const NoticeDetail_1 = ({ navigation, route }) => {
-    const { title, date, content } = route.params;
+    // const { title, date, content } = route.params;
+    const { id, title, date } = route.params;
+    const [content, setContent] = useState('');
+
+    useEffect(() => {
+        const NoticePath = `/notices/${id}`;
+        axios.get(`${BASE_URL}${NoticePath}`)
+            .then(response => {
+                setContent(response.data.content);
+            })
+            .catch(error => {
+                console.error('공지사항을 불러오는데 에러가 생겼습니다.', error);
+            });
+    }, [id]);
     return (
         <View style={styles.back}>
             

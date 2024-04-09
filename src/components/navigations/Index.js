@@ -35,8 +35,8 @@ import ProductDetailPage2 from "../../screens/IconPage/ProductDetail2.js";
 import Product from "../../screens/Product.js"
 import EmailLogin from "../../screens/onboarding/EmailLogin.js"
 import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
-import Notice from "../../screens/Notice.js";
-import NoticeDetail_1 from "../../screens/myPage/NoticeDetail_1.js";
+import Notice from "../../screens/myPage/Notice.js";
+import NoticeDetail from "../../screens/myPage/NoticeDetail.js";
 
 
 const Stack = createNativeStackNavigator();
@@ -109,7 +109,7 @@ function RootNavigator() {
             {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
             {/* <Stack.Screen name='회원가입스크린' component={SignUpScreen} /> */}
-            <Stack.Screen name='회원가입테스트' component={SignUpTest} />
+            <Stack.Screen name='회원가입' component={SignUpTest} />
             <Stack.Screen name='로그인' component={LoginScreen} />
 
             <Stack.Screen name="MyFav" component={MyFav} />
@@ -132,7 +132,7 @@ function RootNavigator() {
             <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
             <Stack.Screen name="Notice" component={Notice} />
-            <Stack.Screen name="NoticeDetail_1" component={NoticeDetail_1} />
+            <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
         </Stack.Navigator>
     );1
 }

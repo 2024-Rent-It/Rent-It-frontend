@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Animated, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Platform } from 'react-native';
+
 const BottomSheet = ({ setStatus}) => {
     const slide = React.useRef(new Animated.Value(300)).current;
     const navigation = useNavigation();
@@ -50,7 +52,9 @@ const BottomSheet = ({ setStatus}) => {
     return (
         <Pressable onPress={closeModal} style={styles.backdrop}>
             {/* 아래 height가 모달이 얼마큼 올라올지 정하는거 */}
-            <Pressable style={{ width: '100%', height: '29%', }}>
+            {/* <Pressable style={{ width: '100%', height: '25%', }}> */}
+            <Pressable style={{ width: '100%', height: Platform.OS === 'android' ? '29%' : '23%' }}>
+
                 <Animated.View style={[styles.bottomSheet, { transform: [{ translateY: slide }] }]}>
                     <Text style={{ fontSize: 23, fontWeight: 'bold', textAlign: "center" }}>다음을 읽고 동의해주십시오.</Text>
                     <Text style={styles.modalText}>
@@ -80,7 +84,7 @@ const BottomSheet = ({ setStatus}) => {
                         <TouchableOpacity style={styles.button}
                         onPress={() => {
                             // navigation.navigate('회원가입폼')
-                            navigation.navigate('회원가입테스트')
+                            navigation.navigate('회원가입')
                             // navigation.navigate('Root')
                         }}>
                             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>동의하고 계속하기

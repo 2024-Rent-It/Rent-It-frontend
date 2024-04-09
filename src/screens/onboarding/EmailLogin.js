@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-nativ
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
 
-const Email = () => {
+const Email = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [isEmailExist, setIsEmailExist] = useState(false);
 
@@ -33,12 +33,13 @@ const Email = () => {
     //   Alert.alert('유효하지 않은 이메일 형식입니다.');
     //   return;
     // }
+    const sendEmailPath = '/sendPwd';
     if (!isEmailExist) {
       Alert.alert('이메일을 다시 입력해주세요.');
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/sendPwd', null, {
+      const response = await axios.post(`${BASE_URL}${sendEmailPath}`, null, {
         params: {
             memberEmail: email
           }
