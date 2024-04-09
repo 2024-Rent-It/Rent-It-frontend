@@ -3,12 +3,12 @@ import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Pressable } 
 
 
 const DATA = [
-    { id: 1, title: '🚨필독 공지사항!', date: '2024-04-01', screen:'NoticeDetail_1' },
-    { id: 2, title: '신고 누적된 유저에 대한 제재 조항', date: '2024-02-13', screen:'NoticeDetail_2' },
+    { id: 1, title: '🚨필독 공지사항!', date: '2024-04-01', screen:'NoticeDetail_1', content:'다섯 개구리 모여서 공명을 하네' },
+    { id: 2, title: '신고 누적된 유저에 대한 제재 조항케로', date: '2024-02-13', screen:'NoticeDetail_1', content:'케로케로케로케로신나게케로케로케로나가자' },
 ]
 
 const Item = ({ item, style, navigation }) => (
-    <Pressable onPress={() => navigation.navigate(item.screen,{title: item.title, date: item.date })}>
+    <Pressable onPress={() => navigation.navigate(item.screen,{title: item.title, date: item.date, content: item.content })}>
         <View style={[styles.item, style]}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>{item.title}</Text>
