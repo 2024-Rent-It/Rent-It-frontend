@@ -1,21 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
+import React, { useState} from "react";
+import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import axios from 'axios';
 
 const Email = () => {
   const [email, setEmail] = useState('');
+  const [isEmailExist, setIsEmailExist] = useState(false);
 
-  const handleResetPasswordPress = () => {
-    if (!validateEmail(email)) {
-      Alert.alert('유효하지 않은 이메일 형식입니다.');
+  const checkEmail = async (email) => {
+    try {
+      const response = await axios.get('http://localhost:8080/checkEmail', {
+        params: {
+          memberEmail: email
+        }
+      });
+
+      // 서버로부터의 응답에 따라 처리
+      if (response.data) {
+        console.log('이메일이 확인되었습니다.');
+        setIsEmailExist(true);
+      } else {
+        console.log('이메일이 존재하지 않습니다.');
+      }
+    } catch (error) {
+      console.error('이메일 확인 중 오류 발생:', error);
+    }
+  };
+
+  const handleResetPasswordPress = async(email) => {
+    // if (!validateEmail(email)) {
+    //   Alert.alert('유효하지 않은 이메일 형식입니다.');
+    //   return;
+    // }
+    if (!isEmailExist) {
+      Alert.alert('이메일을 다시 입력해주세요.');
       return;
     }
+    try {
+      const response = await axios.post('http://localhost:8080/sendPwd', null, {
+        params: {
+            memberEmail: email
+          }
+        }, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            });
+
+      console.log(response)
+      if (response.data) {
+        Alert.alert('임시 비밀번호가 전송되었습니다.', '해당 비밀번호로 로그인해주세요.');
+        navigation.navigate("Onboarding")
+        
+      } else {
+        console.log('에러');
+      }
+    } catch (error) {
+      console.error('이메일 전송 중 오류 발생:', error);
+    }
+  
+
     // 임시 비밀번호 발급 요청 로직 작성
   };
+
 
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return regex.test(email);
   };
+
+  
 
   return (
     <View style={styles.container}>
@@ -28,7 +81,12 @@ const Email = () => {
         value={email}
         onChangeText={setEmail}
       />
-      <Pressable style={styles.button} onPress={handleResetPasswordPress}>
+      <Pressable style={styles.button} 
+      onPress={() => {
+        checkEmail(email);
+        handleResetPasswordPress(email);
+    }}>
+
         <Text style={styles.buttonText}>임시 비밀번호 발급받기</Text>
       </Pressable>
     </View>

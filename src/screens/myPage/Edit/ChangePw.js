@@ -1,8 +1,32 @@
-import React from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
-
+import React, { useState} from "react";
+import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import axios from 'axios';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const ChangePw = ({ navigation }) => {
+    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const [currentPassword, setCurrentPassword] = useState("");
+
+    const checkPassword = async (currentPassword,token) => {
+        try {
+            const response = await axios.put('http://localhost:8080/member/check-password', null,
+            {params:{ currentPassword: currentPassword },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            Alert.alert('확인되었습니다.');
+            navigation.navigate("ChangePW2");
+        } catch (error) {
+            console.error('비밀번호가 틀렸습니다. 다시 입력해주세요.');
+            if (error.response) {
+                // 서버가 응답한 경우
+                console.error('응답 데이터:', error.response);
+                console.error('응답 상태 코드:', error.response.status);
+            }
+        }
+
+    };
     return (
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
@@ -18,8 +42,10 @@ const ChangePw = ({ navigation }) => {
                         style={styles.input}
                         secureTextEntry={true}
                         placeholder="비밀번호 입력"
-                        maxLength={10}
-                    //value={nickName}
+                        value={currentPassword}
+                        onChangeText={(text) => {
+                            setCurrentPassword(text);
+                        }}
                     />
                 </View>
             </View>
@@ -27,7 +53,7 @@ const ChangePw = ({ navigation }) => {
             <Pressable
                 style={styles._button3} backgroundColor={"#A7C8E7"}
                 onPress={() => {
-                    navigation.navigate("ChangePW2")
+                    checkPassword(currentPassword,token);
                 }}
             >
                 <Text style={styles.h2}>확인</Text>

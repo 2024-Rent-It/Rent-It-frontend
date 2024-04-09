@@ -24,11 +24,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(userNickname); // userNickname 값이 변경될 때마다 로그를 출력
+    console.log("닉네임 다음으로 변경됨", userNickname); // userNickname 값이 변경될 때마다 로그를 출력
   }, [userNickname]);
 
   return (
-    <AuthContext.Provider value={{ token, userNickname, userEmail,userLocation,login, logout }}>
+    <AuthContext.Provider value={{ token, userNickname, userEmail,userLocation,setUserNickname,setUserEmail, setUserLocation,login, logout }}>
       {children}
     </AuthContext.Provider>
   );

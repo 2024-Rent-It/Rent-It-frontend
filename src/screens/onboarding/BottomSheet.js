@@ -57,7 +57,8 @@ const BottomSheet = ({ setStatus}) => {
                         <Text
                             style={styles.modalText2}
                             onPress={() => {
-                                navigation.navigate('서비스 이용약관')
+                                navigation.navigate('Root')
+                                // navigation.navigate('서비스 이용약관')
 
                             }}
                         >

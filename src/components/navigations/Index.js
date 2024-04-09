@@ -36,6 +36,8 @@ import Product from "../../screens/Product.js"
 import EmailLogin from "../../screens/onboarding/EmailLogin.js"
 import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
 import Notice from "../../screens/Notice.js";
+import NoticeDetail_1 from "../../screens/myPage/NoticeDetail_1.js";
+import NoticeDetail_2 from "../../screens/myPage/NoticeDetail_2.js";
 
 
 const Stack = createNativeStackNavigator();
@@ -131,6 +133,8 @@ function RootNavigator() {
             <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
             <Stack.Screen name="Notice" component={Notice} />
+            <Stack.Screen name="NoticeDetail_1" component={NoticeDetail_1} />
+            <Stack.Screen name="NoticeDetail_2" component={NoticeDetail_2} />
         </Stack.Navigator>
     );1
 }
