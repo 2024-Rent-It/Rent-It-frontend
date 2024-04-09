@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../constants/api.js';
 
 
 const ChangeNickName = ({ navigation }) => {
@@ -13,8 +14,10 @@ const ChangeNickName = ({ navigation }) => {
 
     /** 닉네임 중복 검사 함수 */
     const checkNickname = async (nickname) => {
+        const checkNicknamePath = `/nicknames/${nickname}`;
         try {
-            const response = await axios.get(`http://localhost:8080/nicknames/${nickname}`);
+            // const response = await axios.get(`http://localhost:8080/nicknames/${nickname}`);
+            const response = await axios.get(`${BASE_URL}${checkNicknamePath}`);
             Alert.alert(response.data);
             if (response.data === "사용 가능한 닉네임입니다.") {
                 setIsNicknameDuplicateChecked(true);
@@ -26,6 +29,7 @@ const ChangeNickName = ({ navigation }) => {
     };
 
     const updateNickname = async (newNickname, token) => {
+        const updateNicknamePath = '/member/update-nickname';
         if (!isNicknameDuplicateChecked) {
             Alert.alert('닉네임 중복 확인이 필요합니다.');
             return;
@@ -33,7 +37,8 @@ const ChangeNickName = ({ navigation }) => {
         // console.log(newNickname,token);
 
         try {
-            const response = await axios.put('http://localhost:8080/member/update-nickname', null,
+            // const response = await axios.put('http://localhost:8080/member/update-nickname', null,
+            const response = await axios.put(`${BASE_URL}${updateNicknamePath}`, null,
                 {
                     params: { nickname: newNickname },
                     headers: {

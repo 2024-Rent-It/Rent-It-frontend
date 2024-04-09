@@ -2,14 +2,17 @@ import React, { useState} from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../constants/api.js';
 
 const ChangePw = ({ navigation }) => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const [currentPassword, setCurrentPassword] = useState("");
 
     const checkPassword = async (currentPassword,token) => {
+        const checkPasswordPath = '/member/check-password';
         try {
-            const response = await axios.put('http://localhost:8080/member/check-password', null,
+            // const response = await axios.put('http://localhost:8080/member/check-password', null,
+            const response = await axios.put(`${BASE_URL}${checkPasswordPath}`, null,
             {params:{ currentPassword: currentPassword },
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -18,7 +21,7 @@ const ChangePw = ({ navigation }) => {
             Alert.alert('확인되었습니다.');
             navigation.navigate("ChangePW2");
         } catch (error) {
-            console.error('비밀번호가 틀렸습니다. 다시 입력해주세요.');
+            Alert.alert('비밀번호가 틀렸습니다. 다시 입력해주세요.');
             if (error.response) {
                 // 서버가 응답한 경우
                 console.error('응답 데이터:', error.response);

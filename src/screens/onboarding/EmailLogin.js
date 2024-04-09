@@ -1,14 +1,16 @@
 import React, { useState} from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 const Email = () => {
   const [email, setEmail] = useState('');
   const [isEmailExist, setIsEmailExist] = useState(false);
 
   const checkEmail = async (email) => {
+    const checkEmailPath = '/checkEmail';
     try {
-      const response = await axios.get('http://localhost:8080/checkEmail', {
+      const response = await axios.get(`${BASE_URL}${checkEmailPath}`, {
         params: {
           memberEmail: email
         }
@@ -57,9 +59,6 @@ const Email = () => {
     } catch (error) {
       console.error('이메일 전송 중 오류 발생:', error);
     }
-  
-
-    // 임시 비밀번호 발급 요청 로직 작성
   };
 
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Pressable, StyleSheet, Text, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // React Navigation의 useNavigation 훅 가져오기
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import { BASE_URL } from '../../constants/api.js';
 
 const LoginScreen = () => {
   const navigation = useNavigation(); // navigation 객체 가져오기
@@ -15,8 +16,10 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
+    const signInPath = '/sign-in';
     try {
-      const response = await fetch('http://localhost:8080/sign-in', {
+      // const response = await fetch('http://localhost:8080/sign-in', {
+        const response = await fetch(`${BASE_URL}${signInPath}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

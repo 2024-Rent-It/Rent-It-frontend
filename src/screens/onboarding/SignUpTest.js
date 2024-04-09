@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Alert, StyleSheet, View, Text, TextInput, ScrollView, Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import { BASE_URL } from '../../constants/api.js';
 
 
 const SignUpTest = () => {
@@ -27,8 +28,11 @@ const SignUpTest = () => {
 
     /** 아이디 중복 검사 함수 */
     const checkAccount = async (account) => {
+        const checkAccountPath = `/accounts/${account}`;
         try {
-            const response = await axios.get(`http://localhost:8080/accounts/${account}`);
+            // const response = await axios.get(`http://localhost:8080/accounts/${account}`);
+            const response = await axios.get(`${BASE_URL}${checkAccountPath}`);
+            
             Alert.alert(response.data);
             if (response.data === "사용 가능한 아이디입니다.") {
                 setIsAccountDuplicateChecked(true);
@@ -43,8 +47,10 @@ const SignUpTest = () => {
 
     /** 닉네임 중복 검사 함수 */
     const checkNickname = async (nickname) => {
+        const checkNicknamePath = `/nicknames/${nickname}`;
         try {
-            const response = await axios.get(`http://localhost:8080/nicknames/${nickname}`);
+            // const response = await axios.get(`http://localhost:8080/nicknames/${nickname}`);
+            const response = await axios.get(`${BASE_URL}${checkNicknamePath}`);
             Alert.alert(response.data);
             if (response.data === "사용 가능한 닉네임입니다.") {
                 setIsNicknameDuplicateChecked(true);
@@ -57,8 +63,9 @@ const SignUpTest = () => {
 
     /** 이메일 중복 검사 함수 */
     const checkEmail = async (email) => {
+        const checkEmailPath = `/emails/${email}`;
         try {
-            const response = await axios.get(`http://localhost:8080/emails/${email}`);
+            const response = await axios.get(`${BASE_URL}${checkEmailPath}`);
             Alert.alert(response.data);
             if (response.data === "사용 가능한 이메일입니다.") {
                 setIsEmailDuplicateChecked(true);
@@ -74,6 +81,7 @@ const SignUpTest = () => {
 
     /** 회원가입 백엔드 전달 함수 */
     const handleSignUp = async () => {
+        const SignUpPath = '/sign-up';
         try {
             console.log(isAccountDuplicateChecked, isNicknameDuplicateChecked, isEmailDuplicateChecked);
 
@@ -101,7 +109,7 @@ const SignUpTest = () => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:8080/sign-up', {
+            const response = await axios.post(`${BASE_URL}${SignUpPath}`, {
                 account: account,
                 password: password,
                 password2: password2,
@@ -147,8 +155,9 @@ const SignUpTest = () => {
     };
 
     const handleLogin = async () => {
+        const signInPath = '/sign-in';
         try {
-            const response = await fetch('http://localhost:8080/sign-in', {
+            const response = await fetch(`${BASE_URL}${signInPath}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

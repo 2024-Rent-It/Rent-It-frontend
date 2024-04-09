@@ -2,6 +2,7 @@ import React, { useState} from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../constants/api.js';
 
 
 
@@ -11,12 +12,14 @@ const ChangePw2 = ({ navigation }) => {
     const [password2, setPassword2] = useState('');
 
     const updatePassword = async (password, password2, token) => {
+        const updatePasswordPath = '/member/update-password';
         if (password !== password2) {
             Alert.alert('비밀번호 오류', '비밀번호가 일치하지 않습니다.');
             return;
         }
         try {
-            const response = await axios.put('http://localhost:8080/member/update-password', null,
+            // const response = await axios.put('http://localhost:8080/member/update-password', null,
+            const response = await axios.put(`${BASE_URL}${updatePasswordPath}`, null,
             {params:{ newPassword: password },
                 headers: {
                     'Authorization': `Bearer ${token}`,

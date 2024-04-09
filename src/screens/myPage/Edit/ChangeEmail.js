@@ -1,8 +1,8 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { Alert, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import axios from 'axios';
-import { useAuth } from '../../../contexts/AuthContext'; 
-
+import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../constants/api.js';
 
 
 const ChangeEmail = ({ navigation }) => {
@@ -10,41 +10,27 @@ const ChangeEmail = ({ navigation }) => {
     const { setUserEmail } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const [newEmail, setNewEmail] = useState("");
     const [isEmailDuplicateChecked, setIsEmailDuplicateChecked] = useState(false);
-    // /** 이메일 중복 검사 함수 */
-    // const checkEmail = async (email) => {
-    //     try {
-    //         const response = await axios.post('http://localhost:8080/check-email', email, {
-    //             headers: {
-    //                 'Content-Type': 'text/plain'
-    //             }
-    //         });
-    //         Alert.alert(response.data);
-    //         if (response.data == "사용 가능한 이메일입니다.") {
-    //             setIsEmailDuplicateChecked(true);
-    //         }
-    //         console.log(response);
-    //         console.log(email);
-    //     } catch (error) {
-    //         console.error('이메일 중복 확인 실패:', error);
-    //         Alert.alert('알림', '중복 확인에 실패했습니다.');
-    //     }
-    // };
+
     /** 이메일 중복 검사 함수 */
-const checkEmail = async (email) => {
-    try {
-        const response = await axios.get(`http://localhost:8080/emails/${email}`);
-        Alert.alert(response.data);
-        if (response.data === "사용 가능한 이메일입니다.") {
-            setIsEmailDuplicateChecked(true);
+    const checkEmail = async (email) => {
+        const checkEmailPath = `/emails/${email}`;
+        try {
+            // const response = await axios.get(`http://localhost:8080/emails/${email}`);
+            const response = await axios.get(`${BASE_URL}${checkEmailPath}`);
+            Alert.alert(response.data);
+            console.log("checkEmailPath",checkEmailPath);
+            if (response.data === "사용 가능한 이메일입니다.") {
+                setIsEmailDuplicateChecked(true);
+            }
+            console.log(response);
+            console.log(email);
+        } catch (error) {
+            console.error('이메일 중복 확인 실패:', error);
+            Alert.alert('알림', '중복 확인에 실패했습니다.');
         }
-        console.log(response);
-        console.log(email);
-    } catch (error) {
-        console.error('이메일 중복 확인 실패:', error);
-        Alert.alert('알림', '중복 확인에 실패했습니다.');
-    }
-};
-    const updateEmail = async (newEmail,token) => {
+    };
+    const updateEmail = async (newEmail, token) => {
+        const updateEmailPath = `/member/update-email`;
         if (!isEmailDuplicateChecked) {
             Alert.alert('이메일 중복 확인이 필요합니다.');
             return;
@@ -52,14 +38,16 @@ const checkEmail = async (email) => {
         // console.log(newNickname,token);
 
         try {
-            const response = await axios.put('http://localhost:8080/member/update-email', null,
-            {params:{ email: newEmail },
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
+            // const response = await axios.put('http://localhost:8080/member/update-email', null,
+            const response = await axios.put(`${BASE_URL}${updateEmailPath}`, null,
+                {
+                    params: { email: newEmail },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
             Alert.alert('변경되었습니다.');
-            const updatedEmail = response.data.data.email; 
+            const updatedEmail = response.data.data.email;
             setUserEmail(updatedEmail);
             navigation.navigate("Root")
         } catch (error) {
@@ -105,14 +93,14 @@ const checkEmail = async (email) => {
             </View>
 
             <Pressable
-                    style={styles._button3} backgroundColor={"#A7C8E7"}
-                    onPress={() => {
-                        updateEmail(newEmail, token);
-                        //navigation.navigate("Root")
-                    }}
-                >
-                    <Text style={styles.h2}>변경</Text>
-                </Pressable>
+                style={styles._button3} backgroundColor={"#A7C8E7"}
+                onPress={() => {
+                    updateEmail(newEmail, token);
+                    //navigation.navigate("Root")
+                }}
+            >
+                <Text style={styles.h2}>변경</Text>
+            </Pressable>
 
         </View>
     );
@@ -133,7 +121,7 @@ const styles = StyleSheet.create({
     },
     horizon: {
         flexDirection: "row",
-        marginBottom:"140%",
+        marginBottom: "140%",
     },
     input: {  //입력
         height: 60,
@@ -163,8 +151,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         height: 60,
         marginBottom: "6%",
-        width:"90%",
-        marginLeft:'5%',
+        width: "90%",
+        marginLeft: '5%',
     },
 
 });
