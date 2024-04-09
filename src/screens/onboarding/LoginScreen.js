@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   input: {
     height: '7%',
     width: '80%',
-    borderRadius: '16%',
+    borderRadius: 16,
     borderColor: "#ffffff",
     borderWidth: 1,
     fontSize: 18,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     height: '7%',
     width: '80%',
     fontSize: 18,
-    borderRadius: '16%',
+    borderRadius: 16,
     paddingHorizontal: 15,
     paddingVertical: 18,
     justifyContent: 'center',
@@ -110,18 +110,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   h1: {
-    fontSize: '33%',
+    fontSize: 33,
     fontWeight: 'bold',
     marginBottom: '2%',
     marginRight: '32%',
   },
   h2: {
-    fontSize: '22%',
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: '7%',
   },
   h3: {
-    fontSize: '17%',
+    fontSize: 17,
     marginBottom: "15%",
     maginLeft: '10',
   },
@@ -137,15 +137,14 @@ export default LoginScreen;
 
 import React, { useState } from 'react';
 import { View, Pressable, StyleSheet, Text, TextInput, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // React Navigation의 useNavigation 훅 가져오기
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
-  const navigation = useNavigation(); // navigation 객체 가져오기
-  const [account, setAccount] = useState(''); // 아이디 상태
-  const [password, setPassword] = useState(''); // 비밀번호 상태
-
+  const navigation = useNavigation(); 
+  const [account, setAccount] = useState(''); 
+  const [password, setPassword] = useState('');
   const handleForgetPassword = () => {
-    navigation.navigate('EmailLogin'); // EmailLogin 화면으로 이동
+    navigation.navigate('EmailLogin'); 
   };
 
   const handleLogin = () => {
@@ -164,18 +163,18 @@ const LoginScreen = () => {
         style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF', fontSize: '14%' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="아이디 입력"
         value={account}
-        onChangeText={text => setAccount(text)} // 아이디 입력 시 상태 업데이트
+        onChangeText={text => setAccount(text)} 
       />
       <TextInput
         style={[styles.input, { borderBottomWidth: 0, backgroundColor: '#FFFFFF', fontSize: '14%' }]} // 테두리 없애고 원하는 색상으로 변경
         placeholder="비밀번호 입력"
         value={password}
-        onChangeText={text => setPassword(text)} // 비밀번호 입력 시 상태 업데이트
+        onChangeText={text => setPassword(text)} 
         secureTextEntry={true} // 비밀번호 숨기기
       />
       <Pressable
         style={styles.button}
-        onPress={handleLogin} // 로그인 버튼을 누를 때 handleLoginPress 함수 호출
+        onPress={handleLogin}
       >
         <Text style={styles.buttonText}>로그인 하기</Text>
       </Pressable>
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   input: {
     height: '7%',
     width: '80%',
-    borderRadius: '16%',
+    borderRadius: 16,
     borderColor: "#ffffff",
     borderWidth: 1,
     fontSize: 18,
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     height: '7%',
     width: '80%',
     fontSize: 18,
-    borderRadius: '16%',
+    borderRadius: 16,
     paddingHorizontal: 15,
     paddingVertical: 18,
     justifyContent: 'center',
@@ -223,18 +222,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   h1: {
-    fontSize: '33%',
+    fontSize: 33,
     fontWeight: 'bold',
     marginBottom: '2%',
     marginRight: '32%',
   },
   h2: {
-    fontSize: '22%',
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: '7%',
   },
   h3: {
-    fontSize: '17%',
+    fontSize: 17,
     marginBottom: "15%",
     maginLeft: '10',
   },
