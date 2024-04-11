@@ -40,25 +40,26 @@ const WritePost = () => {
   };
 
   const categories = ['인기렌탈', '가구/인테리어', '패션잡화', '미용소품', '유아용품', '생활용품', '생활가전', '도서/문구', '미술품', '구합니다', '디지털기기', '스포츠/레저', '운동기구', '파티용품', '반려동물용품', '기타']; // 카테고리 목록
-  const durations = ['1주', '2주', '3주', '4주', '2개월', '3개월', '6개월', '12개월']; // 대여 기간 목록
+  const durations = ['1개월', '2개월', '3개월', '4개월', '5개월', '6개월', '12개월']; // 대여 기간 목록
 
   return (
     <ScrollView style={{ backgroundColor: '#FFFFFF', padding: 20 }}>
-      <TouchableOpacity onPress={handlePhotoUpload} style={{ 
-        backgroundColor: '#8A8A8A', // 배경색 진한 회색
-        width: '27%', // 화면 전체 너비
-        height: '16%',
-        paddingVertical: 15, // 상하 여백
-        alignItems: 'center', // 수직 가운데 정렬
-        borderRadius: 10, // 버튼 모양 정사각형
-        marginBottom: 50, // 중간보다 더 아래에 위치
-        justifyContent: 'center', // 수평 가운데 정렬
-      }}>
-        <Feather name="camera" size={30} color="#fff" /> 
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginTop: '10%' }}>사진 등록</Text>
-      </TouchableOpacity>
-
-      {selectedImage && <Image source={{ uri: selectedImage }} style={{ width: 200, height: 200, marginBottom: 20, alignSelf: 'center' }} />}
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50 }}>
+        <TouchableOpacity onPress={handlePhotoUpload} style={{ 
+          backgroundColor: '#8A8A8A', 
+          width: '27%', 
+          height: 100, 
+          paddingVertical: 15,
+          alignItems: 'center',
+          borderRadius: 10,
+          marginRight: 10, 
+          justifyContent: 'center', 
+        }}>
+          <Feather name="camera" size={30} color="#fff" /> 
+          <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginTop: '10%' }}>사진 등록</Text>
+        </TouchableOpacity>
+        {selectedImage && <Image source={{ uri: selectedImage }} style={{ width: 100, height: 100, borderRadius: 10 }} />}
+      </View>
 
       <TextInput
         placeholder="제목"
@@ -94,15 +95,27 @@ const WritePost = () => {
         )}
       </View>
 
+      <TextInput
+        placeholder="₩ 가격을 입력해주세요."
+        value={price}
+        onChangeText={setPrice}
+        style={{ 
+          marginBottom: 20,
+          padding: 10,
+          borderBottomWidth: 1,
+          borderColor: 'gray',
+          fontSize: 20,
+        }}
+      />
+
       <View style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', zIndex: 1 }}>
         <TouchableOpacity onPress={() => setShowDurationList(!showDurationList)}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ padding: 5, borderBottomWidth: 1, borderRadius: 5, flex: 1, fontSize: 20, color: 'rgba(0, 0, 0, 0.5)' }}>{price ? `최대 ${price}원` : '대여 기간'}</Text>
-            <Text style={{ fontSize: 24 }}>{showDurationList ? '▲' : '▼'}</Text>
+            <Text style={{ padding: 5, borderBottomWidth: 1, borderRadius: 5, flex: 1, fontSize: 20, color: 'rgba(0, 0, 0, 0.5)' }}>기간 {duration || '최대 개월 선택'} {showDurationList ? '▲' : '▼'}</Text>
           </View>
         </TouchableOpacity>
         {showDurationList && (
-          <ScrollView style={{ maxHeight: 240, marginTop: 10, position: 'absolute', width: '100%', Index: 2, backgroundColor: '#f1f1f1', elevation: 2 }}>
+          <ScrollView style={{ maxHeight: 200, marginTop: 10, position: 'absolute', width: '100%', Index: 2, backgroundColor: '#f1f1f1', elevation: 2 }}>
             {durations.map((item, index) => (
               <TouchableOpacity key={index} onPress={() => {
                 setDuration(item);
