@@ -41,14 +41,14 @@ import pink from '../../assets/images/pink.jpeg';
 import jennie from '../../assets/images/jennie.jpg';
 import candle from '../../assets/images/pinkdog.jpg';
 import Swiper from 'react-native-swiper';
-import styled from 'styled-components/native'; // styled-components import
+import styled from 'styled-components/native';
 
 const images = [pink, jennie, candle]; // 이미지 경로 배열
 
 // 스타일링된 PickerComponent
 const StyledPickerComponent = styled(({ style, ...rest }) => (
   <View style={style}>
-    <Swiper loop timeout={3} containerStyle={{ width: '100%', height: '100%', aspectRatio: '16/9' }}>
+    <Swiper autoplay loop timeout={3} containerStyle={{ width: '100%', height: '100%', aspectRatio: '16/9' }}>
       {images.map((image, index) => (
         <Image source={image} style={styles.Topimage} key={index} />
       ))}
