@@ -1,3 +1,163 @@
+/*import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import { AuthProvider } from '../../contexts/AuthContext';
+import { SimpleLineIcons } from '@expo/vector-icons';
+
+
+import MyFav from "../../screens/myPage/MyFav";
+import Writing from "../../screens/userTrans/Writing";
+import Home from "../../screens/Home";
+import Chating from "../../screens/userTrans/Chating";
+import MyPage from "../../screens/myPage/MyPage";
+import MyRent from "../../screens/myPage/MyRent";
+import MyThing from "../../screens/myPage/MyThing";
+import LocationService from "../../screens/Service/LocationService";
+import PrivacyPolicy from "../../screens/Service/PrivacyPolicy";
+import TermsOfService from "../../screens/Service/TermsOfService";
+import VersionInfo from "../../screens/Service/VersionInfo";
+import EditInfo from "../../screens/myPage/EditInfo";
+import MyInfo from "../../screens/myPage/Edit/MyInfo";
+import ChangeNickName from "../../screens/myPage/Edit/ChangeNickName";
+import ChangePw from "../../screens/myPage/Edit/ChangePw";
+import ChangeEmail from "../../screens/myPage/Edit/ChangeEmail";
+import LocationSetting from "../../screens/myPage/Edit/LocationSetting";
+import Onboarding from "../../screens/onboarding/Onboarding";
+import SignUpTest from "../../screens/onboarding/SignUpTest";
+import LoginScreen from "../../screens/onboarding/LoginScreen";
+import AddressScreen from "../../screens/onboarding/AddressScreen";
+import ProductDetailPage from "../../screens/PicPage/ProductDetail.js";
+import ProductDetailPage2 from "../../screens/IconPage/ProductDetail2.js";
+import Product from "../../screens/Product.js"
+import EmailLogin from "../../screens/onboarding/EmailLogin.js"
+import ChangePw2 from "../../screens/myPage/Edit/ChangePW2.js";
+import Notice from "../../screens/myPage/Notice.js";
+import NoticeDetail from "../../screens/myPage/NoticeDetail.js";
+import SearchScreen from "../../../src/components/SearchScreen.js"
+
+
+const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
+
+function BottomTabNavigator() {
+    return (
+        <BottomTab.Navigator
+            initialRouteName="Home"
+            tabBarOptions={{ labelPosition: 'beside-icon', showLabel: false }}
+        >
+            <BottomTab.Screen
+                name="찜한목록"
+                component={MyFav}
+                options={{
+                    tabBarIcon: () => (
+                        <FontAwesome name="heart-o" size={24} color="grey" />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="글쓰기"
+                component={Writing}
+                options={{
+                    tabBarIcon: () => (
+                        <SimpleLineIcons name="pencil" size={24} color="grey" />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                    tabBarIcon: () => (
+                        <AntDesign name="home" size={24} color="grey" />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="채팅"
+                component={Chating}
+                options={{
+                    tabBarIcon: () => (
+                        <Ionicons name="chatbox-ellipses-outline" size={24} color="grey" />
+                    ),
+                }}
+            />
+            <BottomTab.Screen
+                name="마이페이지"
+                component={MyPage}
+                options={{
+                    tabBarIcon: () => (
+                        <Octicons name="person" size={24} color="grey" />
+                    ),
+                }}
+            />
+        </BottomTab.Navigator>
+    );
+}
+
+function RootNavigator() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name='Home' component={Home} options={({ navigation }) => ({
+                headerRight: () => (
+                    <FontAwesome
+                        name="search"
+                        size={24}
+                        color="black"
+                        style={{ marginRight: 15 }}
+                        onPress={() => navigation.navigate('SearchScreen')}
+                    />
+                ),
+                })} />
+            <Stack.Screen name='Onboarding' options={{ headerShown: false }} component={Onboarding} />
+            <Stack.Screen name="Root" component={BottomTabNavigator}
+                options={{ headerShown: false }}
+            />
+            
+            <Stack.Screen name='회원가입' component={SignUpTest} />
+            <Stack.Screen name='로그인' component={LoginScreen} />
+
+            <Stack.Screen name="MyFav" component={MyFav} />
+            <Stack.Screen name="MyRent" component={MyRent} />
+            <Stack.Screen name="MyThing" component={MyThing} />
+            <Stack.Screen name="LocationService" component={LocationService} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+            <Stack.Screen name="TermsOfService" component={TermsOfService} />
+            <Stack.Screen name="VersionInfo" component={VersionInfo} />
+            <Stack.Screen name="EditInfo" component={EditInfo} />
+            <Stack.Screen name="MyInfo" component={MyInfo} />
+            <Stack.Screen name="ChangeNickName" component={ChangeNickName} />
+            <Stack.Screen name="ChangePw" component={ChangePw} />
+            <Stack.Screen name="ChangeEmail" component={ChangeEmail} />
+            <Stack.Screen name="LocationSetting" component={LocationSetting} />
+            <Stack.Screen name="AddressScreen" component={AddressScreen} />
+            <Stack.Screen name="Product" component={Product} />
+            <Stack.Screen name="EmailLogin" component={EmailLogin} />
+            <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="ProductDetail2" component={ProductDetailPage2} />
+            <Stack.Screen name="ChangePW2" component={ChangePw2} />
+            <Stack.Screen name="Notice" component={Notice} />
+            <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
+            <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ title: '검색' }} />
+        </Stack.Navigator>
+    );1
+}
+
+export default function Navigation() {
+    return (
+        <NavigationContainer>
+        <AuthProvider>
+            <RootNavigator />
+        </AuthProvider>
+        </NavigationContainer>
+    );
+}
+*/
+
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -106,10 +266,7 @@ function RootNavigator() {
                 options={{ headerShown: false }}
             />
             
-            {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
-            {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
-            {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
-            {/* <Stack.Screen name='회원가입스크린' component={SignUpScreen} /> */}
+
             <Stack.Screen name='회원가입' component={SignUpTest} />
             <Stack.Screen name='로그인' component={LoginScreen} />
 
@@ -136,7 +293,7 @@ function RootNavigator() {
             <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
         </Stack.Navigator>
-    );1
+    );
 }
 
 export default function Navigation() {
