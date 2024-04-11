@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Modal, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Feather 아이콘을 사용하기 위해 추가
 import * as ImagePicker from 'expo-image-picker';
+import { useAuth } from '../../contexts/AuthContext';
+import { BASE_URL } from '../../constants/api.js';
 
 const WritePost = () => {
+  const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
@@ -36,6 +40,41 @@ const WritePost = () => {
     if (!result.cancelled) {
       setSelectedImage(result.assets[0].uri);
       console.log(result.assets[0].uri); // 이미지 URI 확인용
+    }
+  };
+  const registerProduct = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('price', price);
+    formData.append('duration', duration);
+    formData.append('description', description);
+    console.log(selectedImage)
+    formData.append('images', {
+      uri: selectedImage,
+      name: selectedImage.split('/').pop(), // 파일 이름 추출
+      type: `image/${selectedImage.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
+    });
+  
+    try {
+      const response = await fetch(`${BASE_URL}/products/register`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+  
+      if (response.ok) {
+        Alert.alert('등록되었습니다');
+      } else {
+        // 오류 처리해야댐
+      }
+    } catch (error) {
+      console.error(error);
+      // 오류 처리해야댐
     }
   };
 
@@ -144,7 +183,7 @@ const WritePost = () => {
       />
 
       {/* '글 등록' 버튼 */}
-      <TouchableOpacity onPress={() => {}} style={{ backgroundColor: 'skyblue', padding: 13, alignItems: 'center', borderRadius: 20, alignSelf: 'center', marginBottom: 50 }}>
+      <TouchableOpacity onPress={registerProduct} style={{ backgroundColor: 'skyblue', padding: 13, alignItems: 'center', borderRadius: 20, alignSelf: 'center', marginBottom: 50 }}>
         <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>작성 완료</Text>
       </TouchableOpacity>
     </ScrollView> 
