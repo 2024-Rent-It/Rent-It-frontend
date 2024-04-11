@@ -8,11 +8,11 @@ const Container = styled.View`
 `;
 
 const ImageContainer = styled.View`
-  width: 85%;
-  aspect-ratio: 2/3; /* 세로가 가로보다 약간 더 긴 직사각형 유지 */
+  width: 92%;
+  aspect-ratio: 1/1;
   overflow: hidden;
   border-radius: 10px;
-  margin-bottom: 10px; /* 이미지 간의 간격 조절 */
+  margin-bottom: 8px; /* 이미지 간의 간격 조절 */
 `;
 
 const ProductImage = styled.Image`
@@ -20,9 +20,18 @@ const ProductImage = styled.Image`
   height: 100%;
 `;
 
-const ProductName = styled.Text`
-  font-size: 18px;
-  margin-top: 5px; /* 텍스트와 이미지 사이 간격 조절 */
+const TextContainer = styled.View`
+  width: 92%;
+  margin-bottom: 4px; /* 텍스트와 이미지 간의 간격 조절 */
+`;
+
+const ProductPrice = styled.Text`
+  font-size: 17px;
+  margin-right: 40px;
+`;
+
+const ProductTitle = styled.Text`
+  font-size: 15px;
 `;
 
 const ProductItem = ({ product, onPress }) => {
@@ -32,7 +41,10 @@ const ProductItem = ({ product, onPress }) => {
         <ImageContainer>
           <ProductImage source={product.pictures} resizeMode="cover" />
         </ImageContainer>
-        <ProductName>{product.goodsName}</ProductName>
+        <TextContainer>
+          <ProductPrice>{product.price}</ProductPrice>
+          <ProductTitle>{product.title}</ProductTitle>
+        </TextContainer>
       </Container>
     </TouchableOpacity>
   );

@@ -181,12 +181,12 @@ const Home = () => {
 const RowContainer = styled.View`
     flex-direction: row;
     margin-bottom: 8px;
-    margin-top: 10px;
 `;
 
 const IconContainer = styled.View`
     width: 100%;
     align-items: center;
+    margin-top: 30px;
 `;
 
 const StyledTent = styled.View``;

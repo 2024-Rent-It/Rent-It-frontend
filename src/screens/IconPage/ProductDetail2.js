@@ -47,6 +47,9 @@ const ProductDetail2 = ({ route }) => {
     };
   
     // 주소를 표시할 Header 컴포넌트
+    /**          <TouchableOpacity onPress={goToSearchScreen}>
+            <FontAwesome name="search" size={24} color="black" style={styles.searchIcon} />
+          </TouchableOpacity> */
     const renderHeader = () => (
       <View style={styles.headerContainer}>
         <View style={styles.addressContainer}>
@@ -54,9 +57,7 @@ const ProductDetail2 = ({ route }) => {
           <Text style={styles.address}>{product.Address}</Text>
         </View>
         <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={goToSearchScreen}>
-            <FontAwesome name="search" size={24} color="black" style={styles.searchIcon} />
-          </TouchableOpacity>
+
           <TouchableOpacity onPress={handleImageTextIconPress}>
             <MaterialCommunityIcons name="image-text" size={35} color="black" style={styles.imageTextIcon} />
           </TouchableOpacity>
@@ -70,12 +71,13 @@ const renderItem = ({ item }) => {
   // 수평 배열인 경우
   if (isHorizontal) {
     return (
+      <View style={styles.priceContainer}>
+          <Text style={[styles.horizontalPrice, styles.horizontalPriceText]}>{product.price}</Text>
+          <View style={styles.priceUnderline} />
       <View style={[styles.itemContainer, styles.horizontalItemContainer]}>
         <Image source={product.pictures} style={styles.image} />
         <Text style={[styles.title, styles.horizontalTitle]}>{product.title}</Text> 
-        <View style={styles.priceContainer}>
-          <Text style={[styles.horizontalPrice, styles.horizontalPriceText]}>{product.price}</Text>
-          <View style={styles.priceUnderline} />
+        
         </View>
       </View>
     );
@@ -143,44 +145,35 @@ const styles = StyleSheet.create({
     width: 100,
     height: 130,
     resizeMode: 'cover',
-    marginLeft: '1%',
-    marginRight: '1%',
+    marginLeft: '1.5%',
+    marginRight: '1.5%',
     marginTop: '8%',
     borderRadius: 10,
+    
   },
    price: {
-    textAlign: 'center',
     fontSize: 17,
+    marginLeft: 0
   },
 
   // 수평 배열에 대한 가격 텍스트 스타일
   horizontalPrice: {
-    textAlign: 'center',
-    fontSize: 17,
+    fontSize: 15,
     marginTop: '2%',
     marginRight: '79%',
   },
 
   // 수직 배열에 대한 가격 텍스트 스타일
   verticalPrice: {
-    textAlign: 'center',
     fontSize: 17,
   },
 
-  // 가격 텍스트에 대한 공통 스타일
-  priceText: {
-
-  },
   icon: {
     marginTop: '5%',
   },
   iconContainer: {
     flexDirection: 'row',
     marginRight: 20,
-  },
-  searchIcon: {
-    marginRight: 10,
-    marginTop: '25%',
   },
   imageTextIcon: {
     marginTop: '10%',
@@ -195,19 +188,26 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CCCCCC',
   },
   title: {
-    textAlign: 'center',
-    fontSize: 20,
+    fontSize: 13,
     fontWeight: 'bold',
     marginTop: 5,
+    marginLeft: 0
   },
-  // 수평 배열에 대한 제목 스타일
+  horizontalItemContainer: {
+    flexDirection: 'row',
+    
+  },
   horizontalTitle: {
-    color: 'red', 
+    flex: 1, // 타이틀이 최대한 길어지도록 유연하게 설정
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginTop: 5,
+    marginLeft: 10, // 이미지와의 간격 조절
   },
 
   // 수직 배열에 대한 제목 스타일
   verticalTitle: {
-    color: 'blue',
+    color: 'black',
     },
   });
 export default ProductDetail2;
