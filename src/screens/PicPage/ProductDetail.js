@@ -6,10 +6,6 @@ const ProductDetailPage = ({ route }) => {
   // route.params로부터 전달된 상품 데이터 가져오기
   const { product } = route.params;
 
-
-  /**<Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>{product.goodsName}</Text>
-    
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Price: {product.price}</Text> */
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Image source={product.pictures} style={{ width: '100%', height: '45%' }} />
@@ -20,16 +16,15 @@ const ProductDetailPage = ({ route }) => {
           <Text style={{ fontSize: 16 }}>{product.Address}</Text>
         </View>
       </View>
-      <View style={{ alignItems: 'center', padding: 20 }}> 
-        
-        <Text style={{ fontSize: 16, marginBottom: 5 }}> {product.description}</Text>
+      <View style={{  padding: 10, marginLeft: '5%', marginRight: '5%' }}> 
+        <Text style={{ fontSize: 16, marginBottom: 5 }}>{product.description}</Text>
       </View>
     
       <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#ECECEC', height: 200, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name="heart" size={40} color="black" />
-            <Text style={{ fontSize: 24, color: 'black', marginLeft: '3%', marginTop: '1%' }}>{product.price}</Text>
+            <Text style={{ fontSize: 24, color: 'black', marginLeft: '10%', marginTop: '1%' }}>{product.price}</Text>
           </View>
           <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 30, paddingVertical: 15, borderRadius: 30 }}>
             <Text style={{ color: '#FFF', fontSize: 20 }}>채팅 보내기</Text>

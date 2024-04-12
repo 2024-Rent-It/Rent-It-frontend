@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 10,
-    marginTop: 5,
+    marginTop: '10%',
   },
 });
 
