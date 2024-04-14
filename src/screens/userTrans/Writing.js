@@ -35,6 +35,7 @@ const WritePost = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      multiple: true,
     });
 
     if (!result.cancelled) {
@@ -183,8 +184,8 @@ const WritePost = () => {
       />
 
       {/* '글 등록' 버튼 */}
-      <TouchableOpacity onPress={registerProduct} style={{ backgroundColor: 'skyblue', padding: 13, alignItems: 'center', borderRadius: 20, alignSelf: 'center', marginBottom: 50 }}>
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>작성 완료</Text>
+      <TouchableOpacity onPress={registerProduct} style={{ backgroundColor: '#A7C8E7', padding: 13, alignItems: 'center', borderRadius: 20, alignSelf: 'center', marginBottom: 50 }}>
+        <Text style={{ color: '#000000', fontSize: 18, fontWeight: 'bold' }}>작성 완료</Text>
       </TouchableOpacity>
     </ScrollView> 
   );

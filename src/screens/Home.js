@@ -9,18 +9,18 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import ProductItem from './PicPage/ProductItem'; // ProductItem 컴포넌트 불러오기
-import products from './PicPage/ImageProduct'; // ImageProduct.js에서 상품 데이터 가져오기
+import ProductItem from './PicPage/ProductItem';
+import products from './PicPage/ImageProduct';
 import HomeIcon from '../../src/components/HomeIcon';
 import PickerComponent from '../../src/components/image.js';
 
 const Home = () => {
     const navigation = useNavigation();
-    const [activeSlide, setActiveSlide] = useState(0); // 활성 슬라이드의 인덱스를 추적하는 상태
+    const [activeSlide, setActiveSlide] = useState(0);
 
     /***/
     const items = [
-        { id: 1, title: '인기렌탈' },
+        { id: 1, title: '주방용품' },
         { id: 2, title: '가구/인테리어' },
         { id: 3, title: '패션잡화' },
         { id: 4, title: '미용소품' },
