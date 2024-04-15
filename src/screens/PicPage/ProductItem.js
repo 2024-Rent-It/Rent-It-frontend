@@ -13,6 +13,7 @@ const ImageContainer = styled.View`
   overflow: hidden;
   border-radius: 10px;
   margin-bottom: 8px; /* 이미지 간의 간격 조절 */
+  
 `;
 
 const ProductImage = styled.Image`
