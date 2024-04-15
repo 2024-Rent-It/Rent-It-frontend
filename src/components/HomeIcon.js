@@ -5,8 +5,8 @@ import { FontAwesome6, Ionicons, MaterialCommunityIcons, Octicons, Fontisto } fr
 const HomeIcon = ({ title, onPress, iconName }) => {
   const renderIcon = () => {
     switch (iconName) {
-      case 'heart-outline':
-        return <Ionicons name="heart-outline" size={32} color="black" />;
+      case 'kitchen-set':
+        return <FontAwesome6 name="kitchen-set" size={33} color="black" />
       case 'bed-outline':
         return <Ionicons name="bed-outline" size={32} color="black" />;
       case 'shirt-outline':

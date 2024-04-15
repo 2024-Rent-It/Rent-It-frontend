@@ -30,25 +30,25 @@ const ProductDetail2 = ({ route }) => {
   const renderItem = ({ item }) => {
     if (isHorizontal) {
       return (
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>
-          <View style={styles.priceContainer}>
-            <View style={styles.itemContainer2}>
-              <Image source={product.pictures} style={styles.image2} />
-              <View style={styles.textContainer}>
-                <Text numberOfLines={1} style={[styles.title, styles.horizontalTitle]}>{product.title}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{product.Address}</Text>
-                </View>
-                <Text style={[styles.price, styles.horizontalPrice]}>{product.price}</Text>
-                <View style={{ paddingHorizontal: 10, backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', justifyContent: 'center', width: '80%', marginTop:'2%', }}>
-                  <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{product.term}</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.separator} />
+  <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: item })}>
+    <View style={styles.priceContainer}>
+      <View style={styles.itemContainer2}>
+        <Image source={item.pictures} style={styles.image2} />
+        <View style={styles.textContainer}>
+          <Text numberOfLines={1} style={[styles.title, styles.horizontalTitle]}>{item.title}</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{item.Address}</Text>
           </View>
-        </TouchableOpacity>
-      );
+          <Text style={[styles.price, styles.horizontalPrice]}>{item.price}</Text>
+          <View style={{ paddingHorizontal: 10, backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', justifyContent: 'center', width: '80%', marginTop:'2%', }}>
+            <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{item.term}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.separator} />
+    </View>
+  </TouchableOpacity>
+);
     } else {
       return (
         <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>
