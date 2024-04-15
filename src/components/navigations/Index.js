@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { View } from 'react-native';
 
 import MyFav from '../../screens/myPage/MyFav';
 import Writing from '../../screens/userTrans/Writing';
@@ -37,6 +38,7 @@ import ChangePw2 from '../../screens/myPage/Edit/ChangePW2.js';
 import Notice from '../../screens/myPage/Notice.js';
 import NoticeDetail from '../../screens/myPage/NoticeDetail.js';
 import SearchScreen from '../../../src/components/SearchScreen.js';
+import Notification from '../../../src/components/Notification.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,22 +54,30 @@ const SharedStack = ({ tabName }) => (
         {tabName === 'HomeTab' ? (
             <>
                 <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={({ navigation }) => ({
-                        headerRight: () => (
-                            <FontAwesome
-                                name="search"
-                                size={24}
-                                color="black"
-                                style={{ marginRight: 15 }}
-                                onPress={() =>
-                                    navigation.navigate('SearchScreen')
-                                }
-                            />
-                        ),
-                    })}
+    name="HomeTab"
+    component={Home}
+    options={({ navigation }) => ({
+        headerRight: () => (
+            <View style={{ flexDirection: 'row', marginRight: 15 }}>
+                <AntDesign
+                    name="bells"
+                    size={24}
+                    color="black"
+                    style={{ marginRight: 15 }}
+                    onPress={() => navigation.navigate('Notification')}
+
                 />
+                <AntDesign
+                    name="search1"
+                    size={24}
+                    color="black"
+                    onPress={() => navigation.navigate('SearchScreen')}
+                />
+            </View>
+        ),
+    })}
+/>
+        
                 <>
                     <Stack.Screen
                         name="SearchScreen"
@@ -235,6 +245,7 @@ function RootNavigator() {
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
+            <Stack.Screen name="Notification" component={Notification} />
         </Stack.Navigator>
     );
     1;
