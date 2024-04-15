@@ -53,7 +53,7 @@ const WritePost = () => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.cancelled && result.assets) {
             setSelectedImage([...result.assets.map((a) => a.uri)]);
             console.log(result.assets); // 이미지 URI 확인용
         }

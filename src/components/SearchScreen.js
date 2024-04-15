@@ -37,6 +37,7 @@ const SearchScreen = ({ navigation }) => {
 
     const handleChangeText = (text) => {
         setSearchKeyword(text);
+        filterSearchResults(text, sortType); // 검색 키워드가 변경될 때마다 검색 결과를 필터링하여 정렬합니다.
     };
 
     const handleSearch = async () => {
@@ -44,6 +45,8 @@ const SearchScreen = ({ navigation }) => {
         addSearchToHistory(searchKeyword);
         setSearchKeyword('');
         filterSearchResults(searchKeyword);
+        setShowHistory(false); // 검색 후 최근 검색 기록 숨기기
+        setShowSortOptions(true); // 검색 후에도 정렬 선택 옵션 보이도록 변경
     };
 
     const addSearchToHistory = async (keyword) => {
@@ -61,20 +64,21 @@ const SearchScreen = ({ navigation }) => {
         }
     };
 
-    const filterSearchResults = (keyword) => {
+    const filterSearchResults = (keyword, sortType) => {
         let filteredResults = products.filter((item) =>
             item.title.includes(keyword)
-        );
-        if (sortType === 'priceHighToLow') {
+        ).slice(); // 새로운 배열 생성
+    
+        if (sortType === '고가순') {
             filteredResults = filteredResults.sort((a, b) => b.price - a.price);
-        } else if (sortType === 'priceLowToHigh') {
+        } else if (sortType === '저가순') {
             filteredResults = filteredResults.sort((a, b) => a.price - b.price);
-        } else if (sortType === 'nameAscending') {
+        } else if (sortType === '이름순') {
             filteredResults = filteredResults.sort((a, b) =>
                 a.title.localeCompare(b.title)
             );
         }
-
+    
         setSearchResults(filteredResults);
     };
 
@@ -105,6 +109,11 @@ const SearchScreen = ({ navigation }) => {
         setShowHistory(true);
     };
 
+    const handleSearchAndShowSortOptions = () => {
+        handleSearch();
+        setShowSortOptions(true); // 검색 후에도 정렬 선택창 열린 상태를 유지합니다.
+    };
+
     const handleHistoryPress = (keyword) => {
         setSearchKeyword(keyword);
         setShowHistory(false);
@@ -112,9 +121,13 @@ const SearchScreen = ({ navigation }) => {
     };
 
     const handleSortOptionPress = (type) => {
-        setSortType(type);
-        setShowSortOptions(false);
-        filterSearchResults(searchKeyword); // 검색 결과 내에서 정렬을 수행합니다.
+        let newSortType = null;
+        if (type === '고가순' || type === '저가순' || type === '이름순') {
+            newSortType = type;
+        }
+        setSortType(newSortType);
+       
+        filterSearchResults(searchKeyword, newSortType); // 정렬 옵션을 변경할 때마다 검색 결과를 다시 필터링하여 정렬합니다.
     };
 
     const renderHistoryItem = ({ item, index }) => (
@@ -161,46 +174,38 @@ const SearchScreen = ({ navigation }) => {
                     />
                     <TouchableOpacity
                         style={styles.searchIconWrapper}
-                        onPress={handleSearch}
+                        onPress={handleSearchAndShowSortOptions}
                     >
                         <AntDesign name="search1" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
 
-            {searchKeyword.trim() !== '' && (
+            {showSortOptions && ( // 정렬 선택창 표시 여부는 showSortOptions 상태에 의해 결정됩니다.
                 <View style={styles.sortContainer}>
-                    {showSortOptions ? (
-                        <View style={styles.sortOptions}>
-                            <TouchableOpacity
-                                style={styles.sortOption}
-                                onPress={() =>
-                                    handleSortOptionPress('고가순')
-                                }
-                            >
-                                <Text>고가순</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.sortOption}
-                                onPress={() =>
-                                    handleSortOptionPress('저가순')
-                                }
-                            >
-                                <Text>저가순</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.sortOption}
-                                onPress={() =>
-                                    handleSortOptionPress('이름순')
-                                }
-                            >
-                                <Text>이름순</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ) : null}
+                    <View style={styles.sortOptions}>
+                        <TouchableOpacity
+                            style={styles.sortOption}
+                            onPress={() => handleSortOptionPress('고가순')}
+                        >
+                            <Text>고가순</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.sortOption}
+                            onPress={() => handleSortOptionPress('저가순')}
+                        >
+                            <Text>저가순</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.sortOption}
+                            onPress={() => handleSortOptionPress('이름순')}
+                        >
+                            <Text>이름순</Text>
+                        </TouchableOpacity>
+                    </View>
                     <TouchableOpacity
                         style={styles.sortButton}
-                        onPress={() => setShowSortOptions(!showSortOptions)}
+                        onPress={() => setShowSortOptions(!showSortOptions)} // 접기 버튼을 누르면 showSortOptions 상태를 업데이트합니다.
                     >
                         <Text style={styles.sortButtonText}>
                             {sortType ? sortType : '선택'}

@@ -161,7 +161,7 @@ const products = [
   },
   { 
     id: 13, 
-    title: "레이디백 써보실 분?", 
+    title: "맥북 레이디백 써보실 분?", 
     goodsName: "Lady", 
     user: "왕돼지", 
     Address: "강남구 대치동", 

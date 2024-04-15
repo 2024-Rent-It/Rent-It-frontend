@@ -8,7 +8,7 @@ const Container = styled.View`
 `;
 
 const ImageContainer = styled.View`
-  width: 92%;
+  width: 91%;
   aspect-ratio: 1/1;
   overflow: hidden;
   border-radius: 10px;
