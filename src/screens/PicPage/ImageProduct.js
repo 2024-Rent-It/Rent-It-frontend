@@ -173,7 +173,7 @@ const products = [
   },
   { 
     id: 14, 
-    title: "명품 그릇이에요", 
+    title: "맥북 명품 그릇이에요", 
     goodsName: "Plate", 
     user: "쩝쩝박사", 
     Address: "강남구 대치동", 
