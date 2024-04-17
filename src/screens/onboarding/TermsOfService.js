@@ -11,7 +11,7 @@ const TermsOfService = () => {
                 제1조(목적)
             </Text>
             <Text style={{ marginBottom: 20 }}>
-                이 약관은 ChatGPT 서비스(이하 '서비스')의 이용 조건 및
+                이 약관은 RentIt 서비스(이하 '서비스')의 이용 조건 및
                 절차, 회원과 사이트 운영자의 권리, 의무 및 책임 사항
                 기타 필요한 사항을 규정함을 목적으로 합니다.
             </Text>
