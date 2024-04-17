@@ -37,7 +37,6 @@ const SearchScreen = ({ navigation }) => {
 
     const handleChangeText = (text) => {
         setSearchKeyword(text);
-        filterSearchResults(text, sortType); // 검색 키워드가 변경될 때마다 검색 결과를 필터링하여 정렬합니다.
     };
 
     const handleSearch = async () => {
@@ -45,8 +44,12 @@ const SearchScreen = ({ navigation }) => {
         addSearchToHistory(searchKeyword);
         setSearchKeyword('');
         filterSearchResults(searchKeyword);
-        setShowHistory(false); // 검색 후 최근 검색 기록 숨기기
-        setShowSortOptions(true); // 검색 후에도 정렬 선택 옵션 보이도록 변경
+    };
+
+    const handleSortOptionPress = (type) => {
+        setSortType(type);
+        setShowSortOptions(false);
+        filterSearchResults(searchKeyword); // 검색 결과 내에서 정렬을 수행합니다.
     };
 
     const addSearchToHistory = async (keyword) => {
@@ -64,16 +67,23 @@ const SearchScreen = ({ navigation }) => {
         }
     };
 
-    const filterSearchResults = (keyword, sortType) => {
+    const filterSearchResults = (keyword) => {
         let filteredResults = products.filter((item) =>
             item.title.includes(keyword)
-        ).slice(); // 새로운 배열 생성
-    
+        );
         if (sortType === '고가순') {
-            filteredResults = filteredResults.sort((a, b) => b.price - a.price);
+            filteredResults = filteredResults.sort((a, b) => {
+                if (a.price !== b.price) {
+                    // 가격이 다른 경우, 가격이 높은 순으로 정렬
+                    return b.price - a.price;
+                } else {
+                    // 가격이 같은 경우, 숫자의 길이로 비교하여 더 긴 것이 앞으로 오도록 정렬
+                    return b.price.toString().length - a.price.toString().length;
+                }
+            });
         } else if (sortType === '저가순') {
             filteredResults = filteredResults.sort((a, b) => a.price - b.price);
-        } else if (sortType === '이름순') {
+        } else if (sortType === 'nameAscending') {
             filteredResults = filteredResults.sort((a, b) =>
                 a.title.localeCompare(b.title)
             );
@@ -109,26 +119,12 @@ const SearchScreen = ({ navigation }) => {
         setShowHistory(true);
     };
 
-    const handleSearchAndShowSortOptions = () => {
-        handleSearch();
-        setShowSortOptions(true); // 검색 후에도 정렬 선택창 열린 상태를 유지합니다.
-    };
-
     const handleHistoryPress = (keyword) => {
         setSearchKeyword(keyword);
         setShowHistory(false);
         filterSearchResults(keyword);
     };
 
-    const handleSortOptionPress = (type) => {
-        let newSortType = null;
-        if (type === '고가순' || type === '저가순' || type === '이름순') {
-            newSortType = type;
-        }
-        setSortType(newSortType);
-       
-        filterSearchResults(searchKeyword, newSortType); // 정렬 옵션을 변경할 때마다 검색 결과를 다시 필터링하여 정렬합니다.
-    };
 
     const renderHistoryItem = ({ item, index }) => (
         <View style={styles.historyItemContainer}>
@@ -174,52 +170,15 @@ const SearchScreen = ({ navigation }) => {
                     />
                     <TouchableOpacity
                         style={styles.searchIconWrapper}
-                        onPress={handleSearchAndShowSortOptions}
+                        onPress={handleSearch}
                     >
                         <AntDesign name="search1" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
 
-            {showSortOptions && ( // 정렬 선택창 표시 여부는 showSortOptions 상태에 의해 결정됩니다.
-                <View style={styles.sortContainer}>
-                    <View style={styles.sortOptions}>
-                        <TouchableOpacity
-                            style={styles.sortOption}
-                            onPress={() => handleSortOptionPress('고가순')}
-                        >
-                            <Text>고가순</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.sortOption}
-                            onPress={() => handleSortOptionPress('저가순')}
-                        >
-                            <Text>저가순</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.sortOption}
-                            onPress={() => handleSortOptionPress('이름순')}
-                        >
-                            <Text>이름순</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity
-                        style={styles.sortButton}
-                        onPress={() => setShowSortOptions(!showSortOptions)} // 접기 버튼을 누르면 showSortOptions 상태를 업데이트합니다.
-                    >
-                        <Text style={styles.sortButtonText}>
-                            {sortType ? sortType : '선택'}
-                        </Text>
-                        <AntDesign
-                            name={showSortOptions ? 'up' : 'down'}
-                            size={20}
-                            color="black"
-                        />
-                    </TouchableOpacity>
-                </View>
-            )}
-
-            {showHistory && searchKeyword.trim() === '' && (
+            {(showHistory && searchKeyword.trim() === '') ||
+            (showHistory && searchKeyword.trim() !== '' && searchResults.length === 0) ? (
                 <View style={styles.historyContainer}>
                     <Text style={styles.historyTitle}>최근 검색 기록</Text>
                     <FlatList
@@ -228,15 +187,55 @@ const SearchScreen = ({ navigation }) => {
                         keyExtractor={(item, index) => index.toString()}
                     />
                 </View>
-            )}
+            ) : null}
+
             {searchResults.length > 0 && (
-                <FlatList
-                    data={searchResults}
-                    renderItem={renderSearchResultItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListEmptyComponent={null}
-                    style={{ flex: 1 }}
-                />
+                <>
+                    <View style={styles.sortContainer}>
+                        {showSortOptions && (
+                            <View style={styles.sortOptions}>
+                                <TouchableOpacity
+                                    style={styles.sortOption}
+                                    onPress={() => handleSortOptionPress('고가순')}
+                                >
+                                    <Text>고가순</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.sortOption}
+                                    onPress={() => handleSortOptionPress('저가순')}
+                                >
+                                    <Text>저가순</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.sortOption}
+                                    onPress={() => handleSortOptionPress('이름순')}
+                                >
+                                    <Text>이름순</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        <TouchableOpacity
+                            style={styles.sortButton}
+                            onPress={() => setShowSortOptions(!showSortOptions)}
+                        >
+                            <Text style={styles.sortButtonText}>
+                                {sortType ? sortType : '정렬'}
+                            </Text>
+                            <AntDesign
+                                name={showSortOptions ? 'up' : 'down'}
+                                size={20}
+                                color="black"
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <FlatList
+                        data={searchResults}
+                        renderItem={renderSearchResultItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        ListEmptyComponent={<Text>검색 결과가 없습니다.</Text>}
+                        style={{ flex: 1 }}
+                    />
+                </>
             )}
         </View>
     );
