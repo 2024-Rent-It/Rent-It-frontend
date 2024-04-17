@@ -7,10 +7,10 @@ const itemWidth = (width - 20) / 3;
 
 const MyFav = ({ navigation }) => {
   const [products, setProducts] = useState([
-    { id: 1, name: '바보 개구리', price: '100원', image: require('../../../assets/images/k.png'), liked: false },
-    { id: 2, name: '귀여운 개구리', price: '300원', image: require('../../../assets/images/candle.jpg'), liked: false },
-    { id: 3, name: '깔끔한 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: false },
-    { id: 4, name: '엄청난 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: false },
+    { id: 1, name: '바보 개구리', price: '100원', image: require('../../../assets/images/k.png'), liked: true },
+    { id: 2, name: '귀여운 개구리', price: '300원', image: require('../../../assets/images/candle.jpg'), liked: true },
+    { id: 3, name: '깔끔한 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
+    { id: 4, name: '엄청난 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
   ]);
 
   const toggleLike = (id) => {
@@ -18,6 +18,11 @@ const MyFav = ({ navigation }) => {
       prevProducts.map(product =>
         product.id === id ? { ...product, liked: !product.liked } : product
       )
+    );
+
+    // 찜 목록에서 삭제
+    setProducts(prevProducts =>
+      prevProducts.filter(product => product.id !== id)
     );
   };
 
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
     width: itemWidth,
     marginBottom: 10,
     alignItems: 'center',
-    margin:'1%',
+    margin: '1%',
     position: 'relative', // 상대 위치 설정
   },
   heartContainer: {
@@ -69,10 +74,10 @@ const styles = StyleSheet.create({
     zIndex: 1, // 다른 요소 위에 표시되도록 설정
   },
   image: {
-    width: '100%', 
+    width: '100%',
     height: itemWidth,
     aspectRatio: 1, // 가로 세로 비율을 유지
-    margin:'1%',
+    margin: '1%',
     resizeMode: 'cover',
     marginBottom: 5,
   },

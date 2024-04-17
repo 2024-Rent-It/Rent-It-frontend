@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import {
-    ScrollView,
-    TextInput,
-    View,
-    Text,
-    TouchableOpacity,
-    Alert,
-    Modal,
-    Image,
-    FlatList,
-} from 'react-native';
+import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Modal, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Feather 아이콘을 사용하기 위해 추가
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../constants/api.js';
+import { useNavigation } from '@react-navigation/native';
+
 
 const WritePost = () => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
-
+    const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
@@ -94,6 +86,7 @@ const WritePost = () => {
 
             if (response.ok) {
                 Alert.alert('등록되었습니다');
+                navigation.navigate('HomeTab');
             } else {
                 // 오류 처리해야댐
             }
