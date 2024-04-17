@@ -3,7 +3,10 @@ import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Dimensions }
 import { Ionicons } from '@expo/vector-icons'; // Ionicons 라이브러리 사용
 
 const { width } = Dimensions.get('window');
-const itemWidth = (width - 20) / 3;
+// const itemWidth = (width - 20) / 3;
+const numColumns = 3;
+const itemWidth = (width - 20 - (numColumns - 1) * 10) / numColumns; // 아이템의 너비 계산
+
 
 const MyFav = ({ navigation }) => {
   const [products, setProducts] = useState([
