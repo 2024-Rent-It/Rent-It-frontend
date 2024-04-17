@@ -49,6 +49,7 @@ const ProductDetail2 = ({ route }) => {
     </View>
   </TouchableOpacity>
 );
+
     } else {
       return (
         <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>

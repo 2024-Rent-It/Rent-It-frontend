@@ -23,7 +23,7 @@ const WritePost = () => {
     const [price, setPrice] = useState('');
     const [duration, setDuration] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedImage, setSelectedImage] = useState([]); // 선택된 이미지
+    const [selectedImages, setSelectedImages] = useState([]); // 선택된 이미지들
     const [showCategoryList, setShowCategoryList] = useState(false); // 카테고리 목록 표시 여부
     const [showDurationList, setShowDurationList] = useState(false); // 대여 기간 목록 표시 여부
 
@@ -54,10 +54,17 @@ const WritePost = () => {
         });
 
         if (!result.cancelled && result.assets) {
-            setSelectedImage([...result.assets.map((a) => a.uri)]);
+            setSelectedImages([...selectedImages, ...result.assets]);
             console.log(result.assets); // 이미지 URI 확인용
         }
     };
+
+    const handleRemoveImage = (index) => {
+        const newImages = [...selectedImages];
+        newImages.splice(index, 1);
+        setSelectedImages(newImages);
+    };
+
     const registerProduct = async () => {
         const formData = new FormData();
         formData.append('title', title);
@@ -65,11 +72,13 @@ const WritePost = () => {
         formData.append('price', price);
         formData.append('duration', duration);
         formData.append('description', description);
-        console.log(selectedImage);
-        formData.append('images', {
-            uri: selectedImage,
-            name: selectedImage.split('/').pop(), // 파일 이름 추출
-            type: `image/${selectedImage.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
+        console.log(selectedImages);
+        selectedImages.forEach((image, index) => {
+            formData.append(`images[${index}]`, {
+                uri: image.uri,
+                name: image.uri.split('/').pop(), // 파일 이름 추출
+                type: `image/${image.uri.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
+            });
         });
 
         try {
@@ -158,18 +167,38 @@ const WritePost = () => {
                 </TouchableOpacity>
                 <FlatList
                     horizontal
-                    data={selectedImage}
+                    data={selectedImages}
                     renderItem={({ item, index }) => (
-                        <Image
-                            key={index}
-                            source={{ uri: item }}
-                            style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: 10,
-                                marginRight: 10,
-                            }}
-                        />
+                        <View style={{ position: 'relative' }}>
+                            <Image
+                                key={index}
+                                source={{ uri: item.uri }}
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 10,
+                                    marginRight: 10,
+                                }}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 10,
+                                    borderRadius: 10,
+                                    padding: 1,
+                                    zIndex: 2,
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+                                }}
+                                onPress={() => handleRemoveImage(index)}
+                            >
+                                <Feather
+                                    name="x"
+                                    size={20}
+                                    color="#fff"
+                                />
+                            </TouchableOpacity>
+                        </View>
                     )}
                     style={{ flexGrow: 1 }}
                 />
@@ -222,15 +251,16 @@ const WritePost = () => {
                 </TouchableOpacity>
                 {showCategoryList && (
                     <ScrollView
-                        style={{
-                            maxHeight: 200,
-                            marginTop: 10,
-                            position: 'absolute',
-                            width: '100%',
-                            Index: 2,
-                            backgroundColor: '#F1F1F1',
-                            elevation: 2,
-                        }}
+                    style={{
+                        maxHeight: 200,
+                        marginTop: 10,
+                        position: 'absolute',
+                        width: '100%',
+                        zIndex: 2,
+                        backgroundColor: 'rgba(255, 255, 255, 1)', // 완전 불투명한 흰색 배경
+                        elevation: 2,
+                    }}
+                
                     >
                         {categories.map((item, index) => (
                             <TouchableOpacity
@@ -304,8 +334,8 @@ const WritePost = () => {
                             marginTop: 10,
                             position: 'absolute',
                             width: '100%',
-                            Index: 2,
-                            backgroundColor: '#f1f1f1',
+                            zIndex: 2,
+                            backgroundColor: '#FFFFFF', 
                             elevation: 2,
                         }}
                     >
