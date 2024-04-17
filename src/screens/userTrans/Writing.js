@@ -64,14 +64,27 @@ const WritePost = () => {
         formData.append('price', price);
         formData.append('duration', duration);
         formData.append('description', description);
-        console.log(selectedImages);
+        console.log("선택된 이미지들", selectedImages);
         selectedImages.forEach((image, index) => {
-            formData.append(`images[${index}]`, {
+            formData.append(`images`, {
                 uri: image.uri,
                 name: image.uri.split('/').pop(), // 파일 이름 추출
                 type: `image/${image.uri.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
             });
         });
+        // selectedImages.forEach((image, index) => {
+        //   // console.log(image.uri.split('/').pop());
+        //   const filename = image.uri.split('/').pop();
+        //   const uriParts = image.uri.split('/');
+        //   const uri = Platform.OS === 'android' ? uriParts[uriParts.length - 1] : image.uri;
+        //   formData.append(`images[${index}]`, {
+        //     uri: uri,
+        //     name: filename,
+        //     type: `image/${filename.split('.').pop()}`,
+        //   });
+        // });
+          
+    
 
         try {
             const response = await fetch(`${BASE_URL}/products/register`, {
@@ -95,6 +108,46 @@ const WritePost = () => {
             // 오류 처리해야댐
         }
     };
+    // const registerProduct = async () => {
+    //   const formData = new FormData();
+    //   formData.append('title', title);
+    //   formData.append('category', category);
+    //   formData.append('price', price);
+    //   formData.append('duration', duration);
+    //   formData.append('description', description);
+    //   console.log(selectedImage)
+    //   formData.append('images', {
+    //     uri: selectedImage,
+    //     name: selectedImage.split('/').pop(), // 파일 이름 추출
+    //     type: `image/${selectedImage.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
+    //   });
+    
+    //   try {
+    //     const response = await fetch(`${BASE_URL}/products/register`, {
+    //       method: 'POST',
+    //       headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'multipart/form-data',
+    //         'Authorization': `Bearer ${token}`,
+    //       },
+    //       body: formData,
+    //     });
+    
+    //     if (response.ok) {
+    //       Alert.alert('등록되었습니다');
+    //       navigation.navigate("HomeTab");
+  
+    //     } else {
+    //       throw new Error('등록에 실패하였습니다');
+    //       // 오류 처리해야댐
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //     Alert.alert('오류가 발생하였습니다');
+    //     // 오류 처리해야댐
+    //   }
+    // };
+  
 
     const categories = [
         '인기렌탈',
