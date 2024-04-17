@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Modal, Image } from 'react-native';
+import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Modal, Image, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons'; // Feather 아이콘을 사용하기 위해 추가
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
