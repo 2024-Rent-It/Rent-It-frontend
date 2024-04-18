@@ -27,7 +27,7 @@ import ChangePw from '../../screens/myPage/Edit/ChangePw';
 import ChangeEmail from '../../screens/myPage/Edit/ChangeEmail';
 import LocationSetting from '../../screens/myPage/Edit/LocationSetting';
 import Onboarding from '../../screens/onboarding/Onboarding';
-import SignUpTest from '../../screens/onboarding/SignUpTest';
+import SignUp from '../../screens/onboarding/SignUpScreen.js';
 import LoginScreen from '../../screens/onboarding/LoginScreen';
 import AddressScreen from '../../screens/onboarding/AddressScreen';
 import ProductDetailPage from '../../screens/PicPage/ProductDetail.js';
@@ -39,6 +39,7 @@ import Notice from '../../screens/myPage/Notice.js';
 import NoticeDetail from '../../screens/myPage/NoticeDetail.js';
 import SearchScreen from '../../../src/components/SearchScreen.js';
 import Notification from '../../../src/components/Notification.js';
+import Gomain from '../../screens/onboarding/Gomain.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -227,7 +228,7 @@ function RootNavigator() {
                 options={{ headerShown: false }}
                 component={Onboarding}
             />
-            <Stack.Screen name="회원가입테스트" component={SignUpTest} />
+            <Stack.Screen name="회원가입" component={SignUp} />
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
             <Stack.Screen
                 name="Root"
@@ -246,6 +247,7 @@ function RootNavigator() {
             <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
             <Stack.Screen name="Notification" component={Notification} />
+            <Stack.Screen name="Gomain" component={Gomain} />
         </Stack.Navigator>
     );
     1;

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BASE_URL } from '../../constants/api.js';
+
 
 const ProductDetailPage = ({ route }) => {
   const { product } = route.params;
@@ -10,6 +12,12 @@ const ProductDetailPage = ({ route }) => {
   const toggleLike = () => {
     setIsLiked(prevState => !prevState);
   };
+
+  const showProductList= () =>{
+
+  }
+
+
 
   useEffect(() => {
     if (categoryWidth === 0) {
@@ -21,12 +29,12 @@ const ProductDetailPage = ({ route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <Image source={product.pictures} style={{ width: '100%', height: '40%' }} />
+      <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={{ width: '100%', height: '40%' }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingTop: 10, paddingBottom: 10, }}> 
         <Ionicons name="person-circle-outline" size={50} color="black" />
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', paddingBottom: 2 }}>{product.user}</Text>
-          <Text style={{ fontSize: 13, paddingTop: 2, }}>{product.Address}</Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', paddingBottom: 2 }}>{product.sellerName}</Text>
+          <Text style={{ fontSize: 13, paddingTop: 2, }}>{product.Location}</Text>
         </View>
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: '#EAEAEA' }}></View>
@@ -49,10 +57,10 @@ const ProductDetailPage = ({ route }) => {
         <Ionicons name="heart-outline" size={43} color="black" />
       )}
     </TouchableOpacity>
-       <Text style={{ fontSize: 24, color: 'black', marginLeft: '4%', fontWeight: 'bold', marginRight: '16%'}}>{product.price}</Text>
+       <Text style={{ fontSize: 24, color: 'black', marginLeft: '4%', fontWeight: 'bold', marginRight: '16%'}}>₩{product.price}</Text>
     
       <View style={{ backgroundColor: '#FFF', borderRadius: 20, justifyContent: 'center', width: '37%', alignSelf: 'center', marginLeft: '2%' }}>
-       <Text style={{ color: '#000', fontSize: 15, textAlign: 'center', paddingVertical: 5 }}>{product.term}</Text>
+       <Text style={{ color: '#000', fontSize: 15, textAlign: 'center', paddingVertical: 5 }}>최대 {product.duration} 가능</Text>
      </View>
   </View>
  

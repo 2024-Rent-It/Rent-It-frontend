@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
 
 
-const NoticeDetail_1 = ({ navigation, route }) => {
+const NoticeDetail = ({ navigation, route }) => {
     // const { title, date, content } = route.params;
     const { id, title, date } = route.params;
     const [content, setContent] = useState('');
@@ -40,7 +40,7 @@ const NoticeDetail_1 = ({ navigation, route }) => {
     );
 };
 
-export default NoticeDetail_1;
+export default NoticeDetail;
 
 const styles = StyleSheet.create({
     back: {
