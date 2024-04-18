@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-
+import { BASE_URL } from '../../constants/api.js';
 const Container = styled.View`
   margin-top: 40px;
   align-items: center;
@@ -40,7 +40,8 @@ const ProductItem = ({ product, onPress }) => {
     <TouchableOpacity onPress={() => onPress(product)}>
       <Container>
         <ImageContainer>
-          <ProductImage source={product.pictures} resizeMode="cover" />
+          <ProductImage source={{uri:`${BASE_URL}/images/${product.productImages}`}}
+          resizeMode="cover" />
         </ImageContainer>
         <TextContainer>
           <ProductPrice>{product.price}</ProductPrice>

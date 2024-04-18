@@ -1,7 +1,45 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable,TextInput } from "react-native";
+import { StyleSheet, View, Text, Pressable,TextInput  } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from 'axios';
+import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../constants/api.js';
 
 const LocationSetting = ({ navigation }) => {
+    const route = useRoute();
+    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const { userLocation } = useAuth(); // 로그인된 사용자 지역 가져오기
+    const { setUserLocation } = useAuth(); // setUserLocation 함수 가져오기
+    const { city } = route.params || {}; // 동네 정보(city)를 받아옴
+
+    const updateLocation = async (newNickname, token) => {
+        const updateLocationPath = '/member/update-location';
+        
+        try {
+            const response = await axios.put(`${BASE_URL}${updateLocationPath}`, null,
+                {
+                    params: { location: city },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+
+            Alert.alert('변경되었습니다.');
+            const updatedLocation = response.data.data.location;
+            setUserLocation(updatedLocation);
+
+            navigation.navigate("Root")
+        } catch (error) {
+            console.error('닉네임 변경 실패:', error);
+            if (error.response) {
+                // 서버가 응답한 경우
+                console.error('응답 데이터:', error.response);
+                console.error('응답 상태 코드:', error.response.status);
+            }
+        }
+    }
+
+
     return (
         <View
             style={{ backgroundColor: '#ECECEC', height: '100%' }}>
@@ -16,15 +54,16 @@ const LocationSetting = ({ navigation }) => {
                     <TextInput
                         style={styles.input}
                         width={'60%'}
-                        placeholder="~~기존 주소~~"
+                        placeholder={userLocation}
                         maxLength={10}
-                    //value={nickName}
+                        value={city || ''}
+                        editable={false} // 수정 불가능하도록 설정
                     />
                     <Pressable
                         style={styles._button}
                         width={"34%"}
                         onPress={() => {
-                            alert('sss')
+                            navigation.navigate('AddressScreen');
                         }}
                     >
                         <Text style={styles.h2}>🧭 지역 검색</Text>

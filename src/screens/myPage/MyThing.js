@@ -2,23 +2,55 @@ import React, { useState, useEffect, useRef } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, StyleSheet, Text, TextInput, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 const Tab = createMaterialTopTabNavigator();
 
 const MyThing = () => {
+    // const { userid } = useAuth();
+    const { userNickname } = useAuth();
+
     const [modalVisible, setModalVisible] = useState(false);  //토글 누르면 열리는 모달임
     const [modalVisibleForDoneRent, setModalVisibleForDoneRent] = useState(false); // 닉네임 입력받는 모달임
     const [selectedProduct, setSelectedProduct] = useState(null);
     const tabRef = useRef(null); // Ref for controlling tabs
     const [nickname, setNickname] = useState('');
+    const [products, setProducts] = useState([]);
 
-    const [products, setProducts] = useState([
-        { id: 1, name: '퍼렁별 침략', price: '3000원', period: '1일', sellerName: '', status: '렌트중', image: require('../../../assets/images/coat.jpg') },
-        { id: 2, name: '바보 개구리', price: '2000000원', period: '2일', selsellerNameler: '', status: '렌트중', image: require('../../../assets/images/k.png') },
-        { id: 3, name: '그냥 개구리', price: '800000원', period: '8일', sellerName: '', status: '렌트완료', image: require('../../../assets/images/plate.jpg') },
-        { id: 4, name: '진짜 개구리', price: '5000원', period: '3일', sellerName: '', status: '렌트완료', image: require('../../../assets/images/tools.png') },
-    ]);
+    useEffect(() => {
+        fetchData();
+      }, [userNickname]);
+
+    const fetchData = async () => {
+        try {
+            console.log(userNickname)
+          const response = await axios.get(`${BASE_URL}/products/seller/${userNickname}`);
+        //   console.log(response);
+          const newProducts = response.data;
+          // setProducts(prevProducts => [...prevProducts, ...newProducts]);
+          setProducts([...response.data]);
+          console.log("내 판매", products);
+  
+        } catch (error) {
+          console.error('Error fetching products:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      const onRefresh = () => {
+          setRefreshing(true);
+          fetchData().then(() => setRefreshing(false));
+      };
+  
+    // const [products, setProducts] = useState([
+    //     { id: 1, name: '퍼렁별 침략', price: '3000원', period: '1일', sellerName: '', status: '렌트중', image: require('../../../assets/images/coat.jpg') },
+    //     { id: 2, name: '바보 개구리', price: '2000000원', period: '2일', selsellerNameler: '', status: '렌트중', image: require('../../../assets/images/k.png') },
+    //     { id: 3, name: '그냥 개구리', price: '800000원', period: '8일', sellerName: '', status: '렌트완료', image: require('../../../assets/images/plate.jpg') },
+    //     { id: 4, name: '진짜 개구리', price: '5000원', period: '3일', sellerName: '', status: '렌트완료', image: require('../../../assets/images/tools.png') },
+    // ]);
 
     const toggleModal = (product) => {
         setSelectedProduct(product);
@@ -87,15 +119,15 @@ const MyThing = () => {
             <Pressable onPress={() => toggleModal(product)}>
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
-                        <Image source={product.image} style={styles.image} />
+                        <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={styles.image} />
                     </View>
 
                 </View>
             </Pressable>
             <View style={styles.infoContainer}>
-                <Text style={styles.name}>{product.name}</Text>
-                <Text style={styles.price}>{product.price}</Text>
-                <Text style={styles.period}>{product.period}</Text>
+                <Text style={styles.name}>{product.title}</Text>
+                <Text style={styles.price}>{product.price}원</Text>
+                <Text style={styles.period}>최대 {product.duration} 가능</Text>
             </View>
             <Pressable style={styles.button} onPress={() => toggleModal(product)}>
                 <Icon name="more-vert" size={24} color="black" />
@@ -105,8 +137,9 @@ const MyThing = () => {
 
     const DoingRentScreen = () => (
         <View>
-            {products.filter(product => product.status === '렌트중').map((product) => (
-                <ProductItem key={product.id} product={product} />
+            {products.filter(product => product.status === '거래가능').map((product) => (
+                // <ProductItem key={product.id} product={product} />
+                <ProductItem product={product} />
             ))}
 
             <Modal

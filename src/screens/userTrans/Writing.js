@@ -6,7 +6,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../constants/api.js';
 import { useNavigation } from '@react-navigation/native';
 
-
 const WritePost = () => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const navigation = useNavigation();
