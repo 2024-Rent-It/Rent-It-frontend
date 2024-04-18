@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, StyleSheet, Text, TextInput, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 const Tab = createMaterialTopTabNavigator();
 
-const MyThing = ({ navigation }) => {
+const MyThing = () => {
     const [modalVisible, setModalVisible] = useState(false);  //토글 누르면 열리는 모달임
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [modalVisibleForSeller, setModalVisibleForSeller] = useState(false);
-    const [sellerName, setSellerName] = useState('');
-
-
+    const tabRef = useRef(null); // Ref for controlling tabs
+    const [nickname, setNickname] = useState('');
 
     const [products, setProducts] = useState([
         { id: 1, name: '퍼렁별 침략', price: '3000원', period: '1일', sellerName: '', status: '렌트중', image: require('../../../assets/images/coat.jpg') },
@@ -164,28 +164,29 @@ const MyThing = ({ navigation }) => {
             <View style={styles.productContainer}>
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
-                        <Image source={product.image} style={styles.image} />
+                        <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={styles.image} />
                     </View>
 
                 </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.name}>{product.name}</Text>
-                    <Text style={styles.price}>{product.price}</Text>
-                    <Text style={styles.period}>{product.period}</Text>
-                </View>
-                <Pressable style={styles.button} onPress={() => toggleModal(product)}>
-                    <Icon name="more-vert" size={24} color="black" />
-                </Pressable>
+            </Pressable>
+            <View style={styles.infoContainer}>
+                <Text style={styles.name}>{product.name}</Text>
+                <Text style={styles.price}>{product.price}</Text>
+                <Text style={styles.period}>{product.period}</Text>
             </View>
-        </TouchableOpacity>
+            <Pressable style={styles.button} onPress={() => toggleModal(product)}>
+                <Icon name="more-vert" size={24} color="black" />
+            </Pressable>
+        </View>
     );
 
 
 
     const DoingRentScreen = () => (
         <View>
-            {products.filter(product => product.status === '렌트중').map((product) => (
-                <ProductItem key={product.id} product={product} />
+            {products.filter(product => product.status === '거래가능').map((product) => (
+                // <ProductItem key={product.id} product={product} />
+                <ProductItem product={product} />
             ))}
 
             {/* <Modal

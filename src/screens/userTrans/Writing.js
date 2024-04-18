@@ -6,7 +6,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../constants/api.js';
 import { useNavigation } from '@react-navigation/native';
 
-
 const WritePost = () => {
     const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
     const navigation = useNavigation();
@@ -64,9 +63,9 @@ const WritePost = () => {
         formData.append('price', price);
         formData.append('duration', duration);
         formData.append('description', description);
-        console.log(selectedImages);
+        console.log("선택된 이미지들", selectedImages);
         selectedImages.forEach((image, index) => {
-            formData.append(`images[${index}]`, {
+            formData.append(`images`, {
                 uri: image.uri,
                 name: image.uri.split('/').pop(), // 파일 이름 추출
                 type: `image/${image.uri.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
@@ -94,10 +93,11 @@ const WritePost = () => {
             console.error(error);
             // 오류 처리해야댐
         }
-    };
+    }; 
+  
 
     const categories = [
-        '인기렌탈',
+        '주방용품',
         '가구/인테리어',
         '패션잡화',
         '미용소품',

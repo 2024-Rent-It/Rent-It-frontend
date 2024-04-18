@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 const ProductDetail2 = ({ route }) => {
   const { product } = route.params;
   const [isHorizontal, setIsHorizontal] = useState(false);
+  const [scrollIndex, setScrollIndex] = useState(0); // 현재 스크롤 위치 저장
   const navigation = useNavigation();
 
   // 이미지-텍스트 아이콘을 눌렀을 때의 핸들러
@@ -26,47 +27,47 @@ const ProductDetail2 = ({ route }) => {
     </View>
   );
 
-  // 각 상품을 표시하는 renderItem 함수
-  const renderItem = ({ item }) => {
-    if (isHorizontal) {
-      return (
-  <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: item })}>
-    <View style={styles.priceContainer}>
-      <View style={styles.itemContainer2}>
-        <Image source={item.pictures} style={styles.image2} />
-        <View style={styles.textContainer}>
-          <Text numberOfLines={1} style={[styles.title, styles.horizontalTitle]}>{item.title}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{item.Address}</Text>
+// 각 상품을 표시하는 renderItem 함수
+const renderItem = ({ item }) => {
+  if (isHorizontal) {
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>
+        <View style={styles.priceContainer}>
+          <View style={styles.itemContainer2}>
+            <Image source={product.pictures} style={styles.image2} />
+            <View style={styles.textContainer}>
+              <Text numberOfLines={1} style={[styles.title, styles.horizontalTitle]}>{product.title}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{product.Address}</Text>
+              </View>
+              <Text style={[styles.price, styles.horizontalPrice]}>{product.price}</Text>
+              <View style={{ paddingHorizontal: 10, backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', justifyContent: 'center', width: '80%', marginTop:'2%', }}>
+                <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{product.term}</Text>
+              </View>
+            </View>
           </View>
-          <Text style={[styles.price, styles.horizontalPrice]}>{item.price}</Text>
-          <View style={{ paddingHorizontal: 10, backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', justifyContent: 'center', width: '80%', marginTop:'2%', }}>
-            <Text style={{ color: '#000', fontSize: 13, textAlign: 'center', paddingVertical: 5 }}>{item.term}</Text>
-          </View>
+          <View style={styles.separator} />
         </View>
-      </View>
-      <View style={styles.separator} />
-    </View>
-  </TouchableOpacity>
-);
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>
+        <View style={[styles.itemContainer, styles.verticalItemContainer]}>
+          <Image source={product.pictures} style={styles.image} />
+          <Text numberOfLines={1} style={[styles.title, styles.verticalTitle]}>{product.title}</Text>
+          <Text style={[styles.price, styles.verticalPrice]}>{product.price}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+};
 
-    } else {
-      return (
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product: product })}>
-          <View style={[styles.itemContainer, styles.verticalItemContainer]}>
-            <Image source={product.pictures} style={styles.image} />
-            <Text numberOfLines={1} style={[styles.title, styles.verticalTitle]}>{product.title}</Text>
-            <Text style={[styles.price, styles.verticalPrice]}>{product.price}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    }
-  };
+// keyExtractor 함수 정의
+const keyExtractor = (item, index) => {
+  return isHorizontal ? `horizontal-${index}` : `vertical-${index}`;
+};
 
-  // keyExtractor 함수 정의
-  const keyExtractor = (item, index) => {
-    return isHorizontal ? `horizontal-${index}` : `vertical-${index}`;
-  };
 
   return (
     <View style={styles.container}>
@@ -77,6 +78,8 @@ const ProductDetail2 = ({ route }) => {
         keyExtractor={keyExtractor} // keyExtractor를 설정
         numColumns={isHorizontal ? 1 : 3} // 수직 또는 수평 정렬
         key={isHorizontal ? 'horizontal' : 'vertical'} // FlatList 컴포넌트의 key prop을 변경하여 리렌더링 보장
+        initialScrollIndex={scrollIndex} // 현재 스크롤 위치 설정
+        onScroll={(event) => setScrollIndex(event.nativeEvent.contentOffset.y)} // 현재 스크롤 위치 저장
       />
       {isHorizontal && <View style={styles.horizontalSeparator} />} 
     </View>

@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // React Navigation의 useNavigation 훅 가져오기
 
 const GoMain = () => {
+  const navigation = useNavigation(); // navigation 객체 가져오기
+
   const handleNavigateHome = () => {
+    navigation.navigate('Root'); // Root 화면으로 이동
 
   };
 
