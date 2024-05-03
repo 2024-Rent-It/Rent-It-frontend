@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext.js'; // AuthContext 파일�
 import { BASE_URL } from '../../constants/api.js';
 
 
-const SignUpTest = () => {
+const SignUp = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { login } = useAuth();
@@ -123,11 +123,9 @@ const SignUpTest = () => {
             });
             console.log(isAccountDuplicateChecked, isNicknameDuplicateChecked, isEmailDuplicateChecked);
 
-            Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
+            // Alert.alert('회원가입 성공', '렌팃에 오신걸 환영 합니다.');
             handleLogin();
-            navigation.navigate("Root")
-
-            //   navigation.navigate('')
+            navigation.navigate("Gomain")
 
             // 로그인 화면으로 이동하는 코드 작성
         } catch (error) {
@@ -320,7 +318,6 @@ const SignUpTest = () => {
                                     width={"34%"}
                                     onPress={() => {
                                         navigation.navigate('AddressScreen');
-                                        // checkNickname(account);
 
                                     }}
                                 >
@@ -432,4 +429,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SignUpTest;
+export default SignUp;
