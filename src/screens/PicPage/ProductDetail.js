@@ -13,11 +13,6 @@ const ProductDetailPage = ({ route }) => {
     setIsLiked(prevState => !prevState);
   };
 
-  const showProductList= () =>{
-
-  }
-
-
 
   useEffect(() => {
     if (categoryWidth === 0) {
@@ -29,27 +24,27 @@ const ProductDetailPage = ({ route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={{ width: '100%', height: '40%' }} />
+      <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={{ width: '100%', height: '45%' }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingTop: 10, paddingBottom: 10, }}> 
         <Ionicons name="person-circle-outline" size={50} color="black" />
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', paddingBottom: 2 }}>{product.sellerName}</Text>
+          <Text style={{ fontSize: 17, fontWeight: 'bold', paddingBottom: 2 }}>{product.sellerName}</Text>
           <Text style={{ fontSize: 13, paddingTop: 2, }}>{product.Location}</Text>
         </View>
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: '#EAEAEA' }}></View>
-      <View style={{ padding: 10, marginLeft: '5%', marginRight: '5%',  }}> 
-        <Text style={{ fontSize: 19, marginBottom: 2, marginTop: '2%', fontWeight: 'bold',  }}>{product.title}</Text>
+      <View style={{ padding: 10, marginLeft: '3%', marginRight: '5%',  }}> 
+        <Text style={{ fontSize: 18, fontWeight: 'bold',  }}>{product.title}</Text>
       </View>
-      <View style={{ backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', width: categoryWidth + 10, marginLeft: '5%', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 15, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 5 }}>{product.category}</Text>
+      <View style={{ backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', width: categoryWidth + 7, marginLeft: '5%', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 13, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 5 }}>{product.category}</Text>
       </View>
-      <View style={{ padding: 10, marginLeft: '5%', marginRight: '5%' }}> 
-        <Text style={{ fontSize: 17, marginBottom: 5, marginTop: '4%' }}>{product.description}</Text>
+      <View style={{ padding: 10, marginLeft: '3%', marginRight: '5%' }}> 
+        <Text style={{ fontSize: 16, marginBottom: 5, marginTop: '1%' }}>{product.description}</Text>
       </View>
       
-      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#ECECEC', height: 165, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
-  <View style={{ flexDirection: 'row',  alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, marginTop:'2%' }}>
+      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#ECECEC', height: 160, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+  <View style={{ flexDirection: 'row',  alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, marginTop:'1.5%' }}>
     <TouchableOpacity onPress={toggleLike}>
       {isLiked ? (
         <Ionicons name="heart" size={43} color="black" />
@@ -57,7 +52,7 @@ const ProductDetailPage = ({ route }) => {
         <Ionicons name="heart-outline" size={43} color="black" />
       )}
     </TouchableOpacity>
-       <Text style={{ fontSize: 24, color: 'black', marginLeft: '4%', fontWeight: 'bold', marginRight: '16%'}}>₩{product.price}</Text>
+       <Text style={{ fontSize: 22, color: 'black', marginLeft: '2%', fontWeight: 'bold', marginRight: '23%'}}>₩{product.price}</Text>
     
       <View style={{ backgroundColor: '#FFF', borderRadius: 20, justifyContent: 'center', width: '37%', alignSelf: 'center', marginLeft: '2%' }}>
        <Text style={{ color: '#000', fontSize: 15, textAlign: 'center', paddingVertical: 5 }}>최대 {product.duration} 가능</Text>
@@ -65,9 +60,9 @@ const ProductDetailPage = ({ route }) => {
   </View>
  
 
-  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop:'3%' }}>
-    <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 130, paddingVertical: 17, borderRadius: 25 }}>
-      <Text style={{ color: '#000000', fontSize: 20 }}>채팅 보내기</Text>
+  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop:'1%' }}>
+    <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 130, paddingVertical: 15, borderRadius: 35, marginTop: '3%', }}>
+      <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold', }}>채팅 보내기</Text>
     </TouchableOpacity>
   </View>
 </View>
