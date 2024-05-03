@@ -29,7 +29,7 @@ const LoginScreen = () => {
       const responseData = await response.json(); 
       if (response.ok) {
         const { id, nickname, email, location, token } = responseData.data;
-        // console.log('로그인 정보 확인', responseData.data)
+        console.log('로그인 정보 확인', responseData.data)
         login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
         Alert.alert('로그인 성공', responseData.message);
         navigation.navigate('Root'); // Root 화면으로 이동

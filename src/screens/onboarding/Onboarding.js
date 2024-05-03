@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect } from "react";
 import { StyleSheet, Text, View, FlatList, Animated, TouchableOpacity } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import LottieView from "lottie-react-native";
 import BottomSheet from "./BottomSheet";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
 
 const DATA = [
@@ -42,6 +43,35 @@ export default function Onboarding({navigation}) {
   const animation = React.useRef(null);
 
   const [status, setStatus] = React.useState(false);
+
+  const { login } = useAuth();
+
+  useEffect(() => {
+    // 앱이 시작될 때 AsyncStorage에서 데이터 로드
+    const loadAuthData = async () => {
+      try {
+        console.log("토큰있냐",savedToken, savedNickname, savedEmail, savedLocation);
+
+        const savedToken = await AsyncStorage.getItem('token');
+        const savedNickname = await AsyncStorage.getItem('userNickname');
+        const savedEmail = await AsyncStorage.getItem('userEmail');
+        const savedLocation = await AsyncStorage.getItem('userLocation');
+        // const savedUserID = await AsyncStorage.getItem('userID');
+
+        if (savedToken) {
+          login(savedToken, savedNickname, savedEmail, savedLocation); // 로그인 함수 호출하여 토큰 저장
+          navigation.navigate('Root'); // Root 화면으로 이동
+        }
+
+       
+      } catch (error) {
+        console.error('Error loading auth data:', error);
+      }
+
+    };
+
+    loadAuthData();
+  }, []);
 
   const handleSignUp = () => {
     // 회원가입 버튼이 클릭되었을 때 실행되는 함수
