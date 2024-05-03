@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable,TextInput  } from "react-native";
+import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -14,7 +14,7 @@ const LocationSetting = ({ navigation }) => {
 
     const updateLocation = async (newNickname, token) => {
         const updateLocationPath = '/member/update-location';
-        
+
         try {
             const response = await axios.put(`${BASE_URL}${updateLocationPath}`, null,
                 {
@@ -30,7 +30,7 @@ const LocationSetting = ({ navigation }) => {
 
             navigation.navigate("Root")
         } catch (error) {
-            console.error('닉네임 변경 실패:', error);
+            console.error('지역 변경 실패:', error);
             if (error.response) {
                 // 서버가 응답한 경우
                 console.error('응답 데이터:', error.response);
@@ -69,6 +69,15 @@ const LocationSetting = ({ navigation }) => {
                         <Text style={styles.h2}>🧭 지역 검색</Text>
                     </Pressable>
                 </View>
+
+                <Pressable
+                    style={styles._button3} backgroundColor={"#A7C8E7"}
+                    onPress={() => {
+                        //navigation.navigate("Root")
+                    }}
+                >
+                    <Text style={styles.h2}>변경</Text>
+                </Pressable>
             </View>
 
         </View>
@@ -99,6 +108,7 @@ const styles = StyleSheet.create({
     },
     horizon: {
         flexDirection: "row",
+        height:'85%',
     },
     input: {  //입력
         height: 60,
@@ -116,10 +126,23 @@ const styles = StyleSheet.create({
     _button: {
         backgroundColor: "#CDCDCD",
         alignItems: "center",
-        paddingTop:"5%",
+        paddingTop: "5%",
         borderRadius: 16,
         height: 60,
         width: '29%',
+    },
+    _button3: {
+        backgroundColor: "#A7C8E7",
+        alignItems: "center",
+        padding: 20,
+        borderRadius: 16,
+        height: 60,
+        marginBottom: "6%",
+        width: "90%",
+        marginLeft: '5%',
+    },
+    h2: {  //중복확인
+        fontSize: 18,
     },
 
 });
