@@ -1,44 +1,48 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { FlatList, ScrollView, TouchableOpacity, Dimensions, View, StyleSheet, RefreshControl} from 'react-native';
+import { 
+    FlatList, 
+    ScrollView, 
+    TouchableOpacity, 
+    Dimensions, 
+    View, 
+    StyleSheet, 
+    RefreshControl 
+} from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import ProductItem from './PicPage/ProductItem'; // ProductItem 컴포넌트 불러오기
-// import products from './PicPage/ImageProduct'; // ImageProduct.js에서 상품 데이터 가져오기
+import ProductItem from './PicPage/ProductItem';
 import HomeIcon from '../../src/components/HomeIcon';
 import PickerComponent from '../../src/components/image.js';
 import { BASE_URL } from '../constants/api.js';
+
 const Home = () => {
     const navigation = useNavigation();
-    const [activeSlide, setActiveSlide] = useState(0); // 활성 슬라이드의 인덱스를 추적하는 상태
+    const [activeSlide, setActiveSlide] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
     const flatListConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
+
     const onFlatListViewChanged = useCallback(({ viewableItems }) => {
-        console.log(viewableItems);
         setActiveSlide(viewableItems[0].index);
     }, []);
+
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-  
-    useEffect(() => {
-      fetchData();
-    }, []);
-  
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/products`);
-        // console.log(response);
-        const newProducts = response.data;
-        // setProducts(prevProducts => [...prevProducts, ...newProducts]);
-        setProducts([...response.data]);
-        console.log("product안에걸 보고싶다", products);
 
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      } finally {
-        setIsLoading(false);
-      }
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/products`);
+            setProducts([...response.data]);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const onRefresh = () => {
@@ -46,7 +50,6 @@ const Home = () => {
         fetchData().then(() => setRefreshing(false));
     };
 
-    /***/
     const items = [
         { id: 1, title: '주방용품' },
         { id: 2, title: '가구/인테리어' },
@@ -74,8 +77,8 @@ const Home = () => {
         return result;
     };
 
-    const chunkedItems = chunkArray(products, 3); // 상품 이미지를 가로에 3개씩 분할
-    const chunkedIcons = chunkArray(items, 10); // 아이콘을 가로에 5개씩 분할
+    const chunkedItems = chunkArray(products, 3);
+    const chunkedIcons = chunkArray(items, 10);
 
     const iconTypes = [
         'kitchen-set',
@@ -97,7 +100,7 @@ const Home = () => {
     ];
 
     const renderIconItem = () => (
-        <IconContainer>
+        <StyledIconContainer>
             <FlatList
                 horizontal
                 pagingEnabled
@@ -105,7 +108,7 @@ const Home = () => {
                 data={chunkedIcons}
                 viewabilityConfig={flatListConfigRef.current}
                 onViewableItemsChanged={onFlatListViewChanged}
-                renderItem={({ item, index , product}) => (
+                renderItem={({ item, index }) => (
                     <FlatList
                         key={index}
                         scrollEnabled={false}
@@ -118,24 +121,25 @@ const Home = () => {
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 key={item.id}
-                                product={product}
                                 style={{
                                     width: Dimensions.get('screen').width / 5,
                                     marginTop: 10,
                                 }}
-                                onPress={() =>
+                                onPress={() => {
+                                    console.log('Selected category:', item.title); // 로그 추가
                                     navigation.navigate('ProductDetail2', {
-                                        product,
-                                    })
-                                }
+                                        category: item.title, // 선택된 카테고리를 전달
+                                    });
+                                }}
                             >
                                 <HomeIcon
                                     title={item.title}
-                                    onPress={() =>
+                                    onPress={() => {
+                                        console.log('Selected category:', item.title); // 로그 추가
                                         navigation.navigate('ProductDetail2', {
                                             product: products[item.id - 1],
-                                        })
-                                    }
+                                        });
+                                    }}
                                     iconName={iconTypes[item.id - 1]}
                                 />
                             </TouchableOpacity>
@@ -159,11 +163,11 @@ const Home = () => {
                     />
                 ))}
             </View>
-        </IconContainer>
+        </StyledIconContainer>
     );
 
     const renderProductItem = () => (
-        <StyledTent>
+        <StyledProductContainer>
             {chunkedItems.map((row, index) => (
                 <RowContainer key={index}>
                     {row.map((product, idx) => (
@@ -175,7 +179,6 @@ const Home = () => {
                                 alignItems: 'center',
                             }}
                             onPress={() => {
-                                console.log('Product pressed:', product); // 상품이 눌렸을 때만 로그 출력
                                 navigation.navigate('ProductDetail', {
                                     product,
                                 });
@@ -184,7 +187,6 @@ const Home = () => {
                             <ProductItem
                                 product={product}
                                 onPress={() => {
-                                    console.log('Product pressed:', product); // 상품이 눌렸을 때만 로그 출력
                                     navigation.navigate('ProductDetail', {
                                         product,
                                     });
@@ -194,16 +196,15 @@ const Home = () => {
                     ))}
                 </RowContainer>
             ))}
-        </StyledTent>
+        </StyledProductContainer>
     );
 
     return (
-        <ScrollView 
-        refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
+        <ScrollView
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <PickerComponent />
-
             {renderIconItem()}
             {renderProductItem()}
             <FooterRectangle />
@@ -216,13 +217,15 @@ const RowContainer = styled.View`
     margin-bottom: 8px;
 `;
 
-const IconContainer = styled.View`
+const StyledIconContainer = styled.View`
     width: 100%;
     align-items: center;
     margin-top: 30px;
 `;
 
-const StyledTent = styled.View``;
+const StyledProductContainer = styled.View`
+    margin-top: 20px;
+`;
 
 const FooterRectangle = styled.View`
     width: 100%;
@@ -248,4 +251,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-

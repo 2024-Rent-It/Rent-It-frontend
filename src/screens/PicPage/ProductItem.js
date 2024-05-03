@@ -1,38 +1,42 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { BASE_URL } from '../../constants/api.js';
+
 const Container = styled.View`
-  margin-top: 40px;
+  width: 100px; 
+  margin-bottom: 20px; 
   align-items: center;
+  margin-top: 20px;
+
 `;
 
 const ImageContainer = styled.View`
-  width: 91%;
-  aspect-ratio: 1/1;
+  width: 125px; 
+  height: 130px; 
   overflow: hidden;
-  border-radius: 10px;
-  margin-bottom: 8px; /* 이미지 간의 간격 조절 */
-  
+  border-radius: 15px;
+  margin-bottom: 8px; 
 `;
 
 const ProductImage = styled.Image`
   width: 100%;
-  height: 100%;
+  height: 100%; 
 `;
 
 const TextContainer = styled.View`
-  width: 92%;
-  margin-bottom: 4px; /* 텍스트와 이미지 간의 간격 조절 */
+  width: 100%;
 `;
 
 const ProductPrice = styled.Text`
-  font-size: 17px;
-  margin-right: 40px;
+  font-size: 20px; 
+  margin-bottom: 4px; 
+  font-weight: bold; 
+  color: #333; 
 `;
 
 const ProductTitle = styled.Text`
-  font-size: 15px;
+  font-size: 15px; /* 상품명 폰트 크기 조정 */
 `;
 
 const ProductItem = ({ product, onPress }) => {
@@ -40,11 +44,10 @@ const ProductItem = ({ product, onPress }) => {
     <TouchableOpacity onPress={() => onPress(product)}>
       <Container>
         <ImageContainer>
-          <ProductImage source={{uri:`${BASE_URL}/images/${product.productImages}`}}
-          resizeMode="cover" />
+          <ProductImage source={{uri:`${BASE_URL}/images/${product.productImages}`}} resizeMode="cover" />
         </ImageContainer>
         <TextContainer>
-          <ProductPrice>{product.price}</ProductPrice>
+          <ProductPrice>₩{product.price}</ProductPrice> 
           <ProductTitle>{product.title}</ProductTitle>
         </TextContainer>
       </Container>
