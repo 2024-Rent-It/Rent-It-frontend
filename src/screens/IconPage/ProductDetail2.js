@@ -180,7 +180,8 @@ const ProductDetail2 = ({ route }) => {
     const [products, setProducts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const { category } = route.params; // 전달된 카테고리
-
+    const [isLoading, setIsLoading] = useState(false);
+  
     useEffect(() => {
         getUserLocation();
         fetchProducts(); // 제품 정보 가져오기
@@ -200,18 +201,31 @@ const ProductDetail2 = ({ route }) => {
         }
     };
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/products`);
-            setProducts(response.data); // 전체 상품 불러오기
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    };
+    // const fetchProducts = async () => {
+    //     try {
+    //         const response = await axios.get(`${BASE_URL}/products`);
+    //         setProducts(response.data); // 전체 상품 불러오기
+    //     } catch (error) {
+    //         console.error('Error fetching products:', error);
+    //     }
+    // };
 
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/products`);
+        const newProducts = response.data;
+        setProducts([...response.data]);
+        console.log("product안에걸 보고싶다", products);
+
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     const onRefresh = () => {
         setRefreshing(true);
-        fetchData().then(() => setRefreshing(false));
+        fetchProducts().then(() => setRefreshing(false));
     };
 
     const handleImageTextIconPress = () => {
@@ -222,7 +236,7 @@ const ProductDetail2 = ({ route }) => {
         <StyledProductContainer>
             <RowContainer>
                 {products
-                    .filter(product => product.category === category) // 카테고리에 해당하는 상품 필터링
+                    // .filter(product => product.category === category) // 카테고리에 해당하는 상품 필터링
                     .map((product, index) => (
                         <TouchableOpacity
                             key={product.id}

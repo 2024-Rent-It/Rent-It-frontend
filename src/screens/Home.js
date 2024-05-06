@@ -15,31 +15,52 @@ import ProductItem from './PicPage/ProductItem';
 import HomeIcon from '../../src/components/HomeIcon';
 import PickerComponent from '../../src/components/image.js';
 import { BASE_URL } from '../constants/api.js';
+import { useAuth } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
     const navigation = useNavigation();
     const [activeSlide, setActiveSlide] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
     const flatListConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
-
     const onFlatListViewChanged = useCallback(({ viewableItems }) => {
         setActiveSlide(viewableItems[0].index);
     }, []);
-
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-
+    // const [location, setLocation] = useState('');
+    const { userLocation } = useAuth(); // 로그인된 사용자 지역 가져오기
+    
     useEffect(() => {
-        fetchData();
+        // getUserLocation();
+        getProductsByLocation();
     }, []);
 
-    const fetchData = async () => {
+    // const getUserLocation = async () => {
+    //     try {
+    //         const userLocation = await AsyncStorage.getItem('userLocation');
+    //         console.log("userLocation",userLocation)
+    //         if (userLocation) {
+    //             setLocation(userLocation);
+    //         } else {
+    //             setLocation('위치 정보 없음');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error getting user location:', error);
+    //         setLocation('위치 정보 없음');
+    //     }
+    // };
+
+
+    const getProductsByLocation = async () => {
+        console.log("위치 확인", userLocation);
         try {
-            const response = await axios.get(`${BASE_URL}/products`);
+            const response = await axios.get(`${BASE_URL}/products/location/${userLocation}`);
             setProducts([...response.data]);
+            console.log(products);
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error('Error getProductsByLocation:', error);
         } finally {
             setIsLoading(false);
         }
@@ -47,7 +68,7 @@ const Home = () => {
 
     const onRefresh = () => {
         setRefreshing(true);
-        fetchData().then(() => setRefreshing(false));
+        getProductsByLocation().then(() => setRefreshing(false));
     };
 
     const items = [
@@ -179,17 +200,13 @@ const Home = () => {
                                 alignItems: 'center',
                             }}
                             onPress={() => {
-                                navigation.navigate('ProductDetail', {
-                                    product,
-                                });
+                                navigation.navigate('ProductDetail', {id:product.id});
                             }}
                         >
                             <ProductItem
                                 product={product}
                                 onPress={() => {
-                                    navigation.navigate('ProductDetail', {
-                                        product,
-                                    });
+                                    navigation.navigate('ProductDetail', {id: product.id});
                                 }}
                             />
                         </TouchableOpacity>

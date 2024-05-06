@@ -9,7 +9,6 @@ const LoginScreen = () => {
   const [account, setAccount] = useState(''); // 아이디 상태
   const [password, setPassword] = useState(''); // 비밀번호 상태
   const { login } = useAuth();
-  const { userNickname } = useAuth();
 
   const handleForgetPassword = () => {
     navigation.navigate('EmailLogin'); // EmailLogin 화면으로 이동
@@ -28,9 +27,9 @@ const LoginScreen = () => {
       });
       const responseData = await response.json(); 
       if (response.ok) {
-        const { id, nickname, email, location, token } = responseData.data;
+        const { nickname, email, location, token } = responseData.data;
         console.log('로그인 정보 확인', responseData.data)
-        login(token, nickname,id, email, location); // 로그인 함수 호출하여 토큰 저장
+        login(token, nickname, email, location); // 로그인 함수 호출하여 토큰 저장
         Alert.alert('로그인 성공', responseData.message);
         navigation.navigate('Root'); // Root 화면으로 이동
       } else {

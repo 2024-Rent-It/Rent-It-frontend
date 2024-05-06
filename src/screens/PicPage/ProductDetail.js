@@ -2,15 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BASE_URL } from '../../constants/api.js';
-
+import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ProductDetailPage = ({ route }) => {
-  const { product } = route.params;
+  const { token, userNickname } = useAuth(); // 로그인된 사용자 토큰 가져오기
+  const { id } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [categoryWidth, setCategoryWidth] = useState(0);
+  const [product, setProduct] = useState('');
 
   const toggleLike = () => {
     setIsLiked(prevState => !prevState);
+    console.log("눌렀습니다!", isLiked);
+    if (isLiked){
+      deleteFav(id, token);
+    }else{
+      addFav(id, token);
+    }
   };
 
 
@@ -20,7 +29,104 @@ const ProductDetailPage = ({ route }) => {
       const categoryTextWidth = Dimensions.get('window').width * 0.27 - 10; // Assuming marginLeft: '5%' and paddingHorizontal: 20
       setCategoryWidth(categoryTextWidth);
     }
+    getProductById();
+    checkFavorite();
   }, [categoryWidth]);
+
+  const checkFavorite = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/favorite/check`, {
+      params: {
+        memberNickname: userNickname,
+        productId: id
+      },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+      console.log("check",response.data)
+        setIsLiked(response.data);
+        console.log("찜한 상품인가?",isLiked);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    } finally {
+        // setIsLoading(false);
+    }
+};
+  const getProductById = async () => {
+    console.log(id);
+    try {
+        const response = await axios.get(`${BASE_URL}/products/${id}`);
+        setProduct(response.data);
+        console.log(product);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    } finally {
+        // setIsLoading(false);
+    }
+};
+ const addFav = async (id, token) => {
+  console.log("addFav",id);
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/favorite/add`,
+        null,
+        {
+          params: {
+            productId: id
+          },
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      if (response.status==201) {
+        console.log('찜 등록되었습니다');
+        getProductById();
+    } else {
+        // 오류 처리해야댐
+    }
+} catch (error) {
+    console.error(error);
+    // 오류 처리해야댐
+}
+};
+const getProductFavoriteId = async (productId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/favorite/product/${productId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("찜 id",response.data);
+    favid = response.data
+    return favid; // 찜 아이디 반환
+  } catch (error) {
+    console.error('Error retrieving favorite ID:', error);
+    throw error; // 오류 처리
+  }
+};
+
+const deleteFav = async (id, token) => {
+  const favid = await getProductFavoriteId(id, token);
+  console.log("찜 삭제할 id",favid);
+  try {
+    await axios.delete(`${BASE_URL}/favorite/${favid}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`,
+      }
+  });
+    console.log('Favorite deleted successfully');
+    getProductById();
+  } catch (error) {
+    console.error('Error deleteFav:', error);
+  }
+};
+
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
