@@ -54,21 +54,29 @@ const SellerInfo = ({ navigation, route }) => {
 
                 <View>
                     <View style={styles.Productimage}>
-                        <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={styles.Productimage} />
+                        <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={styles.Productimage} />
                     </View>
                 </View>
 
             </Pressable>
 
-            <View style={styles.infoContainer}>
+            <TouchableOpacity
+                style={styles.infoContainer}
+                onPress={() => {
+                    console.log(product.id);
+                    navigation.navigate('ProductDetail', { id: product.id });
+                }}>
+                <View >
 
-                <Text style={styles.title}>{product.title}</Text>
-                <View style={styles.horizontal}>
-                    <Text style={styles.price}>{product.price}</Text>
-                    <Text style={styles.duration}>{product.duration}</Text>
+                    <Text style={styles.title}>{product.title}</Text>
+                    <View style={styles.horizontal}>
+                        <Text style={styles.price}>{product.price}</Text>
+                        <Text style={styles.duration}>{product.duration}</Text>
+                    </View>
+
                 </View>
+            </TouchableOpacity>
 
-            </View>
         </View>
 
     );
