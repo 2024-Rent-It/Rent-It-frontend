@@ -40,6 +40,8 @@ import NoticeDetail from '../../screens/myPage/NoticeDetail.js';
 import SearchScreen from '../../../src/components/SearchScreen.js';
 import Notification from '../../../src/components/Notification.js';
 import Gomain from '../../screens/onboarding/Gomain.js';
+import KeywordRegis from '../KeywordRegis.js';
+import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,30 +57,30 @@ const SharedStack = ({ tabName }) => (
         {tabName === 'HomeTab' ? (
             <>
                 <Stack.Screen
-    name="HomeTab"
-    component={Home}
-    options={({ navigation }) => ({
-        headerRight: () => (
-            <View style={{ flexDirection: 'row', marginRight: 15 }}>
-                <AntDesign
-                    name="bells"
-                    size={24}
-                    color="black"
-                    style={{ marginRight: 20 }}
-                    onPress={() => navigation.navigate('Notification')}
+                    name="HomeTab"
+                    component={Home}
+                    options={({ navigation }) => ({
+                        headerRight: () => (
+                            <View style={{ flexDirection: 'row', marginRight: 15 }}>
+                                <AntDesign
+                                    name="bells"
+                                    size={24}
+                                    color="black"
+                                    style={{ marginRight: 20 }}
+                                    onPress={() => navigation.navigate('Notification')}
 
+                                />
+                                <AntDesign
+                                    name="search1"
+                                    size={24}
+                                    color="black"
+                                    onPress={() => navigation.navigate('SearchScreen')}
+                                />
+                            </View>
+                        ),
+                    })}
                 />
-                <AntDesign
-                    name="search1"
-                    size={24}
-                    color="black"
-                    onPress={() => navigation.navigate('SearchScreen')}
-                />
-            </View>
-        ),
-    })}
-/>
-        
+
                 <>
                     <Stack.Screen
                         name="SearchScreen"
@@ -89,11 +91,17 @@ const SharedStack = ({ tabName }) => (
                         name="ProductDetail2"
                         component={ProductDetailPage2}
                     />
+
+                    <Stack.Screen
+                        name="키워드 알림 설정"
+                        component={KeywordRegis}
+                    />
                 </>
             </>
         ) : null}
         {tabName === 'ChattingTab' ? (
             <Stack.Screen name="채팅" component={Chating} />
+            
         ) : null}
         {tabName === 'MyPageTab' ? (
             <>
@@ -236,6 +244,7 @@ function RootNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="판매자 정보" component={SellerInfo} />
             {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
             {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
