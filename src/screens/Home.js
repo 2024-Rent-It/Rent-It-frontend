@@ -149,7 +149,7 @@ const Home = () => {
                                 onPress={() => {
                                     console.log('Selected category:', item.title); // 로그 추가
                                     navigation.navigate('ProductDetail2', {
-                                        category: item.title, // 선택된 카테고리를 전달
+                                        category: item.title, location: userLocation // 선택된 카테고리를 전달
                                     });
                                 }}
                             >
@@ -158,7 +158,7 @@ const Home = () => {
                                     onPress={() => {
                                         console.log('Selected category:', item.title); // 로그 추가
                                         navigation.navigate('ProductDetail2', {
-                                            product: products[item.id - 1],
+                                            category: item.title, location: userLocation// 선택된 카테고리를 전달
                                         });
                                     }}
                                     iconName={iconTypes[item.id - 1]}
