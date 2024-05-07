@@ -3,32 +3,35 @@ import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Dimensions }
 import { Ionicons } from '@expo/vector-icons'; // Ionicons 라이브러리 사용
 
 const { width } = Dimensions.get('window');
-// const itemWidth = (width - 20) / 3;
 const numColumns = 3;
 const itemWidth = (width - 20 - (numColumns - 1) * 10) / numColumns; // 아이템의 너비 계산
 
 
 const MyFav = ({ navigation }) => {
   const [products, setProducts] = useState([
-    { id: 1, name: '바보 개구리', price: '100원', image: require('../../../assets/images/k.png'), liked: true },
-    { id: 2, name: '귀여운 개구리', price: '300원', image: require('../../../assets/images/candle.jpg'), liked: true },
-    { id: 3, name: '깔끔한 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
-    { id: 4, name: '엄청난 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
+    { id: 1, title: '바보 개구리', price: '100원', image: require('../../../assets/images/k.png'), liked: true },
+    { id: 2, title: '귀여운 개구리', price: '300원', image: require('../../../assets/images/candle.jpg'), liked: true },
+    { id: 3, title: '깔끔한 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
+    { id: 4, title: '엄청난 개구리', price: '3000원', image: require('../../../assets/images/k.png'), liked: true },
   ]);
 
+  //좋아요 기능을 토글하는 함수 (토글을 누를때 상태가 반전됨)
   const toggleLike = (id) => {
+
+    //product.id === id조건을 만족하면 {'liekd'상태만 반전}내용실행, 만족 안하면 : 뒷부분..(걍 현재 상품 반환)
     setProducts(prevProducts =>
       prevProducts.map(product =>
         product.id === id ? { ...product, liked: !product.liked } : product
       )
     );
 
-    // 찜 목록에서 삭제
+    // 찜 목록에서 삭제 - 선택된 상품 필터링해서 빼고(filter함수 사용해서), 남은 애들로 상품 목록 생성(setProduct역할)
     setProducts(prevProducts =>
       prevProducts.filter(product => product.id !== id)
     );
   };
 
+  //param(item)은 product 배열의 각 상품 객체
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { productId: item.id })}>
       <View style={styles.itemContainer}>
@@ -36,7 +39,7 @@ const MyFav = ({ navigation }) => {
           <Ionicons name={item.liked ? 'heart' : 'heart-outline'} size={24} color={item.liked ? 'red' : 'black'} strokeWidth={1} />
         </TouchableOpacity>
         <Image source={item.image} style={styles.image} />
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name}>{item.title}</Text>
         <Text style={styles.price}>{item.price}</Text>
       </View>
     </TouchableOpacity>
