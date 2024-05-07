@@ -12,8 +12,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AntDesign } from '@expo/vector-icons';
+import { useAuth } from '../../src/contexts/AuthContext.js'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../src/constants/api.js';
 
 const SearchScreen = ({ navigation }) => {
+    const { userLocation } = useAuth();
     const [searchKeyword, setSearchKeyword] = useState('');
     const [searchHistory, setSearchHistory] = useState([]);
     const [showHistory, setShowHistory] = useState(false);
@@ -48,27 +52,76 @@ const SearchScreen = ({ navigation }) => {
     const handleSearch = async () => {
         console.log('검색 키워드:', searchKeyword);
         addSearchToHistory(searchKeyword);
-        setSearchKeyword('');
-        fetchSearchResultsFromServer(searchKeyword);
+        // setSearchKeyword('');
+        // getSearchResults(searchKeyword);
+        const results = await getSearchResults(searchKeyword);
+        setSearchResults(results);
+
     };
 
-    const fetchSearchResultsFromServer = async (keyword) => {
+    /*고가순 정렬*/
+    const getSearchResultsByPriceHighToLow = async (keyword) => {
+        
         try {
-            
-            const response = await fetch(`YOUR_API_ENDPOINT?q=${keyword}`);
-            const data = await response.json();
-            
-            // 가져온 데이터를 검색 결과로 설정
-            setSearchResults(data);
+            const response = await axios.get(`${BASE_URL}/products/search/high-price`, {
+                params: {
+                    searchKeyword: keyword,
+                    location: userLocation
+                }
+            });
+            console.log("check 고가순 검색한 상품 목록", response.data)
+            return response.data;
         } catch (error) {
-            console.error('Error fetching search results:', error);
+            console.error('Error getSearchResultsByPriceHighToLow:', error);
+        } finally {
+            // setIsLoading(false);
         }
+    
+    };
+
+     /*저가순 정렬*/
+    const getSearchResultsByPriceLowToHigh = async (keyword) => {
+        
+        try {
+            const response = await axios.get(`${BASE_URL}/products/search/low-price`, {
+                params: {
+                    searchKeyword: keyword,
+                    location: userLocation
+                }
+            });
+            console.log("check 저가순 검색한 상품 목록", response.data)
+            return response.data;
+        } catch (error) {
+            console.error('Error getSearchResultsByPriceLowToHigh:', error);
+        } finally {
+            // setIsLoading(false);
+        }
+    
+    };
+
+    const getSearchResults = async (keyword) => {
+        
+        try {
+            const response = await axios.get(`${BASE_URL}/products/search`, {
+                params: {
+                    searchKeyword: keyword,
+                    location: userLocation
+                }
+            });
+            console.log("check 검색한 상품 목록", response.data)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetchSearchResultsFromServer:', error);
+        } finally {
+            // setIsLoading(false);
+        }
+    
     };
 
     const handleHistoryPress = (keyword) => {
         setSearchKeyword(keyword);
         setShowHistory(false);
-        fetchSearchResultsFromServer(keyword);
+        getSearchResults(keyword);
     };
 
     const handleSortOptionPress = (type) => {
@@ -77,10 +130,25 @@ const SearchScreen = ({ navigation }) => {
         sortSearchResults(type);
     };
 
-    const sortSearchResults = (type) => {
-        // 검색 결과를 정렬하는 로직을 작성
-        // 정렬된 결과를 setSearchResults() 함수를 사용하여 상태에 저장
+
+    const sortSearchResults = async (type) => {
+        let results = '';
+        if (type=='저가순'){
+            console.log('저가순',searchKeyword);
+            results = await getSearchResultsByPriceLowToHigh(searchKeyword);
+        } else if (type =='고가순'){
+            console.log('고가순',searchKeyword);
+            results = await getSearchResultsByPriceHighToLow(searchKeyword);
+            
+        } else{
+            console.log('최신순',searchKeyword);
+            results = await getSearchResults(searchKeyword);
+        }
+        setSearchResults(results);
     };
+    // const sortSearchResults = async (keyword) => {
+
+    // };
 
     const addSearchToHistory = async (keyword) => {
         try {
@@ -112,24 +180,25 @@ const SearchScreen = ({ navigation }) => {
     const renderSearchResultItem = ({ item }) => (
         <TouchableOpacity
             onPress={() => {
-                setTitle(item.title);
-                setLocation(item.location);
-                setPrice(item.price);
-                setDuration(item.duration);
-                setSelectedImage(item.selectedImage);
+                // setTitle(item.title);
+                // setLocation(item.location);
+                // setPrice(item.price);
+                // setDuration(item.duration);
+                // const imageURL = `${BASE_URL}/images/${item.productImages[0]}`;
+                // setSelectedImage(imageURL); // 이미지 URL 설정
                 navigation.navigate('ProductDetail', {
-                    productId: item.id,
+                    id: item.id,
                 });
             }}
         >
             <View style={styles.searchResultItem}>
-                <Image source={selectedImage} style={styles.productImage} />
+                <Image source={{ uri: `${BASE_URL}/images/${item.productImages}` }}style={styles.productImage} />
                 <View style={styles.productInfo}>
-                    <Text style={styles.productTitle}>{title}</Text>
-                    <Text style={styles.productAddress}>{location}</Text>
-                    <Text style={styles.productPrice}>{price}</Text>
+                    <Text style={styles.productTitle}>{item.title}</Text>
+                    <Text style={styles.productAddress}>{item.location}</Text>
+                    <Text style={styles.productPrice}>{item.price}</Text>
                     <View style={styles.termContainer}>
-                        <Text style={styles.productTerm}>{duration}</Text>
+                        <Text style={styles.productTerm}>{item.duration}</Text>
                     </View>
                 </View>
             </View>
