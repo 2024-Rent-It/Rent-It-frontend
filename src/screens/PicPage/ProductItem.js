@@ -8,7 +8,7 @@ const Container = styled.View`
   margin-bottom: 20px; 
   align-items: center;
   margin-top: 20px;
-
+ 
 `;
 
 const ImageContainer = styled.View`
@@ -17,11 +17,13 @@ const ImageContainer = styled.View`
   overflow: hidden;
   border-radius: 15px;
   margin-bottom: 8px; 
+  
 `;
 
 const ProductImage = styled.Image`
   width: 100%;
-  height: 100%; 
+  height: 120%; 
+  
 `;
 
 const TextContainer = styled.View`
