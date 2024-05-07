@@ -79,7 +79,7 @@ const Notification = () => {
       <View style={styles.buttonContainer}>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate('MyFavTab')}>
+          onPress={() => navigation.navigate('키워드 알림 설정')}>
           <Text style={styles.keyword}>
             키워드 등록하러 가기
           </Text>
