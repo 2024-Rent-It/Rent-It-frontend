@@ -8,7 +8,6 @@ import { useAuth } from '../../contexts/AuthContext';
 const ProductDetailPage = ({ route , navigation}) => {
   const { token, userNickname } = useAuth(); // 로그인된 사용자 토큰 가져오기
   const { id } = route.params;
-  // const { id } = navigation.id;
   console.log("넘어갈 때 들어오는 Id값", id);
 
   const [isLiked, setIsLiked] = useState(false);
