@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text,Alert, StyleSheet, Pressable } from 'react-native';
+import { View, TextInput, Text, Alert, StyleSheet,Keyboard, Pressable,TouchableWithoutFeedback } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const KeywordRegis = ({  }) => {
+const KeywordRegis = ({ }) => {
 
     const [regisKeyword, setRegisKeyword] = useState('');
     const [keywordList, setKeywordList] = useState([]);
@@ -31,47 +31,49 @@ const KeywordRegis = ({  }) => {
 
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 
-        <View style={styles.container}>
+            <View style={styles.container}>
 
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.inputKeyword}
-                    placeholder="알림 받을 키워드를 입력해주세요"
-                    value={regisKeyword}
-                    onChangeText={setRegisKeyword}
-                />
-                <Pressable
-                    style={styles.button}
-                    onPress={handleRegisterKeyword}
-                >
-                    <Text style={styles.buttonText}>등록</Text>
-                </Pressable>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.inputKeyword}
+                        placeholder="알림 받을 키워드를 입력해주세요"
+                        value={regisKeyword}
+                        onChangeText={setRegisKeyword}
+                    />
+                    <Pressable
+                        style={styles.button}
+                        onPress={handleRegisterKeyword}
+                    >
+                        <Text style={styles.buttonText}>등록</Text>
+                    </Pressable>
+                </View>
+
+                <View>
+                    <Text style={styles.sampleText}>
+                        게시물 제목에 포함될 수 있는 키워드를 등록해주세요.
+                        {'\n'}
+                        (최대 5개 등록 가능)
+                        {'\n'}
+                        ex) 다리미, 후라이팬, 핸드폰
+                    </Text>
+                </View>
+
+                <View style={styles.keywordListContainer}>
+                    {keywordList.map((keyword, index) => (
+                        <View key={index} style={styles.keywordItem}>
+                            <Text style={styles.keywordText}>{keyword}</Text>
+                            <Pressable
+                                style={styles.deleteButton}
+                                onPress={() => handleRemoveKeyword(keyword)}>
+                                <AntDesign name="delete" size={22} color="black" />
+                            </Pressable>
+                        </View>
+                    ))}
+                </View>
             </View>
-
-            <View>
-                <Text style={styles.sampleText}>
-                    게시물 제목에 포함될 수 있는 키워드를 등록해주세요.
-                    {'\n'}
-                    (최대 5개 등록 가능)
-                    {'\n'}
-                    ex) 다리미, 후라이팬, 핸드폰
-                </Text>
-            </View>
-
-            <View style={styles.keywordListContainer}>
-                {keywordList.map((keyword, index) => (
-                    <View key={index} style={styles.keywordItem}>
-                        <Text style={styles.keywordText}>{keyword}</Text>
-                        <Pressable
-                            style={styles.deleteButton}
-                            onPress={() => handleRemoveKeyword(keyword)}>
-                            <AntDesign name="delete" size={22} color="black" />
-                        </Pressable>
-                    </View>
-                ))}
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
 
     );
 
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     keywordText: {
         fontSize: 17,
     },
-    deleteButton:{
+    deleteButton: {
     },
 });
 
