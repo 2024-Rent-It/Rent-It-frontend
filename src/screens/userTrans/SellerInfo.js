@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from "react-native";
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
+import { useAuth } from '../../contexts/AuthContext';
 
-const SellerInfo = ({ navigation }) => {
+
+const SellerInfo = ({ navigation, route }) => {
+    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const { sellerName, sellerLocation } = route.params;
     const [user, setUser] = useState({
-        name: "케로로 김",
-        location: "서울특별시",
+        name: sellerName,
+        location: sellerLocation,
         profileImage: require('../../../assets/images/k.png')
     });
+    useEffect(() => {
+        getProductsBySeller();
+    }, []);
 
     const [products, setProducts] = useState([
         { id: 1, title: '케론인의 아이폰', price: '3500원', duration: '1일', selectedImage: require('../../../assets/images/iphone.jpg') },
@@ -16,6 +25,26 @@ const SellerInfo = ({ navigation }) => {
         { id: 5, title: '좋은 노트북', price: '50000원', duration: '10일', selectedImage: require('../../../assets/images/macbook.jpg') },
     ]);
 
+    const getProductsBySeller = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/products/seller`, {
+                params: {
+                    sellerNickname: sellerName,
+                    location: sellerLocation
+                },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            console.log("check 판매자 상품 목록", response.data)
+            setProducts([...response.data]);
+            console.log("판매자 product안에걸 보고싶다", products);
+        } catch (error) {
+            console.error('Error getProductsBySeller:', error);
+        } finally {
+            // setIsLoading(false);
+        }
+    };
     const ProductItem = ({ product }) => (
 
         <View style={styles.productContainer}>
@@ -25,21 +54,29 @@ const SellerInfo = ({ navigation }) => {
 
                 <View>
                     <View style={styles.Productimage}>
-                        <Image source={product.selectedImage} style={styles.Productimage} />
+                        <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={styles.Productimage} />
                     </View>
                 </View>
 
             </Pressable>
 
-            <View style={styles.infoContainer}>
+            <TouchableOpacity
+                style={styles.infoContainer}
+                onPress={() => {
+                    console.log(product.id);
+                    navigation.navigate('ProductDetail', { id: product.id });
+                }}>
+                <View >
 
-                <Text style={styles.title}>{product.title}</Text>
-                <View style={styles.horizontal}>
-                    <Text style={styles.price}>{product.price}</Text>
-                    <Text style={styles.duration}>{product.duration}</Text>
+                    <Text style={styles.title}>{product.title}</Text>
+                    <View style={styles.horizontal}>
+                        <Text style={styles.price}>{product.price}</Text>
+                        <Text style={styles.duration}>{product.duration}</Text>
+                    </View>
+
                 </View>
+            </TouchableOpacity>
 
-            </View>
         </View>
 
     );
@@ -65,7 +102,7 @@ const SellerInfo = ({ navigation }) => {
             </View>
 
             <View>
-                <Text style={styles.h1}>{user.name}님이 렌트중인 상품
+                <Text style={styles.h1}>{user.name}님이 렌트 중인 상품
                 </Text>
             </View>
 
@@ -173,7 +210,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#DDEAF6',
         borderRadius: 13,
-        width: '13%',
+        width: '16%',
         textAlign: 'center',
         backgroundColor: '#DDEAF6',
         overflow: 'hidden',
