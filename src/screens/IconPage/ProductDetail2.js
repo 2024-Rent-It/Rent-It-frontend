@@ -23,44 +23,59 @@ const RowContainer = styled.View``;
 
 const ProductDetail2 = ({ route }) => {
     const navigation = useNavigation();
-    const [location, setLocation] = useState('');
+    // const [location, setLocation] = useState('');
     const [isGrid, setIsGrid] = useState(false);
     const [products, setProducts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const { category } = route.params; // 전달된 카테고리
+    // const { category } = route.params; // 전달된 카테고리
+    const { category , location} = route.params; // 전달된 카테고리
     const [key, setKey] = useState('grid'); // 초기 키 값 설정
 
     useEffect(() => {
-        getUserLocation();
-        fetchProducts(); // 제품 정보 가져오기
+        // getUserLocation();
+        // fetchProducts(); // 제품 정보 가져오기
+        getProductsByLocationAndCategory();
     }, []);
 
-    const getUserLocation = async () => {
-        try {
-            const userLocation = await AsyncStorage.getItem('userLocation');
-            if (userLocation) {
-                setLocation(userLocation);
-            } else {
-                setLocation('위치 정보 없음');
-            }
-        } catch (error) {
-            console.error('Error getting user location:', error);
-            setLocation('위치 정보 없음');
-        }
-    };
+    // const getUserLocation = async () => {
+    //     try {
+    //         const userLocation = await AsyncStorage.getItem('userLocation');
+    //         if (userLocation) {
+    //             setLocation(userLocation);
+    //         } else {
+    //             setLocation('위치 정보 없음');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error getting user location:', error);
+    //         setLocation('위치 정보 없음');
+    //     }
+    // };
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/products`);
-            setProducts(response.data); // 전체 상품 불러오기
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    };
+    // const fetchProducts = async () => {
+    //   try {
+    //     const response = await axios.get(`${BASE_URL}/products`);
+    //     setProducts(response.data); // 전체 상품 불러오기
+    //   } catch (error) {
+    //     console.error('Error fetching products:', error);
+    //   }
+    // };
+    const getProductsByLocationAndCategory = async () => {
+      console.log("location, category", location,category);
+      try {
+        const response = await axios.get(`${BASE_URL}/products/location-category/${location}/${category}`);
+        const newProducts = response.data;
+        setProducts([...response.data]);
+        console.log("product안에걸 보고싶다", products);
 
+      } catch (error) {
+        console.error('Error getProductsByLocationAndCategory:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     const onRefresh = () => {
         setRefreshing(true);
-        fetchProducts().then(() => setRefreshing(false));
+        getProductsByLocationAndCategory().then(() => setRefreshing(false));
     };
 
     const handleImageTextIconPress = () => {
@@ -69,7 +84,7 @@ const ProductDetail2 = ({ route }) => {
     };
 
     const navigateToProductDetail = (product) => {
-        navigation.navigate('ProductDetail', { product });
+      navigation.navigate('ProductDetail', {id: product.id});
     };
 
     const renderProductItem2 = () => (
