@@ -33,8 +33,9 @@ const ProductDetailPage = ({ route , navigation}) => {
     }
     getProductById();
     checkFavorite();
-    getProductById();
-  }, [categoryWidth]);
+    // getProductById();
+    // getProductFavoriteId();
+  }, [categoryWidth, id]);
 
   const checkFavorite = async () => {
     try {
