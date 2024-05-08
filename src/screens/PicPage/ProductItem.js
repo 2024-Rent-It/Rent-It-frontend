@@ -7,18 +7,18 @@ const Container = styled.View`
   width: 100px; 
   margin-bottom: 20px; 
   align-items: center;
-  margin-top: 20px;
- 
+  margin-top: 10px;
+  
 `;
 
 const ImageContainer = styled.View`
-  width: 125px; 
-  height: 130px; 
+  width: 120; 
+  height: 145px; 
   overflow: hidden;
-  border-radius: 15px;
   margin-bottom: 8px; 
-  
+  margin-left: 10px;
 `;
+//border-radius: 10px;
 
 const ProductImage = styled.Image`
   width: 100%;
@@ -31,14 +31,14 @@ const TextContainer = styled.View`
 `;
 
 const ProductPrice = styled.Text`
-  font-size: 20px; 
+  font-size: 17px; 
   margin-bottom: 4px; 
   font-weight: bold; 
   color: #333; 
 `;
 
 const ProductTitle = styled.Text`
-  font-size: 15px; /* 상품명 폰트 크기 조정 */
+  font-size: 15px; 
 `;
 
 const ProductItem = ({ product, onPress }) => {
@@ -49,7 +49,7 @@ const ProductItem = ({ product, onPress }) => {
           <ProductImage source={{uri:`${BASE_URL}/images/${product.productImages}`}} resizeMode="cover" />
         </ImageContainer>
         <TextContainer>
-          <ProductPrice>₩{product.price}</ProductPrice> 
+          <ProductPrice>{product.price}₩</ProductPrice> 
           <ProductTitle>{product.title}</ProductTitle>
         </TextContainer>
       </Container>
