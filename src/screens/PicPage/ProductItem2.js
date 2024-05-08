@@ -1,83 +1,73 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { BASE_URL } from '../../constants/api.js';
+import styled from 'styled-components/native';
 
-const Container = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 20px;
-  ${props => props.isGrid && `
-    flex-direction: column;
-    align-items: flex-start;
-  `}
-`;
+const styles = StyleSheet.create({
+    listItem: {
+        paddingVertical: 12,
+        borderColor: 'lightgrey',
+        borderBottomWidth: '1px',
+        flexDirection: 'row',
+    },
+    gridItem: {
+        flexDirection: 'column',
+    },
+    listImage: {
+        aspectRatio: 1 / 1,
+        width: 140,
+        marginRight: 16,
+        borderRadius: 8,
+    },
+    girdImage: {
+        aspectRatio: 1 / 1,
+        width: '100%',
+        marginBottom: 8,
+        borderRadius: 8,
+    },
+    info: {
+        flexGrow: 1,
+    },
+    title: {
+        fontSize: 16,
+    },
+    price: {
+        fontSize: 16,
+        fontWeight: '700',
+    },
+    duration: {
+        padding: 8,
+        marginTop: 8,
+        borderRadius: 16,
+        alignSelf: 'flex-start',
+        backgroundColor: '#bcd3e8',
+        overflow: 'hidden',
+    },
+});
 
-const ImageContainer = styled.View`
-  width: 140px;
-  height: 160px;
-  overflow: hidden;
-  border-radius: 17px;
-  margin-right: 15px;
-  margin-left: 10%;
-\
-  ${props => props.isGrid && `
-    width: 100%;
-    height: 100px;
-    margin-left: 0;
-    margin-bottom: 10px;
-    
-  `}
-`;
-
-const ProductImage = styled.Image`
-  width: 100%;
-  height: 100%;
-`;
-
-const TextContainer = styled.View`
-  flex: 1;
-`;
-
-const ProductPrice = styled.Text`
-  font-size: 20px;
-  margin-bottom: 4px;
-  font-weight: bold;
-  color: #333;
-`;
-
-const ProductTitle = styled.Text`
-  font-size: 17px;
-`;
-
-const ProductDuration = styled.Text`
-  font-size: 15px;
-  background-color: #DDEAF6;
-  padding: 4px 8px;
-  border-radius: 30px;
-  color: #333;
-  margin-top: 4px;
-  width: 55px;
-`;
-
-const ProductItem2 = ({ product, onPress, isGrid }) => {
-  return (
-    <>
-      <TouchableOpacity onPress={() => onPress(product)}>
-        <Container isGrid={isGrid}>
-          <ImageContainer isGrid={isGrid}>
-            <ProductImage source={{ uri: `${BASE_URL}/images/${product.productImages}` }} resizeMode="cover" />
-          </ImageContainer>
-          <TextContainer>
-            <ProductPrice>₩{product.price}</ProductPrice>
-            <ProductTitle>{product.title}</ProductTitle>
-            <ProductDuration>{product.duration}</ProductDuration>
-          </TextContainer>
-        </Container>
-      </TouchableOpacity>
-    </>
-  );
+const ProductItem2 = ({ product, isGrid }) => {
+    return (
+        <View style={isGrid ? styles.gridItem : styles.listItem}>
+            <Image
+                style={isGrid ? styles.girdImage : styles.listImage}
+                source={{
+                    uri: `${BASE_URL}/images/${product.productImages}`,
+                }}
+            />
+            <View style={styles.info}>
+                <Text style={styles.price}>
+                    {`₩${product.price
+                        .toString()
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
+                </Text>
+                <Text style={styles.title}>{product.title}</Text>
+                {!isGrid ? (
+                    <Text style={styles.duration}>{product.duration}</Text>
+                ) : null}
+            </View>
+        </View>
+    );
 };
 
 export default ProductItem2;

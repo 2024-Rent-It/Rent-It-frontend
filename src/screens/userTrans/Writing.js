@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Modal, Image, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // Feather 아이콘을 사용하기 위해 추가
+import { ScrollView, TextInput, View, Text, TouchableOpacity, Alert, Image, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { BASE_URL } from '../../constants/api.js';
 import { useNavigation } from '@react-navigation/native';
 
 const WritePost = () => {
-    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+    const { token } = useAuth();
     const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState('');
     const [duration, setDuration] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]); // 선택된 이미지들
-    const [showCategoryList, setShowCategoryList] = useState(false); // 카테고리 목록 표시 여부
-    const [showDurationList, setShowDurationList] = useState(false); // 대여 기간 목록 표시 여부
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [showCategoryList, setShowCategoryList] = useState(false);
+    const [showDurationList, setShowDurationList] = useState(false);
 
-    // 권한 요청
     const requestPermission = async () => {
-        const { status } =
-            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert(
                 'Permission denied',
@@ -31,22 +29,29 @@ const WritePost = () => {
     };
 
     useEffect(() => {
-        requestPermission();
-    }, []);
+        const unsubscribe = navigation.addListener('blur', () => {
+            // 화면이 벗어날 때 상태 초기화
+            setTitle('');
+            setCategory('');
+            setPrice('');
+            setDuration('');
+            setDescription('');
+            setSelectedImages([]);
+        });
+    
+        return unsubscribe;
+    }, [navigation]);
 
     const handlePhotoUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsMultipleSelection: true,
             selectionLimit: 3,
-            // allowsEditing: true,
-            // aspect: [4, 3],
             quality: 1,
         });
 
         if (!result.cancelled && result.assets) {
             setSelectedImages([...selectedImages, ...result.assets]);
-            console.log(result.assets); // 이미지 URI 확인용
         }
     };
 
@@ -67,11 +72,11 @@ const WritePost = () => {
         selectedImages.forEach((image, index) => {
             formData.append(`images`, {
                 uri: image.uri,
-                name: image.uri.split('/').pop(), // 파일 이름 추출
-                type: `image/${image.uri.split('.').pop()}`, // 확장자를 이용하여 이미지 타입 설정
+                name: image.uri.split('/').pop(),
+                type: `image/${image.uri.split('.').pop()}`,
             });
         });
-
+    
         try {
             const response = await fetch(`${BASE_URL}/products/register`, {
                 method: 'POST',
@@ -82,19 +87,28 @@ const WritePost = () => {
                 },
                 body: formData,
             });
-
+    
             if (response.ok) {
                 Alert.alert('등록되었습니다');
+                // 글 등록 후 상태 초기화
+                setTitle('');
+                setCategory('');
+                setPrice('');
+                setDuration('');
+                setDescription('');
+                setSelectedImages([]);
                 navigation.navigate('HomeTab');
-            } else {
-                // 오류 처리해야댐
+            } else
+            {
+                // 오류 처리
+                Alert.alert('등록에 실패했습니다');
             }
         } catch (error) {
             console.error(error);
             // 오류 처리해야댐
         }
+        
     }; 
-  
 
     const categories = [
         '주방용품',
@@ -126,10 +140,10 @@ const WritePost = () => {
 
     return (
         <KeyboardAvoidingView 
-    style={{ flex: 1 }}
-    behavior={Platform.OS === "ios" ? "padding" : null} 
-    contentContainerStyle={{ flexGrow: 1 }}
->
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : null} 
+            contentContainerStyle={{ flexGrow: 1 }}
+        >
             <ScrollView style={{ backgroundColor: '#FFFFFF', padding: 20 }}>
                 <View
                     style={{
@@ -373,7 +387,6 @@ const WritePost = () => {
                     }}
                 />
 
-                {/* '글 등록' 버튼 */}
                 <TouchableOpacity
                     onPress={registerProduct}
                     style={{
