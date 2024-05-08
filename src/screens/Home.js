@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect, } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { 
     FlatList, 
     ScrollView, 
@@ -7,7 +7,8 @@ import {
     View, 
     StyleSheet, 
     RefreshControl,
-    Text
+    Text,
+    Image,
 } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,38 +29,21 @@ const Home = () => {
         setActiveSlide(viewableItems[0].index);
     }, []);
     const [products, setProducts] = useState([]);
-    const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    // const [location, setLocation] = useState('');
     const { userLocation } = useAuth(); // 로그인된 사용자 지역 가져오기
+
+    const { width } = Dimensions.get('window');
+    const numColumns = 3;
+    const itemWidth = (width - 20 - (numColumns - 1) * 10) / numColumns; // 아이템의 너비 계산
     
     useEffect(() => {
-        // getUserLocation();
         getProductsByLocation();
     }, []);
 
-    // const getUserLocation = async () => {
-    //     try {
-    //         const userLocation = await AsyncStorage.getItem('userLocation');
-    //         console.log("userLocation",userLocation)
-    //         if (userLocation) {
-    //             setLocation(userLocation);
-    //         } else {
-    //             setLocation('위치 정보 없음');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error getting user location:', error);
-    //         setLocation('위치 정보 없음');
-    //     }
-    // };
-
-
     const getProductsByLocation = async () => {
-        console.log("위치 확인", userLocation);
         try {
             const response = await axios.get(`${BASE_URL}/products/location/${userLocation}`);
             setProducts([...response.data]);
-            console.log(products);
         } catch (error) {
             console.error('Error getProductsByLocation:', error);
         } finally {
@@ -74,17 +58,17 @@ const Home = () => {
 
     const items = [
         { id: 1, title: '주방용품' },
-        { id: 2, title: '가구/인테리어' },
+        { id: 2, title: '가구인테리어' },
         { id: 3, title: '패션잡화' },
         { id: 4, title: '미용소품' },
         { id: 5, title: '유아용품' },
         { id: 6, title: '생활용품' },
         { id: 7, title: '생활가전' },
-        { id: 8, title: '도서/문구' },
+        { id: 8, title: '도서문구' },
         { id: 9, title: '미술품' },
         { id: 10, title: '구합니다' },
         { id: 11, title: '디지털기기' },
-        { id: 12, title: '스포츠/레저' },
+        { id: 12, title: '스포츠레저' },
         { id: 13, title: '운동기구' },
         { id: 14, title: '파티용품' },
         { id: 15, title: '반려동물용품' },
@@ -121,6 +105,44 @@ const Home = () => {
         'ellipsis-horizontal-outline',
     ];
 
+    const images = [
+        require('../../assets/images/sun1.png'),
+        require('../../assets/images/sun2.jpeg'),
+        require('../../assets/images/sun3.png'),
+        require('../../assets/images/sun4.png'),
+        require('../../assets/images/sun5.png'),
+    ];
+
+    const renderSunImages = () => (
+        <View>
+            <View style={styles.sunImageWrapper}>
+                    <Image
+                        source={require('../../assets/images/summer.jpeg')}
+                        style={styles.summerImage}
+                    />
+                </View>
+            <Text style={styles.sunImageText}>여름을 더욱 빛나게 해 줄 아이템✨</Text>
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.sunImageContainer}
+            >
+                {images.map((image, index) => (
+                    <View key={index} style={styles.sunImageWrapper}>
+                        <Image
+                            source={image}
+                            style={styles.sunImage}
+                        />
+                    </View>
+                ))}
+                
+                
+            </ScrollView>
+            
+        </View>
+        
+    );
+
     const renderIconItem = () => (
         <StyledIconContainer>
             <FlatList
@@ -136,7 +158,7 @@ const Home = () => {
                         scrollEnabled={false}
                         numColumns={5}
                         data={item}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         style={{
                             width: Dimensions.get('screen').width,
                         }}
@@ -170,6 +192,7 @@ const Home = () => {
                 )}
             />
             <View style={styles.indicatorContainer}>
+                
                 {chunkedIcons.map((_, index) => (
                     <View
                         key={index}
@@ -189,39 +212,46 @@ const Home = () => {
     );
 
     const renderProductItem = () => (
-        <StyledProductContainer>
-            {chunkedItems.map((row, index) => (
-                <RowContainer key={index}>
-                    {row.map((product, idx) => (
-                        <TouchableOpacity
-                            key={product.id}
-                            style={{
-                                marginHorizontal: 5,
-                                flex: 1,
-                                alignItems: 'center',
-                            }}
-                            onPress={() => {
-                                navigation.navigate('ProductDetail', {id:product.id});
-                            }}
-                        >
-                            <ProductItem
-                                product={product}
-                                onPress={() => {
-                                    navigation.navigate('ProductDetail', {id: product.id});
+        <View>
+            <StyledProductContainer>
+                {renderSunImages()} 
+                
+            <Text style={styles.productHeaderText}>새로운 대여 가능 목록</Text>
+                {chunkedItems.map((row, index) => (
+                    <RowContainer key={index}>
+                        {row.map((product, idx) => (
+                            <TouchableOpacity
+                                key={product.id}
+                                style={{
+                                    marginHorizontal: 5,
+                                    width: itemWidth,
+                                    alignItems: 'center',
                                 }}
-                            />
-                        </TouchableOpacity>
-                    ))}
-                </RowContainer>
-            ))}
-        </StyledProductContainer>
+                                onPress={() => {
+                                    navigation.navigate('ProductDetail', {id:product.id});
+                                }}
+                            >
+                                <ProductItem
+                                    product={product}
+                                    onPress={() => {
+                                        navigation.navigate('ProductDetail', {id: product.id});
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </RowContainer>
+                ))}
+            </StyledProductContainer>
+        </View>
     );
+    
 
     return (
         <ScrollView
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
+                
             <PickerComponent />
             {renderIconItem()}
             {renderProductItem()}
@@ -277,7 +307,7 @@ const styles = StyleSheet.create({
         fontWeight: 'regular',
         color: 'black',
         marginTop: 10,
-        marginRight: '36%',
+        marginRight: '32%',
     },
     footermiddleText: {
         textAlign: 'center',
@@ -303,6 +333,41 @@ const styles = StyleSheet.create({
         marginRight: '3%',
         marginLeft: '3%',
     },
+    sunImageContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    sunImageWrapper: {
+        alignItems: 'center',
+    },
+    sunImage: {
+        width: 250,
+        height: 300,
+        marginBottom: 20,
+        marginLeft: 15,
+    },
+    sunImageText: {
+        marginLeft: 15,
+        marginTop: 25,
+        color: 'black',
+        fontSize: 20,
+        fontWeight: 'regular',
+    },
+    summerImage: {
+        width: '100%',
+        height: 200,
+        marginBottom: 20,
+        marginTop: 20,
+    },
+    productHeaderText: {
+        marginLeft: 15,
+        marginTop: 25,
+        color: 'black',
+        fontSize: 20,
+        fontWeight: 'regular',
+    }
 });
 
 export default Home;
