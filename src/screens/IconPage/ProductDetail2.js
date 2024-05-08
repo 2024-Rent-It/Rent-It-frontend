@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Dimensions, RefreshControl, FlatList } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    ScrollView,
+    Image,
+    Dimensions,
+    RefreshControl,
+    FlatList,
+} from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -40,13 +50,13 @@ const ProductDetail2 = ({ route }) => {
     };
 
     const fetchProducts = async () => {
-      try {
-          const response = await axios.get(`${BASE_URL}/products`);
-          setProducts(response.data); // 전체 상품 불러오기
-      } catch (error) {
-          console.error('Error fetching products:', error);
-      }
-  };
+        try {
+            const response = await axios.get(`${BASE_URL}/products`);
+            setProducts(response.data); // 전체 상품 불러오기
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -54,48 +64,63 @@ const ProductDetail2 = ({ route }) => {
     };
 
     const handleImageTextIconPress = () => {
-      setIsGrid(prevState => !prevState);
-      setKey(prevKey => prevKey === 'grid' ? 'list' : 'grid'); // 키 값을 변경하여 강제로 새로 고침
-  }
+        setIsGrid((prevState) => !prevState);
+        setKey((prevKey) => (prevKey === 'grid' ? 'list' : 'grid')); // 키 값을 변경하여 강제로 새로 고침
+    };
 
-  const navigateToProductDetail = (product) => {
-    navigation.navigate('ProductDetail', { product });
-  };
+    const navigateToProductDetail = (product) => {
+        navigation.navigate('ProductDetail', { product });
+    };
 
-  const renderProductItem2 = () => (
-    <StyledProductContainer>
-        <RowContainer>
-            <FlatList
-                key={key} // 키 값 동적으로 설정
-                data={products}
-                keyExtractor={item => item?.title + item?.duration} // 고유한 키 생성
-                numColumns={isGrid ? 3 : 1} // 그리드 또는 리스트 형식으로 표시
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={isGrid ? styles.gridItem : styles.listItem}
-                        onPress={() => navigateToProductDetail(item)}
-                    >
-                        <ProductItem product={item} onPress={navigateToProductDetail} />
-                    </TouchableOpacity>
-                )}
-            />
-        </RowContainer>
-    </StyledProductContainer>
-);
+    const renderProductItem2 = () => (
+        <StyledProductContainer>
+            <RowContainer>
+                <FlatList
+                    key={key} // 키 값 동적으로 설정
+                    data={products}
+                    scrollEnabled={false}
+                    keyExtractor={(item) => item?.title + item?.duration} // 고유한 키 생성
+                    numColumns={isGrid ? 3 : 1} // 그리드 또는 리스트 형식으로 표시
+                    contentContainerStyle={isGrid ? { gap: 16 } : null}
+                    columnWrapperStyle={isGrid ? { gap: 16 } : null}
+                    style={{ paddingHorizontal: 16 }}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={isGrid ? styles.gridItem : styles.listItem}
+                            onPress={() => navigateToProductDetail(item)}
+                        >
+                            <ProductItem product={item} isGrid={isGrid} />
+                        </TouchableOpacity>
+                    )}
+                />
+            </RowContainer>
+        </StyledProductContainer>
+    );
 
     return (
         <ScrollView
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
+            }
+        >
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
                     <View style={styles.addressContainer}>
-                        <MaterialIcons name="place" size={29} color="black" style={styles.addressicon} />
+                        <MaterialIcons
+                            name="place"
+                            size={29}
+                            color="black"
+                            style={styles.addressicon}
+                        />
                         <Text style={styles.address}>{location}</Text>
                     </View>
                     <TouchableOpacity onPress={handleImageTextIconPress}>
-                        <MaterialCommunityIcons name="image-text" size={35} color="black" style={styles.imageTextIcon} />
+                        <MaterialCommunityIcons
+                            name="image-text"
+                            size={35}
+                            color="black"
+                            style={styles.imageTextIcon}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -110,14 +135,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: '3%',
+        marginTop: 12,
     },
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
         paddingHorizontal: 20,
-        marginBottom: 20,
+        marginBottom: 12,
     },
     addressContainer: {
         flexDirection: 'row',
@@ -134,12 +159,10 @@ const styles = StyleSheet.create({
         marginRight: '3%',
     },
     gridItem: {
-        width: windowWidth / 3,
-        marginBottom: 20,
+        width: (Dimensions.get('window').width - 16 * 4) / 3,
     },
     listItem: {
-        width: '100%',
-        marginBottom: 20,
+        //
     },
 });
 

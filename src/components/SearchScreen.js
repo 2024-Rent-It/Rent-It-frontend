@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -20,11 +19,6 @@ const SearchScreen = ({ navigation }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [sortType, setSortType] = useState(null);
     const [showSortOptions, setShowSortOptions] = useState(false);
-    const [title, setTitle] = useState(''); // 상품명
-    const [location, setLocation] = useState(''); // 지역
-    const [price, setPrice] = useState(''); // 가격
-    const [duration, setDuration] = useState(''); // 기간
-    const [selectedImage, setSelectedImage] = useState([]); // 첫번째 이미지
 
     useEffect(() => {
         retrieveSearchHistory();
@@ -52,12 +46,22 @@ const SearchScreen = ({ navigation }) => {
         fetchSearchResultsFromServer(searchKeyword);
     };
 
+    const removeSearchItem = async (index) => {
+        try {
+            const updatedHistory = [...searchHistory];
+            updatedHistory.splice(index, 1);
+            await AsyncStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+            setSearchHistory(updatedHistory);
+        } catch (error) {
+            console.error('Error removing search item:', error);
+        }
+    };
+
+
     const fetchSearchResultsFromServer = async (keyword) => {
         try {
-            
             const response = await fetch(`YOUR_API_ENDPOINT?q=${keyword}`);
             const data = await response.json();
-            
             // 가져온 데이터를 검색 결과로 설정
             setSearchResults(data);
         } catch (error) {
@@ -112,24 +116,18 @@ const SearchScreen = ({ navigation }) => {
     const renderSearchResultItem = ({ item }) => (
         <TouchableOpacity
             onPress={() => {
-                setTitle(item.title);
-                setLocation(item.location);
-                setPrice(item.price);
-                setDuration(item.duration);
-                setSelectedImage(item.selectedImage);
                 navigation.navigate('ProductDetail', {
                     productId: item.id,
                 });
             }}
         >
             <View style={styles.searchResultItem}>
-                <Image source={selectedImage} style={styles.productImage} />
+                <Image source={item.selectedImage} style={styles.productImage} />
                 <View style={styles.productInfo}>
-                    <Text style={styles.productTitle}>{title}</Text>
-                    <Text style={styles.productAddress}>{location}</Text>
-                    <Text style={styles.productPrice}>{price}</Text>
+                    <Text style={styles.productTitle}>{item.title}</Text>
+                    <Text style={styles.productPrice}>{item.price}</Text>
                     <View style={styles.termContainer}>
-                        <Text style={styles.productTerm}>{duration}</Text>
+                        <Text style={styles.productTerm}>{item.duration}</Text>
                     </View>
                 </View>
             </View>
