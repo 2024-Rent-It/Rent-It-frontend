@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, FlatList, Image, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
+import { View, TextInput, Text,Alert, StyleSheet, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 const KeywordRegis = ({  }) => {
