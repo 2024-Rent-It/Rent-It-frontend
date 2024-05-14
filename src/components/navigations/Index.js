@@ -42,6 +42,7 @@ import Notification from '../../../src/components/Notification.js';
 import Gomain from '../../screens/onboarding/Gomain.js';
 import KeywordRegis from '../KeywordRegis.js';
 import SellerInfo from '../../screens/userTrans/SellerInfo.js';
+import TraderInput from '../../screens/myPage/TraderInput.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -245,6 +246,7 @@ function RootNavigator() {
             />
             <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
             <Stack.Screen name="판매자 정보" component={SellerInfo} />
+            <Stack.Screen name="예약 전환을 위한 정보 입력" component={TraderInput} />
             {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
             {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
