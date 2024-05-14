@@ -17,6 +17,8 @@ const EditPost = ({ route }) => {
     const [duration, setDuration] = useState('');
     const [description, setDescription] = useState('');
     const [selectedImages, setSelectedImages] = useState([]);
+    const [showCategoryList, setShowCategoryList] = useState(false);
+    const [showDurationList, setShowDurationList] = useState(false); // 추가
 
     useEffect(() => {
         fetchProductData(productId);
@@ -96,6 +98,33 @@ const EditPost = ({ route }) => {
         }
     };
 
+    const categories = [
+        '주방용품',
+        '가구인테리어',
+        '패션잡화',
+        '미용소품',
+        '유아용품',
+        '생활용품',
+        '생활가전',
+        '도서문구',
+        '미술품',
+        '구합니다',
+        '디지털기기',
+        '스포츠레저',
+        '운동기구',
+        '파티용품',
+        '반려동물용품',
+        '기타',
+    ];
+
+    const durations = [
+        '1개월',
+        '2개월',
+        '3개월',
+        '6개월',
+        '12개월',
+    ];
+
     return (
         <ScrollView style={{ backgroundColor: '#FFFFFF', padding: 20 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
@@ -146,9 +175,61 @@ const EditPost = ({ route }) => {
                 onChangeText={setTitle}
                 style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', fontSize: 20 }}
             />
-            {/* 카테고리 선택 UI */}
             <View style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', zIndex: 1 }}>
-                {/* 카테고리 선택 코드 */}
+                <TouchableOpacity
+                    onPress={() => setShowCategoryList(!showCategoryList)}
+                >
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                        <Text
+                            style={{
+                                padding: 5,
+                                borderBottomWidth: 1,
+                                borderRadius: 5,
+                                flex: 1,
+                                fontSize: 20,
+                                color: 'rgba(0, 0, 0, 0.5)',
+                            }}
+                        >
+                            {category || '카테고리'}
+                        </Text>
+                        <Text style={{ fontSize: 24 }}>
+                            {showCategoryList ? '▲' : '▼'}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                {showCategoryList && (
+                    <ScrollView
+                        style={{
+                            maxHeight: 200,
+                            marginTop: 10,
+                            width: '100%',
+                            zIndex: 2,
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                            elevation: 2,
+                        }}
+                    >
+                        {categories.map((item, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => {
+                                    setCategory(item);
+                                    setShowCategoryList(false);
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        paddingVertical: 10,
+                                        fontSize: 20,
+                                    }}
+                                >
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                )}
             </View>
             <TextInput
                 placeholder="₩ 가격을 입력해주세요."
@@ -156,9 +237,67 @@ const EditPost = ({ route }) => {
                 onChangeText={setPrice}
                 style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', fontSize: 20 }}
             />
-          
-            <View style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', zIndex: 1 }}>
-               
+            <View
+                style={{
+                    marginBottom: 20,
+                    padding: 10,
+                    borderBottomWidth: 1,
+                    borderColor: 'gray',
+                    zIndex: 1,
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() => setShowDurationList(!showDurationList)}
+                >
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                        <Text
+                            style={{
+                                padding: 5,
+                                borderBottomWidth: 1,
+                                borderRadius: 5,
+                                flex: 1,
+                                fontSize: 20,
+                                color: 'rgba(0, 0, 0, 0.5)',
+                            }}
+                        >
+                            기간 {duration || '최대 개월 선택'}{' '}
+                            {showDurationList ? '▲' : '▼'}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                {showDurationList && (
+                    <ScrollView
+                        style={{
+                            maxHeight: 200,
+                            marginTop: 10,
+                            width: '100%',
+                            zIndex: 2,
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                            elevation: 2,
+                        }}
+                    >
+                        {durations.map((item, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => {
+                                    setDuration(item);
+                                    setShowDurationList(false);
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        paddingVertical: 10,
+                                        fontSize: 20,
+                                    }}
+                                >
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                )}
             </View>
             <TextInput
                 placeholder="상품 설명"
@@ -167,7 +306,6 @@ const EditPost = ({ route }) => {
                 multiline
                 style={{ marginBottom: 20, padding: 10, borderBottomWidth: 1, borderColor: 'gray', minHeight: 200, fontSize: 20 }}
             />
-            
             <TouchableOpacity
                 onPress={updateProduct}
                 style={{ backgroundColor: '#A7C8E7', padding: 13, alignItems: 'center', borderRadius: 20, alignSelf: 'center' }}
