@@ -30,21 +30,21 @@ const MyThing = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
-      }, [userNickname]);
+    }, [userNickname]);
 
     const fetchData = async () => {
         try {
             console.log(userNickname)
-          const response = await axios.get(`${BASE_URL}/products/seller/${userNickname}`);
-          setProducts([...response.data]);
-          console.log("내 판매", products);
+            const response = await axios.get(`${BASE_URL}/products/seller/${userNickname}`);
+            setProducts([...response.data]);
+            console.log("내 판매", products);
 
         } catch (error) {
-          console.error('Error fetching products:', error);
+            console.error('Error fetching products:', error);
         } finally {
-        //   setIsLoading(false);
+            //   setIsLoading(false);
         }
-      };
+    };
 
     //   const onRefresh = () => {
     //       setRefreshing(true);
@@ -64,8 +64,8 @@ const MyThing = ({ navigation }) => {
     //     console.log("productId:",id);
     //     navigation.navigate('예약 전환을 위한 정보 입력', { productId: id });
     // };
-     //예약가능->예약중 (TraderInput.js로 이동)
-     const closeAndNavigate = (id, traderName, startDate, endDate) => {
+    //예약가능->예약중 (TraderInput.js로 이동)
+    const closeAndNavigate = (id, traderName, startDate, endDate) => {
         setModalVisible(false);
         navigation.navigate('예약 전환을 위한 정보 입력', { productId: id, updateProductStatus, handleStatusChange, productInfo: { traderName, startDate, endDate } });
     };
@@ -104,16 +104,16 @@ const MyThing = ({ navigation }) => {
                     },
                     body: JSON.stringify(requestData),
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('상품을 렌트하는 데 실패했습니다.');
                 }
 
                 console.log(response);
                 fetchData();
-    
+
                 // 렌트 성공 메시지나 다른 처리를 할 수 있음
-    
+
             } catch (error) {
                 console.error('Error:', error);
                 // 오류 처리
@@ -122,14 +122,36 @@ const MyThing = ({ navigation }) => {
 
         const confirmStatusChange = () => {
             // 선택한 상품의 상태를 변경하고 모달을 닫음
-            const updatedProducts = products.map(prod => {
-                if (prod.id === selectedProduct.id) {
-                    return { ...prod, status: status };
-                }
-                return prod;
-            });
-            setProducts(updatedProducts);
+            // const updatedProducts = products.map(prod => {
+            //     if (prod.id === selectedProduct.id) {
+            //         return { ...prod, status: status };
+            //     }
+            //     return prod;
+            // });
+            // setProducts(updatedProducts);
             setModalVisible(false);
+            // '렌트완료' 상태인 경우에만 백엔드 API 호출
+            if (status === '렌트완료') {
+                axios.put(`${BASE_URL}/products/${selectedProduct.id}/complete-rent`)
+                    .then(response => {
+                        console.log("렌트완료로 변경 성공"); // 성공한 경우에 대한 처리
+                        fetchData();
+                    })
+                    .catch(error => {
+                        console.error('Error completing rent:', error); // 오류가 발생한 경우에 대한 처리
+                    });
+            }
+            if (status === '렌트가능') {
+                axios.put(`${BASE_URL}/products/${selectedProduct.id}/rent-available`)
+                    .then(response => {
+                        console.log("렌트가능으로 변경 성공"); // 성공한 경우에 대한 처리
+                        fetchData();
+                    })
+                    .catch(error => {
+                        console.error('Error completing rent:', error); // 오류가 발생한 경우에 대한 처리
+                    });
+            }
+
         };
 
         if (status === '렌트중') {
@@ -144,18 +166,6 @@ const MyThing = ({ navigation }) => {
                     },
                     {
                         text: '확인',
-                        // onPress: () => {
-                        //     console.log('여기까진 괜춘')
-                        //     // 선택한 상품의 상태를 변경하고 모달을 닫음
-                        //     const updatedProducts = products.map(prod => {
-                        //         if (prod.id === selectedProduct.id) {
-                        //             return { ...prod, status: status, buyerName: buyerName, startDate: startDate, endDate: endDate };
-                        //         }
-                        //         return prod;
-                        //     });
-                        //     setProducts(updatedProducts);
-                        //     setModalVisible(false);
-                        // }
                         onPress: () => confirmRental() // confirmRental 함수 호출로 변경
                     }
                 ],
@@ -178,13 +188,18 @@ const MyThing = ({ navigation }) => {
                 {
                     text: '네',
                     onPress: () => {
-                        const updatedProducts = products.filter(prod => prod.id !== selectedProduct.id);
-                        setProducts(updatedProducts);
-                        setModalVisible(false);
-                        setSelectedProduct(null); // 선택한 상품 초기화
-                        Alert.alert('알림', '삭제되었습니다.');
-
-
+                        axios.delete(`${BASE_URL}/products/${selectedProduct.id}`)
+                            .then(response => {
+                                // const updatedProducts = products.filter(prod => prod.id !== selectedProduct.id);
+                                // setProducts(updatedProducts);
+                                setModalVisible(false);
+                                setSelectedProduct(null); // 선택한 상품 초기화
+                                Alert.alert('알림', '삭제되었습니다.');
+                                fetchData();
+                            })
+                            .catch(error => {
+                                console.error('상품 삭제 중 오류 발생:', error);
+                            });
                     }
                 },
                 {
@@ -202,13 +217,13 @@ const MyThing = ({ navigation }) => {
     const ProductItem = ({ product }) => (
         <View style={styles.productContainer}>
             <Pressable onPress={() => {
-                                    console.log("상세화면 넘어갈때",product.id);
-                                    navigation.navigate('상세 화면', {id:product.id});
-                                }}>
+                console.log("상세화면 넘어갈때", product.id);
+                navigation.navigate('상세 화면', { id: product.id });
+            }}>
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
                         {/* <Image source={product.selectedImage} style={styles.image} /> */}
-                        <Image source={{uri:`${BASE_URL}/images/${product.productImages}`}} style={styles.image} />
+                        <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={styles.image} />
                     </View>
 
                 </View>
@@ -240,57 +255,57 @@ const MyThing = ({ navigation }) => {
 
 
 
-   const DoingRentScreen = ({ }) => (
-    <View>
-        {products.filter(product => product.status === '렌트가능').map((product) => (
-            <ProductItem key={product.id} product={product} />
-            // setSelectedProduct(product.id);
+    const DoingRentScreen = ({ }) => (
+        <View>
+            {products.filter(product => product.status === '렌트가능').map((product) => (
+                <ProductItem key={product.id} product={product} />
+                // setSelectedProduct(product.id);
 
-            
-        ))}
 
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-                setModalVisible(!modalVisible);
-            }}
-        >
-            <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            ))}
 
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Pressable
-                            style={styles.modalButtonTop}
-                            onPress={closeAndNavigate}>
-                            <Text style={styles.modalText}>렌트 중</Text>
-                        </Pressable>
-                        <TouchableOpacity
-                            style={styles.modalButton}
-                            onPress={() => navigation.navigate('ReWriting.js')}>
-                            <Text style={styles.modalText}>게시글 수정</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.modalButton}
-                            onPress={handleDeleteProduct}>
-                            <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.modalButtonBottom}
-                            onPress={() => handleStatusChange('닫기')}>
-                            <Text style={styles.modalText}>닫기</Text>
-                        </TouchableOpacity>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalView}>
+                            <Pressable
+                                style={styles.modalButtonTop}
+                                onPress={closeAndNavigate}>
+                                <Text style={styles.modalText}>렌트 중</Text>
+                            </Pressable>
+                            <TouchableOpacity
+                                style={styles.modalButton}
+                                onPress={() => navigation.navigate('ReWriting.js')}>
+                                <Text style={styles.modalText}>게시글 수정</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.modalButton}
+                                onPress={handleDeleteProduct}>
+                                <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.modalButtonBottom}
+                                onPress={() => handleStatusChange('닫기')}>
+                                <Text style={styles.modalText}>닫기</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </TouchableWithoutFeedback>
-        </Modal>
-    </View>
-);
+                </TouchableWithoutFeedback>
+            </Modal>
+        </View>
+    );
 
 
 
-    
+
 
     const ReservationScreen = () => {
         return (
@@ -385,7 +400,7 @@ const MyThing = ({ navigation }) => {
     }
 
     return (
-        
+
         <Tab.Navigator
             screenOptions={({ route }) => ({
             })}
@@ -500,7 +515,7 @@ const styles = StyleSheet.create({
     },
     modalViewDone: {
         height: 365,
-        backgroundColor:'white',
+        backgroundColor: 'white',
         paddingTop: '0%',
         paddingBottom: 0,
         padding: 35,
