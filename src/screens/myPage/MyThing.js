@@ -1,37 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, TextInput, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const Tab = createMaterialTopTabNavigator();
 
-const MyThing = () => {
-    
+
+const MyThing = ({ navigation }) => {
+
+
     const [modalVisible, setModalVisible] = useState(false);  //토글 누르면 열리는 모달임
-    const [modalVisibleForDoneRent, setModalVisibleForDoneRent] = useState(false); // 닉네임 입력받는 모달임
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [sellerName, setSellerName] = useState('');
 
     const [products, setProducts] = useState([
-        { id: 1, title: '퍼렁별 침략', price: '3000원', duration: '1일', sellerName: '', status: '렌트가능', selectedImage: require('../../../assets/images/coat.jpg') },
-        { id: 2, title: '바보 개구리', price: '2000000원', duration: '2일', selsellerNameler: '', status: '렌트가능', selectedImage: require('../../../assets/images/k.png') },
-        { id: 3, title: '그냥 개구리', price: '800000원', duration: '8일', sellerName: '', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
-        { id: 4, title: '진짜 개구리', price: '5000원', duration: '3일', sellerName: '', status: '렌트완료', selectedImage: require('../../../assets/images/tools.png') },
-        { id: 5, title: '귀여운 타마마', price: '500원', duration: '10일', sellerName: '', status: '예약중', selectedImage: require('../../../assets/images/tree.jpg') },
-    
+        { id: 1, title: '퍼렁별 침략', price: '3000원', duration: '1개월', traderName: '', startDate: '', endDate: '', status: '렌트가능', selectedImage: require('../../../assets/images/coat.jpg') },
+        { id: 2, title: '바보 개구리', price: '2000000원', duration: '2개월', traderName: '', startDate: '', endDate: '', status: '렌트가능', selectedImage: require('../../../assets/images/k.png') },
+        { id: 3, title: '그냥 개구리', price: '800000원', duration: '8개월', traderName: '장원영', startDate: '2024-08-11', endDate: '2024-12-31', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
+        { id: 4, title: '그냥 개구리', price: '800000원', duration: '5개월', traderName: '장원영', startDate: '2024-08-11', endDate: '2024-09-21', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
+        { id: 5, title: '진짜 개구리', price: '5000원', duration: '3개월', traderName: '카리나', startDate: '2024-08-11', endDate: '2024-10-16', status: '렌트완료', selectedImage: require('../../../assets/images/tools.png') },
+        { id: 6, title: '귀여운 타마마', price: '500원', duration: '8개월', traderName: '침착맨', startDate: '2024-08-11', endDate: '2024-11-11', status: '렌트중', selectedImage: require('../../../assets/images/tree.jpg') },
+
     ]);
+
+
 
     const toggleModal = (product) => {
         setSelectedProduct(product);
-        // setModalVisible(!modalVisible);
+        setModalVisible(!modalVisible);
         setModalVisible(true);
     };
 
+    //예약가능->예약중 (TraderInput.js로 이동)
+    const closeAndNavigate = (id, traderName, startDate, endDate) => {
+        setModalVisible(false);
+        navigation.navigate('예약 전환을 위한 정보 입력', { productId: id, updateProductStatus, handleStatusChange, productInfo: { traderName, startDate, endDate } });
+    };
+
+    const updateProductStatus = (id, traderName, startDate, endDate) => {
+        setProducts(products.map(product => {
+            if (product.id === id) {
+                return { ...product, status: '렌트중', traderName, startDate, endDate };
+            } else {
+                return product;
+            }
+        }));
+    };
+
+
+
     //얜 건들지마셈
+    const handleStatusChange = (status, traderName, startDate, endDate) => {
+        console.log('시~~발 제발제발', traderName, startDate, endDate);
 
-
-    const handleStatusChange = (status) => {
         const confirmStatusChange = () => {
             // 선택한 상품의 상태를 변경하고 모달을 닫음
             const updatedProducts = products.map(prod => {
@@ -44,11 +65,10 @@ const MyThing = () => {
             setModalVisible(false);
         };
 
-        if (status === '렌트완료') {
-            // Alert를 사용하여 확인 요청 -> 수정해야함
+        if (status === '렌트중') {
             Alert.alert(
                 '확인',
-                '상품 상태를 렌트완료로 변경하시겠습니까?',
+                '상품 상태를 렌트중으로 변경하시겠습니까?',
                 [
                     {
                         text: '취소',
@@ -58,10 +78,11 @@ const MyThing = () => {
                     {
                         text: '확인',
                         onPress: () => {
+                            console.log('여기까진 괜춘')
                             // 선택한 상품의 상태를 변경하고 모달을 닫음
                             const updatedProducts = products.map(prod => {
                                 if (prod.id === selectedProduct.id) {
-                                    return { ...prod, status: status };
+                                    return { ...prod, status: status, traderName: traderName, startDate: startDate, endDate: endDate };
                                 }
                                 return prod;
                             });
@@ -72,44 +93,13 @@ const MyThing = () => {
                 ],
                 { cancelable: false }
             );
-        } else if (status === '예약중' || status === '렌트가능') { // '렌트중' 상태일 때
+        } else if (status === '렌트완료' || status === '렌트가능') { // '렌트중' 상태일 때
             confirmStatusChange(); // 바로 상태 변경 함수 호출
         } else {
             // '렌트완료'나 '렌트중'이 아닌 다른 상태일 때는 모달만 닫음
             setModalVisible(false);
         }
     };  //여기까지 건들지마셈
-
-
-
-
-    //New
-    // const handleStatusChange = (status) => {
-    //     const confirmStatusChange = () => {
-    //         // 선택한 상품의 상태를 변경하고 모달을 닫음
-    //         const updatedProducts = products.map(prod => {
-    //             if (prod.id === selectedProduct.id) {
-    //                 return { ...prod, status: status, sellerName: nickname }; // SellerName 추가
-    //             }
-    //             return prod;
-    //         });
-    //         setProducts(updatedProducts);
-    //         setModalVisible(false);
-    //     };
-
-    //     if (status === '렌트완료') {
-    //         // '렌트완료' 상태로 변경할 때 SellerName을 입력받는 팝업 모달 표시
-    //         setModalVisibleForDoneRent(true);
-    //         setModalVisible(false); // 모달 닫기
-    //     } else if (status === '렌트중') {
-    //         confirmStatusChange(); // 바로 상태 변경 함수 호출
-    //     } else {
-    //         // '렌트완료'나 '렌트중'이 아닌 다른 상태일 때는 모달만 닫음
-    //         setModalVisible(false);
-    //     }
-    // };
-
-
 
 
     const handleDeleteProduct = () => {
@@ -152,9 +142,22 @@ const MyThing = () => {
                 </View>
             </Pressable>
             <View style={styles.infoContainer}>
-                <Text style={styles.name}>{product.title}</Text>
+                <Text style={styles.title}>{product.title}</Text>
                 <Text style={styles.price}>{product.price}</Text>
-                <Text style={styles.period}>{product.duration}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.status}>
+                        {/* product.status가 없으면 '거래자' 표시 */}
+                        <Text style={{ color: 'gray' }}>{product.status}</Text>
+                    </View>
+                    <View style={styles.trader}>
+                        {/* product.traderName이 없으면 '거래자' 표시 */}
+                        <Text style={{ color: 'gray' }}>{product.traderName || '거래자 미정'}</Text>
+                    </View>
+                    <View style={styles.date}>
+                        {/* product.endDate가 없으면 '반납예정일' 표시 */}
+                        <Text style={{ color: 'gray' }}>{product.endDate || '반납예정일 미정'}</Text>
+                    </View>
+                </View>
             </View>
             <Pressable style={styles.button} onPress={() => toggleModal(product)}>
                 <Icon name="more-vert" size={24} color="black" />
@@ -162,48 +165,14 @@ const MyThing = () => {
         </View>
     );
 
-    const DoingRentScreen = () => (
+
+
+
+    const DoingRentScreen = ({ }) => (
         <View>
-            {products.filter(product => product.status === '렌트가능' || product.status === '예약중').map((product) => (
+            {products.filter(product => product.status === '렌트가능').map((product) => (
                 <ProductItem key={product.id} product={product} />
             ))}
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisibleForDoneRent}
-                onRequestClose={() => {
-                    setModalVisibleForDoneRent(false);
-                }}
-            >
-                <View style={styles.modalContainer_Seller}>
-                    <View style={styles.modalView_Seller}>
-                        <TextInput
-                            placeholder="판매자 이름을 입력하세요"
-                            style={styles.input}
-                            onChangeText={text => setSellerName(text)} // SellerName 입력값 변경
-                            value={sellerName}
-                        />
-                        <TouchableOpacity
-                            style={styles.modalButton}
-                            onPress={() => {
-                                // SellerName 입력값 확인
-                                if (sellerName.trim() === '') {
-                                    Alert.alert('알림', '판매자 이름을 입력하세요.');
-                                } else {
-                                    // SellerName 입력값이 있으면 상태 변경 함수 호출하고 팝업 모달 닫기
-                                    confirmStatusChange();
-                                    setSellerName(''); // SellerName 입력값 초기화
-                                    setModalVisibleForDoneRent(false);
-                                }
-                            }}
-                        >
-                            <Text style={styles.modalText}>확인</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
 
             <Modal
                 animationType="slide"
@@ -215,23 +184,16 @@ const MyThing = () => {
             >
                 <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
 
-
-
                     <View style={styles.modalContainer}>
                         <View style={styles.modalView}>
-                            <TouchableOpacity
+                            <Pressable
                                 style={styles.modalButtonTop}
-                                onPress={() => handleStatusChange('렌트중')}>
-                                <Text style={styles.modalText}>예약중</Text>
-                            </TouchableOpacity>
+                                onPress={closeAndNavigate}>
+                                <Text style={styles.modalText}>렌트 중</Text>
+                            </Pressable>
                             <TouchableOpacity
                                 style={styles.modalButton}
-                                onPress={() => handleStatusChange('렌트완료')}>
-                                <Text style={styles.modalText}>렌트 완료</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.modalButton}
-                                onPress={() => handleStatusChange('게시글 수정')}>
+                                onPress={() => navigation.navigate('ReWriting.js')}>
                                 <Text style={styles.modalText}>게시글 수정</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -249,12 +211,13 @@ const MyThing = () => {
                 </TouchableWithoutFeedback>
             </Modal>
         </View>
+
     );
 
-    const DoneRentScreen = () => {
+    const ReservationScreen = () => {
         return (
             <View>
-                {products.filter(product => product.status === '렌트완료').map((product) => (
+                {products.filter(product => product.status === '렌트중').map((product) => (
                     <ProductItem key={product.id} product={product} />
                 ))}
                 <Modal
@@ -276,13 +239,8 @@ const MyThing = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.modalButton}
-                                    onPress={() => handleStatusChange('예약중')}>
-                                    <Text style={styles.modalText}>예약 중</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.modalButton}
-                                    onPress={() => handleStatusChange('게시글 수정')}>
-                                    <Text style={styles.modalText}>게시글 수정</Text>
+                                    onPress={() => handleStatusChange('렌트완료')}>
+                                    <Text style={styles.modalText}>렌트 완료</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.modalButton}
@@ -302,11 +260,63 @@ const MyThing = () => {
         );
     }
 
+    const DoneRentScreen = () => {
+        return (
+            <View>
+                {products.filter(product => product.status === '렌트완료').map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                ))}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+
+                        <View style={styles.modalContainerDone}>
+                            <View style={styles.modalViewDone}>
+                                <TouchableOpacity
+                                    style={styles.modalButtonTop}
+                                    onPress={() => handleStatusChange('렌트가능')}>
+                                    <Text style={styles.modalText}>렌트 가능</Text>
+                                </TouchableOpacity>
+                                {/* <TouchableOpacity
+                                    style={styles.modalButton}
+                                    onPress={() => handleStatusChange('렌트중')}>
+                                    <Text style={styles.modalText}>렌트 중</Text>
+                                </TouchableOpacity> */}
+                                <TouchableOpacity
+                                    style={styles.modalButton}
+                                    onPress={handleDeleteProduct}>
+                                    <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.modalButtonBottom}
+                                    onPress={() => handleStatusChange('닫기')}>
+                                    <Text style={styles.modalText}>닫기</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </View>
+        );
+    }
+
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+            })}
+        >
             <Tab.Screen name="렌트가능" component={DoingRentScreen} />
+            <Tab.Screen name="렌트중" component={ReservationScreen} />
             <Tab.Screen name="렌트완료" component={DoneRentScreen} />
         </Tab.Navigator>
+
+
     );
 };
 
@@ -325,7 +335,7 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 10,
         backgroundColor: 'lightgray',
-        marginLeft:'5%',
+        marginLeft: '5%',
     },
     image: {
         width: '100%',
@@ -336,18 +346,49 @@ const styles = StyleSheet.create({
     infoContainer: {
         flex: 1,
     },
-    name: {
+    title: {
         fontSize: 16,
         fontWeight: 'bold',
+        marginBottom: 5,
     },
     price: {
         fontSize: 14,
         color: 'gray',
+        marginBottom: 4,
     },
-    period: {
+    status: {
+        height: 25,
         fontSize: 14,
-        color: 'gray',
+        backgroundColor: '#DDEAF6',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10, // 양쪽으로 패딩 추가
+        minWidth: '22%', // 최소 너비 설정
     },
+    trader: {
+        height: 25,
+        fontSize: 14,
+        marginLeft: 5,
+        backgroundColor: '#DDEAF6',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10, // 양쪽으로 패딩 추가
+        minWidth: '22%', // 최소 너비 설정
+    },
+    date: {
+        height: 25,
+        fontSize: 14,
+        marginLeft: 5,
+        backgroundColor: '#DDEAF6',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10, // 양쪽으로 패딩 추가
+        minWidth: '30%', // 최소 너비 설정
+    },
+
     button: {
         padding: 10,
     },
@@ -356,24 +397,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         backgroundColor: 'rgba(0, 0, 0, 0.05)', // 반투명한 배경색
     },
-    modalContainer_Seller: {
+    modalContainerDone: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명한 배경색
+        justifyContent: 'flex-end',
     },
-    modalView_Seller: {
-        backgroundColor: 'white',
-        width: '80%', // 모달의 너비를 설정할 수 있습니다.
-        padding: 20,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-
     modalView: {
+        // borderWidth:1,
         backgroundColor: 'white',
         height: '45%',
         paddingTop: '0%',
+        paddingBottom: 0,
         padding: 35,
         borderRadius: '20%',
         alignItems: 'center',
@@ -384,11 +417,28 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        addingBottom: 0,
+    },
+    modalViewDone: {
+        height: 365,
+        backgroundColor:'white',
+        paddingTop: '0%',
+        paddingBottom: 0,
+        padding: 35,
+        borderRadius: '20%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        addingBottom: 0,
     },
     modalButton: {
         width: '120%',
-        height: '19%',
+        height: 90,
         padding: '1.5%',
         marginHorizontal: '1.5%', // 좌우 여백 설정
         marginTop: '1%', // 상단 여백 설정
@@ -397,9 +447,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#BBB9B9',
     },
     modalButtonTop: {
-        borderTopStartRadius: '20%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         width: '120%',
-        height: '19%',
+        height: 90,
         padding: '1.5%',
         marginHorizontal: '1.5%', // 좌우 여백 설정
         marginTop: '1%', // 상단 여백 설정
@@ -409,8 +460,9 @@ const styles = StyleSheet.create({
     },
     modalButtonBottom: {
         borderBottomEndRadius: '20%',
+        borderBottomStartRadius: '20%',
         width: '120%',
-        height: '19%',
+        height: 90,
         padding: '1.5%',
         marginHorizontal: '1.5%', // 좌우 여백 설정
         marginTop: '1%', // 상단 여백 설정
