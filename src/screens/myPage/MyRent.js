@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, StyleSheet, Text, TextInput, Alert, Pressable, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
-
+const Tab = createMaterialTopTabNavigator();
 
 const MyRent = ({ }) => {
-
     const [products, setProducts] = useState([
-        { id: 1, title: '침착한 케로로', price: '3500원', duration: '1일', selectedImage: require('../../../assets/images/coat.jpg') },
-        { id: 2, title: '그냥 개구리', price: '7000원', duration: '2일',  selectedImage: require('../../../assets/images/k.png') },
-        { id: 3, title: '케로케로', price: '8500원', duration: '8일', selectedImage: require('../../../assets/images/plate.jpg') },
-        { id: 4, title: '똑똑한 쿠루루', price: '580000원', duration: '3일', selectedImage: require('../../../assets/images/tools.png') },
-        { id: 5, title: '이중인격 타마마', price: '50000원', duration: '10일', selectedImage: require('../../../assets/images/tree.jpg') },
+        { id: 1, title: '케로로 귀여워', price: '3000원', duration: '1개월', traderName: '', startDate: '', endDate: '24-05-11', status: '렌트가능', selectedImage: require('../../../assets/images/coat.jpg') },
+        { id: 2, title: '바보 개구리', price: '2000000원', duration: '2개월', traderName: '', startDate: '', endDate: '24-06-18', status: '렌트가능', selectedImage: require('../../../assets/images/k.png') },
+        { id: 3, title: '코난 개구리', price: '800000원', duration: '5개월', traderName: '장원영', startDate: '11111', endDate: '24-04-05', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
+        { id: 4, title: '귀여운 코난', price: '5000원', duration: '3개월', traderName: '카리나', startDate: '1231', endDate: '23-03-19', status: '렌트완료', selectedImage: require('../../../assets/images/tools.png') },
+        { id: 5, title: '청소하는 타마마', price: '500원', duration: '8개월', traderName: '침착맨', startDate: '1231', endDate: '24-12-19', status: '렌트중', selectedImage: require('../../../assets/images/tree.jpg') },
+
     ]);
 
     const ProductItem = ({ product }) => (
         <View style={styles.productContainer}>
 
-            <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+            <Pressable onPress={() => navigation.navigate('상세 화면')}>
 
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
@@ -29,23 +29,58 @@ const MyRent = ({ }) => {
 
             <View style={styles.infoContainer}>
 
-                <Text style={styles.title}>{product.title}</Text>
+                <View style={styles.horizontal}>
+                    <Text style={styles.title}>{product.title}</Text>
+                    {/* <Text style={styles.status}>{product.status}</Text> */}
+                </View>
+
+
                 <View style={styles.horizontal}>
                     <Text style={styles.price}>{product.price}</Text>
-                    <Text style={styles.duration}>{product.duration}</Text>
+                    <View style={styles.duration}>
+                        <Text >반납일 : {product.endDate}</Text>
+                    </View>
+
                 </View>
 
             </View>
         </View>
     );
 
-
-    return (
+    const DoingScreen = ({ }) => (
         <View>
-            {products.map(product => (
+            {products.filter(product => product.status === '렌트중').map((product) => (
                 <ProductItem key={product.id} product={product} />
             ))}
         </View>
+
+    );
+
+    const DoneScreen = ({ }) => (
+        <View>
+            {products.filter(product => product.status === '렌트완료').map((product) => (
+                <ProductItem key={product.id} product={product} />
+            ))}
+        </View>
+
+    );
+
+
+    return (
+
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+            })}
+        >
+            <Tab.Screen name="렌트중" component={DoingScreen} />
+            <Tab.Screen name="렌트완료" component={DoneScreen} />
+
+        </Tab.Navigator>
+        // <View>
+        //     {products.map(product => (
+        //         <ProductItem key={product.id} product={product} />
+        //     ))}
+        // </View>
     );
 
 };
@@ -81,29 +116,53 @@ const styles = StyleSheet.create({
     infoContainer: {
         flex: 1,
         width: 20,
-        marginBottom:'1%',
+        marginBottom: '1%',
     },
     title: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom:'1.5%',
+        marginBottom: '1.5%',
     },
     price: {
-        marginTop:'0.6%',
+        marginTop: '0.6%',
         fontSize: 15,
         color: 'gray',
     },
-    duration: {
-        padding:'0.7%',
-        marginLeft:'3%',
+    status: {
+        height: 25,
+        padding: '0.7%',
+        marginLeft: '3%',
         borderWidth: 1,
-        borderColor:'#DDEAF6',
-        borderRadius:13,
-        width: '13%',
-        textAlign:'center',
-        backgroundColor:'#DDEAF6',
+        borderColor: '#A7C8E7',
+        borderRadius: 13,
+        width: '25%',
+        textAlign: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#A7C8E7',
         overflow: 'hidden',
-        color: 'gray',
+        color: 'black',
+        paddingTop: 3,
+    },
+    duration: {
+        // padding: '0.7%',
+        // marginLeft: '3%',
+        // borderWidth: 1,
+        // borderColor: '#DDEAF6',
+        // borderRadius: 13,
+        // width: '25%',
+        // textAlign: 'center',
+        // backgroundColor: '#DDEAF6',
+        // overflow: 'hidden',
+        // color: 'gray',
+        height: 25,
+        fontSize: 14,
+        marginLeft: 5,
+        backgroundColor: '#DDEAF6',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10, // 양쪽으로 패딩 추가
+        minWidth: '30%', // 최소 너비 설정
     },
 });
 

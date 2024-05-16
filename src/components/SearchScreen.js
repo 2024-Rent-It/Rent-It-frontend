@@ -186,7 +186,7 @@ const SearchScreen = ({ navigation }) => {
                 // setDuration(item.duration);
                 // const imageURL = `${BASE_URL}/images/${item.productImages[0]}`;
                 // setSelectedImage(imageURL); // 이미지 URL 설정
-                navigation.navigate('ProductDetail', {
+                navigation.navigate('상세 화면', {
                     id: item.id,
                 });
             }}

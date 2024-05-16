@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, TextInput, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, Pressable} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -61,7 +61,7 @@ const Notification = () => {
 
   );
 
-  const ActivityNoti = ({navigation}) => (
+  const ActivityNoti = ({ navigation }) => (
     <View style={{ backgroundColor: 'white' }}>
       {notifications.map(notification => (
         notification.type === '활동 알람' && <NotificationItem key={notification.id} notification={notification} />
@@ -70,7 +70,7 @@ const Notification = () => {
 
   );
 
-  const KeywordNoti = ({navigation}) => (
+  const KeywordNoti = ({ navigation }) => (
     <View >
       {notifications.map(notification => (
         notification.type === '키워드 알람' && <NotificationItem key={notification.id} notification={notification} />
@@ -100,7 +100,7 @@ const Notification = () => {
 };
 
 const styles = StyleSheet.create({
-  
+
   notificationContainer: {
     height: 105,
     flexDirection: 'row',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 10,
-    borderWidth:0.4,
+    borderWidth: 0.4,
     marginLeft: '5%',
     borderRadius: 40,
   },
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 17,
-    marginBottom:'1%',
+    marginBottom: '1%',
   },
   priceChange: {
     fontSize: 12,
   },
   daysAgo: {
-    marginTop:'1.5%',
+    marginTop: '1.5%',
     color: 'gray',
   },
   buttonContainer: {

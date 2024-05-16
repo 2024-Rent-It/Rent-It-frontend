@@ -50,7 +50,7 @@ const Tab = createBottomTabNavigator();
 const SharedStack = ({ tabName }) => (
     <Stack.Navigator>
         {tabName === 'MyFavTab' ? (
-            <Stack.Screen name="찜한목록" component={MyFav} />
+            <Stack.Screen name="관심 상품" component={MyFav} />
         ) : null}
         {tabName === 'WritingTab' ? (
             <Stack.Screen name="글쓰기" component={Writing} />
@@ -68,7 +68,7 @@ const SharedStack = ({ tabName }) => (
                                     size={24}
                                     color="black"
                                     style={{ marginRight: 20 }}
-                                    onPress={() => navigation.navigate('Notification')}
+                                    onPress={() => navigation.navigate('알림')}
 
                                 />
                                 <AntDesign
@@ -134,22 +134,22 @@ const SharedStack = ({ tabName }) => (
                 </>
 
                 {/* 나의 거래 */}
-                <Stack.Screen name="MyFav" component={MyFav} />
-                <Stack.Screen name="MyThing" component={MyThing} />
-                <Stack.Screen name="MyRent" component={MyRent} />
+                <Stack.Screen name="관심 상품" component={MyFav} />
+                <Stack.Screen name="내 상품 관리" component={MyThing} />
+                <Stack.Screen name="대여 내역" component={MyRent} />
                 {/* 서비스 정보 */}
                 <Stack.Screen
-                    name="TermsOfService"
+                    name="이용 약관"
                     component={TermsOfService}
                 />
-                <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-                <Stack.Screen
+                <Stack.Screen name="개인정보 처리방침" component={PrivacyPolicy} />
+                {/* <Stack.Screen
                     name="LocationService"
                     component={LocationService}
-                />
-                <Stack.Screen name="VersionInfo" component={VersionInfo} />
+                /> */}
+                <Stack.Screen name="버전 정보" component={VersionInfo} />
                 {/* 하단 */}
-                <Stack.Screen name="Notice" component={Notice} />
+                <Stack.Screen name="공지사항" component={Notice} />
             </>
         ) : null}
     </Stack.Navigator>
@@ -244,7 +244,7 @@ function RootNavigator() {
                 component={TabNavigator}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="상세 화면" component={ProductDetailPage} />
             <Stack.Screen name="판매자 정보" component={SellerInfo} />
             <Stack.Screen name="예약 전환을 위한 정보 입력" component={TraderInput} />
             {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
@@ -257,7 +257,7 @@ function RootNavigator() {
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
-            <Stack.Screen name="Notification" component={Notification} />
+            <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
         </Stack.Navigator>
     );

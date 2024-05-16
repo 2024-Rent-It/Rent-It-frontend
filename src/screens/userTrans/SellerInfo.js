@@ -64,7 +64,7 @@ const SellerInfo = ({ navigation, route }) => {
                 style={styles.infoContainer}
                 onPress={() => {
                     console.log(product.id);
-                    navigation.navigate('ProductDetail', { id: product.id });
+                    navigation.navigate('상세 화면', { id: product.id });
                 }}>
                 <View >
 

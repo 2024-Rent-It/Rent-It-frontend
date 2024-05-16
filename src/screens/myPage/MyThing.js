@@ -133,7 +133,7 @@ const MyThing = ({ navigation }) => {
 
     const ProductItem = ({ product }) => (
         <View style={styles.productContainer}>
-            <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+            <Pressable onPress={() => navigation.navigate('상세 화면')}>
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
                         <Image source={product.selectedImage} style={styles.image} />
