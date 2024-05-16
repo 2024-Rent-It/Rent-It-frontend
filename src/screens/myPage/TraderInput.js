@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 
 const TraderInput = ({ navigation, route }) => {
     const { productId, updateProductStatus, productInfo, handleStatusChange } = route.params;
-    const [traderName, setTraderName] = useState('');
+    const [buyerName, setTraderName] = useState('');
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [status, setStatus] = useState('');
@@ -36,8 +36,8 @@ const TraderInput = ({ navigation, route }) => {
 
     useEffect(() => {
         if (productInfo) {
-            const { traderName, startDate, endDate } = productInfo;
-            setTraderName(traderName);
+            const { buyerName, startDate, endDate } = productInfo;
+            setTraderName(buyerName);
             setStartDate(startDate);
             setEndDate(endDate);
             setStatus('렌트중');
@@ -46,6 +46,7 @@ const TraderInput = ({ navigation, route }) => {
 
     // 확인 버튼 이벤트 핸들러
     const confirmRental = () => {
+        // console.log("상품 아이디 확인좀..",productId);
         const formatDateString = (date) => {
 
             const year = date.getFullYear();
@@ -56,20 +57,24 @@ const TraderInput = ({ navigation, route }) => {
             return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         };
 
-        const formattedStartDate = formatDateString(startDate);
-        const formattedEndDate = formatDateString(endDate);
-        handleStatusChange('렌트중', traderName, formattedStartDate, formattedEndDate)
+        // const formattedStartDate = formatDateString(startDate);
+        // const formattedEndDate = formatDateString(endDate);
+        const formattedStartDate = formatDateString(startDate)+'T00:00:00'; 
+        const formattedEndDate = formatDateString(endDate)+'T00:00:00';
+        // const formattedStartDate = startDate.toISOString(); 
+        // const formattedEndDate = endDate.toISOString();
+        handleStatusChange('렌트중', buyerName, formattedStartDate, formattedEndDate)
         setStatus('렌트중')
-        updateProductStatus(productId, traderName, formattedStartDate, formattedEndDate, '렌트중');
-        // navigation.navigate('MyThing', { productId,traderName, startDate, endDate });
+        updateProductStatus(productId, buyerName, formattedStartDate, formattedEndDate, '렌트중');
+        // navigation.navigate('MyThing', { productId,buyerName, startDate, endDate });
         navigation.navigate('내 상품 관리', {
             // productId: id,
             updateProductStatus,
             handleStatusChange,
-            productInfo: { traderName, startDate: formattedStartDate, endDate: formattedEndDate }
+            productInfo: { buyerName, startDate: formattedStartDate, endDate: formattedEndDate }
         });
-        console.log(productId, traderName, startDate, endDate, status);
-        console.log("여기까진 갠찮다 이거야...TraderInput이다F")
+        // console.log(productId, buyerName, startDate, endDate, status);
+        // console.log("여기까진 갠찮다 이거야...TraderInput이다F")
     };
 
     return (
@@ -207,7 +212,7 @@ const TraderInput = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles._button3} backgroundColor={"#A7C8E7"}
                 onPress={() => {
-                    confirmRental(traderName, startDate, endDate);
+                    confirmRental(buyerName, startDate, endDate);
                 }}
             >
                 <Text style={styles.h2}>확인</Text>
