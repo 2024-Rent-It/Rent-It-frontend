@@ -15,9 +15,16 @@ const TraderInput = ({ navigation, route }) => {
     const [showEndPicker, setShowEndPicker] = useState(false);
 
     const onChangeStart = (event, selectedDate) => {
-        const currentDate = selectedDate || startDate;
+        // const currentDate = selectedDate || startDate;
+        // setShowStartPicker(Platform.OS === 'ios');
+        // setStartDate(currentDate);
+        const currentDate = selectedDate || "24-00-00";
         setShowStartPicker(Platform.OS === 'ios');
-        setStartDate(currentDate);
+        if (currentDate === "24-00-00") {
+            setStartDate(currentDate);
+        } else {
+            setStartDate(currentDate);
+        }
     };
 
     const onChangeEnd = (event, selectedDate) => {
@@ -40,7 +47,7 @@ const TraderInput = ({ navigation, route }) => {
     // 확인 버튼 이벤트 핸들러
     const confirmRental = () => {
         const formatDateString = (date) => {
-            
+
             const year = date.getFullYear();
             const month = date.getMonth() + 1; // 월은 0부터 시작
             const day = date.getDate();
@@ -55,7 +62,7 @@ const TraderInput = ({ navigation, route }) => {
         setStatus('렌트중')
         updateProductStatus(productId, traderName, formattedStartDate, formattedEndDate, '렌트중');
         // navigation.navigate('MyThing', { productId,traderName, startDate, endDate });
-        navigation.navigate('MyThing', {
+        navigation.navigate('내 상품 관리', {
             // productId: id,
             updateProductStatus,
             handleStatusChange,
@@ -72,9 +79,6 @@ const TraderInput = ({ navigation, route }) => {
             <Text style={styles.t1}>거래하는 상대방의 닉네임을 입력해주세요</Text>
 
 
-            {/* <View style={styles.input_field}> */}
-
-
             <TextInput
                 style={styles.input}
                 width={'60%'}
@@ -86,32 +90,118 @@ const TraderInput = ({ navigation, route }) => {
             <Text style={styles.t1}>대여 시작일과 반납일을 기입해주세요</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
-                <Pressable
-                    onPress={() => setShowStartPicker(true)}>
-                    <DateTimePicker
-                        value={startDate || new Date()} // startDate가 유효하지 않은 경우, 새로운 날짜 객체를 사용
-                        mode="date"
-                        display="default"
-                        onChange={onChangeStart}
-                    />
 
-                </Pressable>
+                {
+                    showStartPicker ? (
+                        <Pressable onPress={() => {
+                            setShowStartPicker(true)
+                            // setShowEndPicker(false)
+                        }
+                        }>
+                            <DateTimePicker
+                                value={startDate || new Date()} // 이 부분은 실제로 선택된 날짜나, 기본 날짜를 나타냅니다.
+                                mode="date"
+                                display="default"
+                                onChange={onChangeStart}
+                            />
+                        </Pressable>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.dateButton}
+                            onPress={() => setShowStartPicker(true)}>
+                            <Text style={styles.dateText}>시작일 선택</Text>
+                        </TouchableOpacity>
+                    )
+                }
+
                 <Text style={styles.h3}> 부터 </Text>
 
-                <Pressable
-                    onPress={() => setShowEndPicker(true)}>
-                    <DateTimePicker
-                        value={endDate || new Date()} // startDate가 유효하지 않은 경우, 새로운 날짜 객체를 사용
-                        mode="date"
-                        display="default"
-                        onChange={onChangeEnd}
-                    />
+                {
+                    showEndPicker ? (
+                        <Pressable onPress={() => {
+                            setShowEndPicker(true)
 
-                </Pressable>
+                            }}>
+                            <DateTimePicker
+                                value={endDate || new Date()} // 이 부분은 실제로 선택된 날짜나, 기본 날짜를 나타냅니다.
+                                mode="date"
+                                display="default"
+                                onChange={onChangeEnd}
+                            />
+                        </Pressable>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.dateButton}
+                            onPress={() => setShowEndPicker(true)}>
+                            <Text style={styles.dateText}>반납일 선택</Text>
+                        </TouchableOpacity>
+                    )
+                }
+
                 <Text style={styles.h3}> 까지 </Text>
             </View>
 
-            {/* </View> */}
+
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
+                {
+                    showStartPicker ? (
+                        <Pressable onPress={() => setShowStartPicker(false)}>
+                            <DateTimePicker
+                                value={startDate || new Date()}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    onChangeStart(event, selectedDate);
+                                    // setShowStartPicker(false); // 이 부분을 제거합니다.
+                                }}
+                            />
+                        </Pressable>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.dateButton}
+                            onPress={() => {
+                                setShowStartPicker(true);
+                                setShowEndPicker(false);
+                            }}>
+                            <Text style={styles.dateText}>{startDate ? startDate.toLocaleDateString() : '시작일 선택'}</Text>
+                        </TouchableOpacity>
+                    )
+                }
+
+                <Text style={styles.h3}> 부터 </Text>
+
+                {
+                    showEndPicker ? (
+                        <Pressable onPress={() => setShowEndPicker(false)}>
+                            <DateTimePicker
+                                value={endDate || new Date()}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    onChangeEnd(event, selectedDate);
+                                    // setShowEndPicker(false); // 이 부분을 제거합니다.
+                                }}
+                            />
+                        </Pressable>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.dateButton}
+                            onPress={() => {
+                                setShowEndPicker(true);
+                                setShowStartPicker(false);
+                            }}>
+                            <Text style={styles.dateText}>{endDate ? endDate.toLocaleDateString() : '반납일 선택'}</Text>
+                        </TouchableOpacity>
+                    )
+                }
+
+                <Text style={styles.h3}> 까지 </Text>
+            </View> */}
+
+
+
+
+
 
 
             <TouchableOpacity
@@ -184,7 +274,24 @@ const styles = StyleSheet.create({
         fontSize: 25,
         alignContent: 'center',
         textAlignVertical: 'center',
-    }
+    },
+    dateButton: {
+        // width: '60%',
+        height: 60,
+        borderRadius: 16,
+        borderColor: "#D9D9D9",
+        borderWidth: 1,
+        fontSize: 18,
+        paddingHorizontal: 15,
+        paddingVertical: 18,
+        marginBottom: 10,
+        backgroundColor: '#D9D9D9',
+        marginLeft: "2%",
+    },
+    dateText: {
+        fontSize: 17,
+        // backgroundColor:'#D9D9D9'
+    },
 });
 
 export default TraderInput;
