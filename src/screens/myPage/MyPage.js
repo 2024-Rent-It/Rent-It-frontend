@@ -51,7 +51,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyFav')}
+                <TouchableOpacity onPress={() => navigation.navigate('관심 상품')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -59,7 +59,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyThing')}
+                <TouchableOpacity onPress={() => navigation.navigate('내 상품 관리')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -67,7 +67,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyRent')}
+                <TouchableOpacity onPress={() => navigation.navigate('대여 내역')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -86,7 +86,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('TermsOfService')}
+                <TouchableOpacity onPress={() => navigation.navigate('이용 약관')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -94,7 +94,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy')}
+                <TouchableOpacity onPress={() => navigation.navigate('개인정보 처리방침')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -102,15 +102,15 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('LocationService')}
+                {/* <TouchableOpacity onPress={() => navigation.navigate('LocationService')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
                         위치기반 서비스 이용약관
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
-                <TouchableOpacity onPress={() => navigation.navigate('VersionInfo')}
+                <TouchableOpacity onPress={() => navigation.navigate('버전 정보')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
@@ -122,7 +122,7 @@ const MyPage = ({ navigation }) => {
 
             <View style={[styles.container,{ borderBottomWidth: 0 }]}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Notice')}
+                <TouchableOpacity onPress={() => navigation.navigate('공지사항')}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>

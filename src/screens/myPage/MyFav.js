@@ -79,7 +79,7 @@ const MyFav = ({ navigation }) => {
 
     //param(item)은 product 배열의 각 상품 객체
     const renderItem = ({ item }) => (
-      <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { id: item.product.id })}>
+      <TouchableOpacity onPress={() => navigation.navigate('상세 화면', { id: item.product.id })}>
         <View style={styles.itemContainer}>
           <TouchableOpacity onPress={() => toggleLike(item.product.favid, item.product.id)} style={styles.heartContainer}>
             <Ionicons name={item.product.liked ? 'heart' : 'heart-outline'} size={24} color={item.product.liked ? 'red' : 'black'} strokeWidth={1} />
