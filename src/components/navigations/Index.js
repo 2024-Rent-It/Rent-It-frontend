@@ -43,6 +43,7 @@ import Gomain from '../../screens/onboarding/Gomain.js';
 import KeywordRegis from '../KeywordRegis.js';
 import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 import TraderInput from '../../screens/myPage/TraderInput.js';
+import EditPost from '../../screens/userTrans/ReWriting.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -136,6 +137,7 @@ const SharedStack = ({ tabName }) => (
                 {/* 나의 거래 */}
                 <Stack.Screen name="관심 상품" component={MyFav} />
                 <Stack.Screen name="내 상품 관리" component={MyThing} />
+                <Stack.Screen name="게시글 수정" component={EditPost} />
                 <Stack.Screen name="대여 내역" component={MyRent} />
                 {/* 서비스 정보 */}
                 <Stack.Screen

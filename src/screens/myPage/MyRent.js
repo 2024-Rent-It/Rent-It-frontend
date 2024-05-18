@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, TextInput, Alert, Pressable, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, ScrollView, Text, Pressable, Image } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -48,20 +48,26 @@ const MyRent = ({ }) => {
     );
 
     const DoingScreen = ({ }) => (
-        <View>
-            {products.filter(product => product.status === '렌트중').map((product) => (
-                <ProductItem key={product.id} product={product} />
-            ))}
-        </View>
+        <ScrollView>
+            <View>
+                {products.filter(product => product.status === '렌트중').map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                ))}
+            </View>
+        </ScrollView>
+
 
     );
 
     const DoneScreen = ({ }) => (
-        <View>
-            {products.filter(product => product.status === '렌트완료').map((product) => (
-                <ProductItem key={product.id} product={product} />
-            ))}
-        </View>
+        <ScrollView>
+            <View>
+                {products.filter(product => product.status === '렌트완료').map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                ))}
+            </View>
+        </ScrollView>
+
 
     );
 
@@ -69,18 +75,13 @@ const MyRent = ({ }) => {
     return (
 
         <Tab.Navigator
-            screenOptions={({ route }) => ({
+            screenOptions={() => ({
             })}
         >
             <Tab.Screen name="렌트중" component={DoingScreen} />
             <Tab.Screen name="렌트완료" component={DoneScreen} />
 
         </Tab.Navigator>
-        // <View>
-        //     {products.map(product => (
-        //         <ProductItem key={product.id} product={product} />
-        //     ))}
-        // </View>
     );
 
 };
