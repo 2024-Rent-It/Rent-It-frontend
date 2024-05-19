@@ -1,27 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, StyleSheet, ScrollView, Text, Pressable, Image } from "react-native";
+import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 const Tab = createMaterialTopTabNavigator();
 
-const MyRent = ({ }) => {
-    const [products, setProducts] = useState([
-        { id: 1, title: '케로로 귀여워', price: '3000원', duration: '1개월', traderName: '', startDate: '', endDate: '24-05-11', status: '렌트가능', selectedImage: require('../../../assets/images/coat.jpg') },
-        { id: 2, title: '바보 개구리', price: '2000000원', duration: '2개월', traderName: '', startDate: '', endDate: '24-06-18', status: '렌트가능', selectedImage: require('../../../assets/images/k.png') },
-        { id: 3, title: '코난 개구리', price: '800000원', duration: '5개월', traderName: '장원영', startDate: '11111', endDate: '24-04-05', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
-        { id: 4, title: '귀여운 코난', price: '5000원', duration: '3개월', traderName: '카리나', startDate: '1231', endDate: '23-03-19', status: '렌트완료', selectedImage: require('../../../assets/images/tools.png') },
-        { id: 5, title: '청소하는 타마마', price: '500원', duration: '8개월', traderName: '침착맨', startDate: '1231', endDate: '24-12-19', status: '렌트중', selectedImage: require('../../../assets/images/tree.jpg') },
+const MyRent = ({navigation }) => {
+    // const [products, setProducts] = useState([
+    //     { id: 1, title: '케로로 귀여워', price: '3000원', duration: '1개월', buyerName: '', startDate: '', endDate: '24-05-11', status: '렌트가능', selectedImage: require('../../../assets/images/coat.jpg') },
+    //     { id: 2, title: '바보 개구리', price: '2000000원', duration: '2개월', buyerName: '', startDate: '', endDate: '24-06-18', status: '렌트가능', selectedImage: require('../../../assets/images/k.png') },
+    //     { id: 3, title: '코난 개구리', price: '800000원', duration: '5개월', buyerName: '장원영', startDate: '11111', endDate: '24-04-05', status: '렌트완료', selectedImage: require('../../../assets/images/plate.jpg') },
+    //     { id: 4, title: '귀여운 코난', price: '5000원', duration: '3개월', buyerName: '카리나', startDate: '1231', endDate: '23-03-19', status: '렌트완료', selectedImage: require('../../../assets/images/tools.png') },
+    //     { id: 5, title: '청소하는 타마마', price: '500원', duration: '8개월', buyerName: '침착맨', startDate: '1231', endDate: '24-12-19', status: '렌트중', selectedImage: require('../../../assets/images/tree.jpg') },
 
-    ]);
+    // ]);
+    const { userNickname } = useAuth();
+    const [products, setProducts] = useState([]);
+
+
+    useEffect(() => {
+        fetchData();
+    }, [userNickname]);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/products/buyer/${userNickname}`);
+            setProducts([...response.data]);
+            // console.log("내 판매", products);
+
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            //   setIsLoading(false);
+        }
+    };
 
     const ProductItem = ({ product }) => (
         <View style={styles.productContainer}>
 
-            <Pressable onPress={() => navigation.navigate('상세 화면')}>
+            <Pressable onPress={() => {
+                navigation.navigate('상세 화면', { id: product.id });
+            }}>
 
                 <View style={styles.imageContainer}>
                     <View style={styles.image}>
-                        <Image source={product.selectedImage} style={styles.image} />
+                        <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={styles.image} />
                     </View>
                 </View>
 
@@ -36,9 +61,9 @@ const MyRent = ({ }) => {
 
 
                 <View style={styles.horizontal}>
-                    <Text style={styles.price}>{product.price}</Text>
+                    <Text style={styles.price}>₩{product.price}</Text>
                     <View style={styles.duration}>
-                        <Text >반납일 : {product.endDate}</Text>
+                        <Text >반납일 : {product.endDate.substring(0, 10)}</Text>
                     </View>
 
                 </View>
