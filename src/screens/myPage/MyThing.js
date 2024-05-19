@@ -287,7 +287,10 @@ const MyThing = ({ navigation }) => {
                                 </Pressable>
                                 <TouchableOpacity
                                     style={styles.modalButton}
-                                    onPress={() => navigation.navigate('게시글 수정')}>
+                                    onPress={() => {
+                                        navigation.navigate('게시글 수정', { productId: selectedProduct.id });
+                                        setModalVisible(false); // 화면 이동 시 모달을 닫음
+                                    }}>
                                     <Text style={styles.modalText}>게시글 수정</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
