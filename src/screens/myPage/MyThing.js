@@ -287,7 +287,7 @@ const MyThing = ({ navigation }) => {
                                 </Pressable>
                                 <TouchableOpacity
                                     style={styles.modalButton}
-                                    onPress={() => navigation.navigate('EditPost')}>
+                                    onPress={() => navigation.navigate('게시글 수정')}>
                                     <Text style={styles.modalText}>게시글 수정</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
