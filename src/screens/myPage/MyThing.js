@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, Alert, Pressable, Modal, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 import axios from 'axios';
@@ -256,63 +256,18 @@ const MyThing = ({ navigation }) => {
 
 
     const DoingRentScreen = ({ }) => (
-        <View>
-            {products.filter(product => product.status === '렌트가능').map((product) => (
-                <ProductItem key={product.id} product={product} />
-                // setSelectedProduct(product.id);
+
+        <ScrollView>
 
 
-            ))}
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalView}>
-                            <Pressable
-                                style={styles.modalButtonTop}
-                                onPress={closeAndNavigate}>
-                                <Text style={styles.modalText}>렌트 중</Text>
-                            </Pressable>
-                            <TouchableOpacity
-                                style={styles.modalButton}
-                                onPress={() => navigation.navigate('ReWriting.js')}>
-                                <Text style={styles.modalText}>게시글 수정</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.modalButton}
-                                onPress={handleDeleteProduct}>
-                                <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.modalButtonBottom}
-                                onPress={() => handleStatusChange('닫기')}>
-                                <Text style={styles.modalText}>닫기</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
-    );
-
-
-
-
-
-    const ReservationScreen = () => {
-        return (
             <View>
-                {products.filter(product => product.status === '렌트중').map((product) => (
+                {products.filter(product => product.status === '렌트가능').map((product) => (
                     <ProductItem key={product.id} product={product} />
+                    // setSelectedProduct(product.id);
+
+
                 ))}
+
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -325,15 +280,15 @@ const MyThing = ({ navigation }) => {
 
                         <View style={styles.modalContainer}>
                             <View style={styles.modalView}>
-                                <TouchableOpacity
+                                <Pressable
                                     style={styles.modalButtonTop}
-                                    onPress={() => handleStatusChange('렌트가능')}>
-                                    <Text style={styles.modalText}>렌트 가능</Text>
-                                </TouchableOpacity>
+                                    onPress={closeAndNavigate}>
+                                    <Text style={styles.modalText}>렌트 중</Text>
+                                </Pressable>
                                 <TouchableOpacity
                                     style={styles.modalButton}
-                                    onPress={() => handleStatusChange('렌트완료')}>
-                                    <Text style={styles.modalText}>렌트 완료</Text>
+                                    onPress={() => navigation.navigate('EditPost')}>
+                                    <Text style={styles.modalText}>게시글 수정</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.modalButton}
@@ -350,52 +305,111 @@ const MyThing = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </Modal>
             </View>
+
+        </ScrollView>
+    );
+
+
+
+
+
+    const ReservationScreen = () => {
+        return (
+            <ScrollView>
+
+
+                <View>
+                    {products.filter(product => product.status === '렌트중').map((product) => (
+                        <ProductItem key={product.id} product={product} />
+                    ))}
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+
+                            <View style={styles.modalContainer}>
+                                <View style={styles.modalView}>
+                                    <TouchableOpacity
+                                        style={styles.modalButtonTop}
+                                        onPress={() => handleStatusChange('렌트가능')}>
+                                        <Text style={styles.modalText}>렌트 가능</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={() => handleStatusChange('렌트완료')}>
+                                        <Text style={styles.modalText}>렌트 완료</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleDeleteProduct}>
+                                        <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButtonBottom}
+                                        onPress={() => handleStatusChange('닫기')}>
+                                        <Text style={styles.modalText}>닫기</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </Modal>
+                </View>
+            </ScrollView>
         );
     }
 
     const DoneRentScreen = () => {
         return (
-            <View>
-                {products.filter(product => product.status === '렌트완료').map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                ))}
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <ScrollView>
 
-                        <View style={styles.modalContainerDone}>
-                            <View style={styles.modalViewDone}>
-                                <TouchableOpacity
-                                    style={styles.modalButtonTop}
-                                    onPress={() => handleStatusChange('렌트가능')}>
-                                    <Text style={styles.modalText}>렌트 가능</Text>
-                                </TouchableOpacity>
-                                {/* <TouchableOpacity
+
+                <View>
+                    {products.filter(product => product.status === '렌트완료').map((product) => (
+                        <ProductItem key={product.id} product={product} />
+                    ))}
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+
+                            <View style={styles.modalContainerDone}>
+                                <View style={styles.modalViewDone}>
+                                    <TouchableOpacity
+                                        style={styles.modalButtonTop}
+                                        onPress={() => handleStatusChange('렌트가능')}>
+                                        <Text style={styles.modalText}>렌트 가능</Text>
+                                    </TouchableOpacity>
+                                    {/* <TouchableOpacity
                                     style={styles.modalButton}
                                     onPress={() => handleStatusChange('렌트중')}>
                                     <Text style={styles.modalText}>렌트 중</Text>
                                 </TouchableOpacity> */}
-                                <TouchableOpacity
-                                    style={styles.modalButton}
-                                    onPress={handleDeleteProduct}>
-                                    <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.modalButtonBottom}
-                                    onPress={() => handleStatusChange('닫기')}>
-                                    <Text style={styles.modalText}>닫기</Text>
-                                </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButton}
+                                        onPress={handleDeleteProduct}>
+                                        <Text style={[styles.modalText, { color: 'red' }]}>삭제</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.modalButtonBottom}
+                                        onPress={() => handleStatusChange('닫기')}>
+                                        <Text style={styles.modalText}>닫기</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>
-            </View>
+                        </TouchableWithoutFeedback>
+                    </Modal>
+                </View>
+            </ScrollView>
         );
     }
 
@@ -573,4 +587,3 @@ const styles = StyleSheet.create({
 });
 
 export default MyThing;
-
