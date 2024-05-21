@@ -216,7 +216,7 @@ const Home = () => {
             <StyledProductContainer>
                 {renderSunImages()} 
                 
-            <Text style={styles.productHeaderText}>새로운 대여 가능 목록</Text>
+            <Text style={styles.productHeaderText}>새로운 대여 가능 목록📋</Text>
                 {chunkedItems.map((row, index) => (
                     <RowContainer key={index}>
                         {row.map((product, idx) => (

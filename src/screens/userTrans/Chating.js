@@ -1,9 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TextInput, Alert, Pressable, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-
-
-
-const Chating = ({ navigation }) => {
+/*const Chating = ({ navigation }) => {
 
     const [product, setProduct] = useState(
         { id: 1, title: '침착한 케로로', price: '3500원', duration: '1일', selectedImage: require('../../../assets/images/coat.jpg') }
@@ -21,7 +16,7 @@ const Chating = ({ navigation }) => {
                     </View>
                 </Pressable>
 
-            </View> */}
+            </View> 
             <View style={styles.imageContainer}>
                 <Pressable onPress={() => navigation.navigate('판매자 정보')}>
                     <Image source={product.selectedImage} style={styles.image} />
@@ -130,3 +125,42 @@ const styles = StyleSheet.create({
 });
 
 export default Chating;
+*/
+
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+const MyChatListScreen = () => {
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>나의 채팅방 목록</Text>
+            </View>
+            {/* 나머지 화면 내용 */}
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+    },
+    header: {
+        backgroundColor: '#DDEAF6',
+        padding: 10,
+        
+        justifyContent: 'center',
+    },
+    headerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000',
+        marginLeft: 10,
+    },
+});
+
+export default MyChatListScreen;
+
+
+

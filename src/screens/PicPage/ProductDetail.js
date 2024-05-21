@@ -5,7 +5,7 @@ import { BASE_URL } from '../../constants/api.js';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 
-const ProductDetailPage = ({ route , navigation}) => {
+const ProductDetailPage = ({ route, navigation }) => {
   const { token, userNickname } = useAuth(); // 로그인된 사용자 토큰 가져오기
   const { id } = route.params;
   console.log("넘어갈 때 들어오는 Id값", id);
@@ -24,7 +24,6 @@ const ProductDetailPage = ({ route , navigation}) => {
     }
   };
 
-
   useEffect(() => {
     if (categoryWidth === 0) {
       // Calculate the width of the category text
@@ -33,8 +32,6 @@ const ProductDetailPage = ({ route , navigation}) => {
     }
     getProductById();
     checkFavorite();
-    // getProductById();
-    // getProductFavoriteId();
   }, [categoryWidth, id]);
 
   const checkFavorite = async () => {
@@ -53,10 +50,9 @@ const ProductDetailPage = ({ route , navigation}) => {
       console.log("찜한 상품인가?", isLiked);
     } catch (error) {
       console.error('Error checkFavorite:', error);
-    } finally {
-      // setIsLoading(false);
     }
   };
+
   const getProductById = async () => {
     console.log(id);
     try {
@@ -65,10 +61,9 @@ const ProductDetailPage = ({ route , navigation}) => {
       console.log(product);
     } catch (error) {
       console.error('Error fetching products:', error);
-    } finally {
-      // setIsLoading(false);
     }
   };
+
   const addFav = async (id, token) => {
     console.log("addFav", id);
     try {
@@ -96,6 +91,7 @@ const ProductDetailPage = ({ route , navigation}) => {
       // 오류 처리해야댐
     }
   };
+
   const getProductFavoriteId = async (productId) => {
     try {
       const response = await axios.get(
@@ -131,17 +127,9 @@ const ProductDetailPage = ({ route , navigation}) => {
     }
   };
 
-
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={{ width: '100%', height: '45%' }} />
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingTop: 10, paddingBottom: 10, }}> 
-        <Ionicons name="person-circle-outline" size={50} color="black" />
-        <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontSize: 17, fontWeight: 'bold', paddingBottom: 2 }}>{product.sellerName}</Text>
-          <Text style={{ fontSize: 13, paddingTop: 2, }}>{product.Location}</Text>
-        </View>
-      </View> */}
       <TouchableOpacity
         onPress={() => navigation.navigate('판매자 정보', { sellerName: product.sellerName, sellerLocation: product.Location })}
         style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingTop: 10, paddingBottom: 10 }}>
@@ -155,7 +143,7 @@ const ProductDetailPage = ({ route , navigation}) => {
       <View style={{ padding: 10, marginLeft: '3%', marginRight: '5%', }}>
         <Text style={{ fontSize: 18, fontWeight: 'bold', }}>{product.title}</Text>
       </View>
-      <View style={{ backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', width: categoryWidth + 7, marginLeft: '5%', justifyContent: 'center' }}>
+      <View style={{ backgroundColor: '#DDEAF6', borderRadius: 20, flexDirection: 'row', width: 100, marginLeft: '5%', justifyContent: 'center', paddingVertical: 6 }}>
         <Text style={{ fontSize: 13, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 5 }}>{product.category}</Text>
       </View>
       <View style={{ padding: 10, marginLeft: '3%', marginRight: '5%' }}>
@@ -178,9 +166,11 @@ const ProductDetailPage = ({ route , navigation}) => {
           </View>
         </View>
 
-
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: '1%' }}>
-          <TouchableOpacity style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 130, paddingVertical: 15, borderRadius: 35, marginTop: '3%', }}>
+          <TouchableOpacity
+            style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 130, paddingVertical: 15, borderRadius: 35, marginTop: '3%', }}
+            onPress={() => navigation.navigate('ChatingScreen')}
+          >
             <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold', }}>채팅 보내기</Text>
           </TouchableOpacity>
         </View>

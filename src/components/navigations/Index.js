@@ -44,6 +44,7 @@ import KeywordRegis from '../KeywordRegis.js';
 import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 import TraderInput from '../../screens/myPage/TraderInput.js';
 import EditPost from '../../screens/userTrans/ReWriting.js';
+import ChatingScreen from '../../screens/userTrans/ChatingScreen.js'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -261,9 +262,9 @@ function RootNavigator() {
             <Stack.Screen name="ChangePW2" component={ChangePw2} />
             <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
+            <Stack.Screen name="ChatingScreen" component={ChatingScreen} />
         </Stack.Navigator>
     );
-    1;
 }
 
 export default function Navigation() {
