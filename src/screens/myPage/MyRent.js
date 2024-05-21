@@ -61,9 +61,9 @@ const MyRent = ({navigation }) => {
 
 
                 <View style={styles.horizontal}>
-                    <Text style={styles.price}>₩{product.price}</Text>
+                    <Text style={styles.price}>{product.price}</Text>
                     <View style={styles.duration}>
-                        <Text >반납일 : {product.endDate.substring(0, 10)}</Text>
+                        <Text >반납일 : {product.endDate}</Text>
                     </View>
 
                 </View>
