@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable, ScrollView } from "react-native";
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
 import { useAuth } from '../../contexts/AuthContext';
+
 
 
 const SellerInfo = ({ navigation, route }) => {
@@ -47,6 +48,9 @@ const SellerInfo = ({ navigation, route }) => {
     };
     const ProductItem = ({ product }) => (
 
+
+
+
         <View style={styles.productContainer}>
 
             <Pressable
@@ -79,9 +83,13 @@ const SellerInfo = ({ navigation, route }) => {
 
         </View>
 
+
     );
 
     return (
+
+
+
 
         <View style={{ backgroundColor: 'white' }}>
 
@@ -105,15 +113,17 @@ const SellerInfo = ({ navigation, route }) => {
                 <Text style={styles.h1}>{user.name}님이 렌트 중인 상품
                 </Text>
             </View>
+            <ScrollView>
 
-            <View style={styles.productView}>
-                {products.map(product => (
-                    <ProductItem key={product.id} product={product} />
-                ))}
-            </View>
-
+                <View style={styles.productView}>
+                    {products.map(product => (
+                        <ProductItem key={product.id} product={product} />
+                    ))}
+                </View>
+            </ScrollView >
 
         </View>
+
 
     );
 };
