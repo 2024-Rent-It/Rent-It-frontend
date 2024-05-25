@@ -79,7 +79,7 @@ const TraderInput = ({ navigation, route }) => {
 
     return (
         <View
-            style={{ backgroundColor: '#ECECEC', }}>
+            style={{ backgroundColor: '#ECECEC',height:'150%' }}>
 
             <Text style={styles.t1}>거래하는 상대방의 닉네임을 입력해주세요</Text>
 
