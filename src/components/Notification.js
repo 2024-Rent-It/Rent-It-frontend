@@ -1,17 +1,67 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, Pressable} from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-
+import { useAuth } from '../../src/contexts/AuthContext.js'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../src/constants/api.js';
 
 const Tab = createMaterialTopTabNavigator();
 
-const Notification = () => {
+const Notification = ({ navigation }) => {
+  const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
 
-  const [notifications, setNotifications] = useState([
-    { id: 1, type: '활동 알람', message: '상품 가격이 내려갔습니다.', productId: 1, priceChange: '-1,000원', keyword: '', timestamp: new Date() },
-    { id: 2, type: '키워드 알람', message: '내가 등록한 키워드를 포함한 상품이 등록되었습니다.', productId: 1, priceChange: '-1,000원', keyword: '케론인', timestamp: new Date() },
-  ]);
+  
+
+  // const [notifications, setNotifications] = useState([
+  //   { id: 1, type: '활동 알람', message: '상품 가격이 내려갔습니다.', productId: 1, priceChange: '-1,000원', keyword: '', timestamp: new Date() },
+  //   { id: 2, type: '키워드 알람', message: '내가 등록한 키워드를 포함한 상품이 등록되었습니다.', productId: 1, priceChange: '-1,000원', keyword: '케론인', timestamp: new Date() },
+  // ]);
+
+  const [notifications, setNotifications] = useState([]);
+  // [{"createdAt": "2024-05-27T23:23:58.903585", "id": 4, "keyword": "의자", "message": "\"의자\" 상품이 등록되었습니다! 확인하러 가 볼까요?", "productId": 21, "type": "키워드 알람"}]
+
+  useEffect(() => {
+    fetchKeywordNotifications();
+}, []);
+
+  const fetchKeywordNotifications = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/keyword-notification`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+    setNotifications([...response.data]);
+
+      console.log("확인하자",response.data);
+
+
+    } catch (error) {
+      console.error('알림 데이터 받아오는 에러:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // = async () => {
+//     try {
+//         const response = await fetch('${BASE_URL}/keyword-notification', {
+//             method: 'GET',
+//             headers: {
+//                 'Authorization': `Bearer ${token}` // 토큰을 헤더에 포함
+//             }
+//         });
+//         if (response.ok) {
+//             const data = await response.data;
+//             console.log("키워드 알림 보자", data);
+//             setKeywordNotifications(data);
+//         } else {
+//             console.error('Failed to fetch notifications');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching notifications:', error);
+//     }
+// };
 
   const getDaysAgo = (timestamp) => {
     const now = new Date();
@@ -28,11 +78,14 @@ const Notification = () => {
 
 
 
-  const NotificationItem = ({ notification }) => (
+  const NotificationItem = ({ notification, keywordNotifications }) => (
 
     <View style={styles.notificationContainer}>
 
-      <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('상세 화면', { id: notification.id });
+        }}>
 
         <View style={[styles.imageContainer, { alignItems: 'center', justifyContent: 'center' }]}>
           <AntDesign name="home" size={50} color="black" />
@@ -43,16 +96,26 @@ const Notification = () => {
       <View style={styles.infoContainer}>
         {notification.type === '활동 알람' && (
           <>
-            <Text style={styles.message}>{notification.message}</Text>
-            <Text style={styles.priceChange}>{notification.priceChange}</Text>
-            <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('상세 화면', { id: notification.id });
+              }}>
+              <Text style={styles.message}>{notification.message}</Text>
+              <Text style={styles.priceChange}>{notification.priceChange}</Text>
+              <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text>
+            </Pressable>
           </>
         )}
         {notification.type === '키워드 알람' && (
           <>
-            {/* <Text>{notification.message}</Text> */}
-            <Text style={styles.message}>{`\"${notification.keyword}\" 상품이 등록되었습니다! \n 확인하러 가 볼까요?`}</Text>
-            <Text>{`${notification.daysAgo}일 전`}</Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('상세 화면', { id: notification.productId });
+              }}>
+              <Text style={styles.message}>{`\"${notification.keyword}\" 상품이 등록되었습니다! \n 확인하러 가 볼까요?`}</Text>
+              {/* <Text>{`${notification.daysAgo}일 전`}</Text> */}
+            </Pressable>
+
           </>
         )}
 
