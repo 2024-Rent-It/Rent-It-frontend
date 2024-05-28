@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { 
+    Platform,
     FlatList, 
     ScrollView, 
     TouchableOpacity, 
@@ -20,6 +21,96 @@ import { BASE_URL } from '../constants/api.js';
 import { useAuth } from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// 이 아래는 Notification 관련 Import 입니다.
+import Constants from 'expo-constants';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+// import { useState, useEffect, useRef } from 'react';
+// 이 위는 Notification 관련 Import 입니다.
+
+// 이 아래는 Notification 관련 Config 입니다.
+// App이 foreground 일 때 작동 config
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
+});
+// 이 위는 Notification 관련 Config 입니다.
+
+// 이 아래는 Notification 권한 관련 Function 입니다.
+function handleRegistrationError(errorMessage) {
+    // console.log("프로젝트에러에러에러");
+    // Noti permission 관련 오류를 처리해주는 Func.
+    alert(errorMessage);
+    throw new Error(errorMessage);
+}
+
+async function registerForPushNotificationsAsync(userNickname) {
+    // console.log('aaaa', projectId, '야 이거 맞냐');
+    // console.log('projectId', projectId);
+    // Noti permission을 받아오는 Func.
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+
+    if (Device.isDevice) {
+        const { status: existingStatus } =
+            await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            handleRegistrationError('알림 권한이 없습니다');
+            return;
+        }
+        const projectId =
+            Constants?.expoConfig?.extra?.eas?.projectId ??
+            Constants?.easConfig?.projectId;
+        if (!projectId) {
+            handleRegistrationError('Project id를 설정해 주세요.');
+        }
+        try {
+            const pushTokenString = (
+                await Notifications.getExpoPushTokenAsync({
+                    projectId,
+                })
+            ).data;
+            
+            console.log("유저닉네임, 토큰 확인", userNickname, pushTokenString);
+            const tokenData = {
+                nickname : userNickname,
+                token: pushTokenString,
+            };
+
+            await fetch(`${BASE_URL}/tokens/register`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tokenData),
+            });
+
+            console.log(pushTokenString);
+            console.log("확인됐음.");
+            return pushTokenString;
+        } catch (e) {
+            handleRegistrationError(`${e}`);
+        }
+    } else {
+        handleRegistrationError('실제 기기에서만 테스트 가능합니다!');
+    }
+}
+
 const Home = () => {
     const navigation = useNavigation();
     const [activeSlide, setActiveSlide] = useState(0);
@@ -30,7 +121,11 @@ const Home = () => {
     }, []);
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { userLocation } = useAuth(); // 로그인된 사용자 지역 가져오기
+    const { userLocation,userNickname } = useAuth(); // 로그인된 사용자 지역 가져오기
+    const [expoPushToken, setExpoPushToken] = useState('');
+    // const [productName, setProductName] = useState<string>('');
+
+
 
     const { width } = Dimensions.get('window');
     const numColumns = 3;
@@ -38,6 +133,9 @@ const Home = () => {
     
     useEffect(() => {
         getProductsByLocation();
+        registerForPushNotificationsAsync(userNickname)
+        .then((token) => setExpoPushToken(token ?? ''))
+        .catch((error) => setExpoPushToken(`${error}`));
     }, []);
 
     const getProductsByLocation = async () => {
@@ -216,7 +314,7 @@ const Home = () => {
             <StyledProductContainer>
                 {renderSunImages()} 
                 
-            <Text style={styles.productHeaderText}>새로운 대여 가능 목록📋</Text>
+            <Text style={styles.productHeaderText}>새로운 대여 가능 목록</Text>
                 {chunkedItems.map((row, index) => (
                     <RowContainer key={index}>
                         {row.map((product, idx) => (
