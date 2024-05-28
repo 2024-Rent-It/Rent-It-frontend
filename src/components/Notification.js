@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, Pressable} from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
 
 const Tab = createMaterialTopTabNavigator();
 
-const Notification = () => {
+const Notification = ({ navigation }) => {
 
   const [notifications, setNotifications] = useState([
     { id: 1, type: '활동 알람', message: '상품 가격이 내려갔습니다.', productId: 1, priceChange: '-1,000원', keyword: '', timestamp: new Date() },
@@ -32,7 +32,10 @@ const Notification = () => {
 
     <View style={styles.notificationContainer}>
 
-      <Pressable onPress={() => navigation.navigate('ProductDetail')}>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('상세 화면', { id: notification.id });
+        }}>
 
         <View style={[styles.imageContainer, { alignItems: 'center', justifyContent: 'center' }]}>
           <AntDesign name="home" size={50} color="black" />
@@ -43,16 +46,26 @@ const Notification = () => {
       <View style={styles.infoContainer}>
         {notification.type === '활동 알람' && (
           <>
-            <Text style={styles.message}>{notification.message}</Text>
-            <Text style={styles.priceChange}>{notification.priceChange}</Text>
-            <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('상세 화면', { id: notification.id });
+              }}>
+              <Text style={styles.message}>{notification.message}</Text>
+              <Text style={styles.priceChange}>{notification.priceChange}</Text>
+              <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text>
+            </Pressable>
           </>
         )}
         {notification.type === '키워드 알람' && (
           <>
-            {/* <Text>{notification.message}</Text> */}
-            <Text style={styles.message}>{`\"${notification.keyword}\" 상품이 등록되었습니다! \n 확인하러 가 볼까요?`}</Text>
-            <Text>{`${notification.daysAgo}일 전`}</Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('상세 화면', { id: notification.id });
+              }}>
+              <Text style={styles.message}>{`\"${notification.keyword}\" 상품이 등록되었습니다! \n 확인하러 가 볼까요?`}</Text>
+              <Text>{`${notification.daysAgo}일 전`}</Text>
+            </Pressable>
+
           </>
         )}
 
