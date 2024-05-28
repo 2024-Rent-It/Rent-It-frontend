@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, KeyboardAvoidingView, SafeAreaView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, KeyboardAvoidingView, SafeAreaView, Image, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ChatScreen = ({ productId }) => {
@@ -38,8 +38,12 @@ const ChatScreen = ({ productId }) => {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        >
+            <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                     {product && (
                         <>
@@ -51,31 +55,29 @@ const ChatScreen = ({ productId }) => {
                         </>
                     )}
                 </View>
-                <View style={styles.messageListContainer}>
-                    <FlatList
-                        data={messages}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        style={styles.messageList}
-                        contentContainerStyle={styles.messageListContent}
-                    />
-                </View>
-                
+                <FlatList
+                    data={messages}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    style={styles.messageList}
+                    contentContainerStyle={styles.messageListContent}
+                    inverted
+                />
                 <View style={styles.inputContainer}>
                     <View style={styles.textInputContainer}>
                         <TextInput
                             style={styles.input}
                             value={input}
                             onChangeText={setInput}
-                            //placeholder="메시지를 입력하세요..."
+                            placeholder="메시지를 입력하세요..."
                         />
                     </View>
                     <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
                         <Icon name="send" size={24} color="#000" />
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 };
 
@@ -137,7 +139,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         backgroundColor: '#DDEAF6',
-        marginBottom: 5,
     },
     textInputContainer: {
         flex: 1,
@@ -148,7 +149,6 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         paddingHorizontal: 20,
         fontSize: 16,
-        marginLeft: 10,
     },
     iconButton: {
         justifyContent: 'center',
