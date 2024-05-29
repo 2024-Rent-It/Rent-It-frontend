@@ -19,7 +19,7 @@ const ChangePw = ({ navigation }) => {
                 }
             });
             Alert.alert('확인되었습니다.');
-            navigation.navigate("ChangePW2");
+            navigation.navigate("비밀번호 변경");
         } catch (error) {
             Alert.alert('비밀번호가 틀렸습니다. 다시 입력해주세요.');
             if (error.response) {
