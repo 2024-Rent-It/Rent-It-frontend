@@ -346,9 +346,11 @@ const Home = () => {
 
     return (
         <ScrollView
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
+    contentContainerStyle={{ flexGrow: 1, backgroundColor: 'white' }}
+    refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }
+>
                 
             <PickerComponent />
             {renderIconItem()}
