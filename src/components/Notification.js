@@ -1,6 +1,6 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable,ScrollView } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { useAuth } from '../../src/contexts/AuthContext.js'; // AuthContext 파일의 useAuth 훅 가져오기
 import axios from 'axios';
@@ -11,7 +11,7 @@ const Tab = createMaterialTopTabNavigator();
 const Notification = ({ navigation }) => {
   const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
 
-  
+
 
   // const [notifications, setNotifications] = useState([
   //   { id: 1, type: '활동 알람', message: '상품 가격이 내려갔습니다.', productId: 1, priceChange: '-1,000원', keyword: '', timestamp: new Date() },
@@ -23,18 +23,18 @@ const Notification = ({ navigation }) => {
 
   useEffect(() => {
     fetchKeywordNotifications();
-}, []);
+  }, []);
 
   const fetchKeywordNotifications = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/keyword-notification`, {
         headers: {
-            'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         }
-    });
-    setNotifications([...response.data]);
+      });
+      setNotifications([...response.data]);
 
-      console.log("확인하자",response.data);
+      console.log("확인하자", response.data);
 
 
     } catch (error) {
@@ -44,24 +44,24 @@ const Notification = ({ navigation }) => {
     }
   };
   // = async () => {
-//     try {
-//         const response = await fetch('${BASE_URL}/keyword-notification', {
-//             method: 'GET',
-//             headers: {
-//                 'Authorization': `Bearer ${token}` // 토큰을 헤더에 포함
-//             }
-//         });
-//         if (response.ok) {
-//             const data = await response.data;
-//             console.log("키워드 알림 보자", data);
-//             setKeywordNotifications(data);
-//         } else {
-//             console.error('Failed to fetch notifications');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching notifications:', error);
-//     }
-// };
+  //     try {
+  //         const response = await fetch('${BASE_URL}/keyword-notification', {
+  //             method: 'GET',
+  //             headers: {
+  //                 'Authorization': `Bearer ${token}` // 토큰을 헤더에 포함
+  //             }
+  //         });
+  //         if (response.ok) {
+  //             const data = await response.data;
+  //             console.log("키워드 알림 보자", data);
+  //             setKeywordNotifications(data);
+  //         } else {
+  //             console.error('Failed to fetch notifications');
+  //         }
+  //     } catch (error) {
+  //         console.error('Error fetching notifications:', error);
+  //     }
+  // };
 
   const getDaysAgo = (timestamp) => {
     const now = new Date();
@@ -124,20 +124,35 @@ const Notification = ({ navigation }) => {
 
   );
 
-  const ActivityNoti = ({ navigation }) => (
-    <View style={{ backgroundColor: 'white' }}>
+
+
+  const ActivityNoti = () => (
+
+    <ScrollView style={styles.notiBackground}>
       {notifications.map(notification => (
         notification.type === '활동 알람' && <NotificationItem key={notification.id} notification={notification} />
       ))}
-    </View>
-
+    </ScrollView>
   );
 
   const KeywordNoti = ({ navigation }) => (
-    <View >
-      {notifications.map(notification => (
+    <ScrollView style={styles.notiBackground}>
+      {/* {notifications.map(notification => (
         notification.type === '키워드 알람' && <NotificationItem key={notification.id} notification={notification} />
-      ))}
+      ))} */}
+      {notifications.length === 0 ? (
+        <View style={styles.keywordEmpty}>
+
+          <Text style={styles.t1}>
+            받은 알림이 없어요.{"\n"} 키워드 등록하고 알림을 받아보세요.
+          </Text>
+        </View>
+      ) : (
+        notifications.map(notification => (
+          notification.type === '키워드 알람' && <NotificationItem key={notification.id} notification={notification} />
+        ))
+      )}
+
 
       <View style={styles.buttonContainer}>
         <Pressable
@@ -148,7 +163,7 @@ const Notification = ({ navigation }) => {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 
 
@@ -165,6 +180,7 @@ const Notification = ({ navigation }) => {
 const styles = StyleSheet.create({
 
   notificationContainer: {
+    borderTopWidth: 0.2,
     height: 105,
     flexDirection: 'row',
     alignItems: 'center',
@@ -172,7 +188,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
     paddingVertical: 10,
-    backgroundColor: 'white',
 
   },
   productContainer: {
@@ -203,6 +218,11 @@ const styles = StyleSheet.create({
     width: 20,
     marginBottom: '1%',
   },
+  notiBackground: {
+    flex: 1,
+    height: "120%",
+    backgroundColor: 'white'
+  },
   message: {
     fontSize: 17,
     marginBottom: '1%',
@@ -231,6 +251,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 10,
     fontWeight: 'bold', // 텍스트를 볼드체로 변경
+  },
+  keywordEmpty: {
+    marginTop:200,
+    marginBottom:10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  t1: {
+    fontSize: 18,
+    textAlign: 'center',
+    lineHeight:30,
   },
 });
 
