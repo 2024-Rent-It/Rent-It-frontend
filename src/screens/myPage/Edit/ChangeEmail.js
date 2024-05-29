@@ -18,7 +18,7 @@ const ChangeEmail = ({ navigation }) => {
             // const response = await axios.get(`http://localhost:8080/emails/${email}`);
             const response = await axios.get(`${BASE_URL}${checkEmailPath}`);
             Alert.alert(response.data);
-            console.log("checkEmailPath",checkEmailPath);
+            console.log("checkEmailPath", checkEmailPath);
             if (response.data === "사용 가능한 이메일입니다.") {
                 setIsEmailDuplicateChecked(true);
             }
@@ -60,16 +60,12 @@ const ChangeEmail = ({ navigation }) => {
         }
     }
     return (
-        <View
-            style={{ backgroundColor: '#ECECEC', height: '100%' }}>
+        <View>
             <Text style={styles.t1}>💡변경하려는 이메일을 입력해주세요</Text>
-            <View>
-                <TextInput />
-            </View>
 
             <View style={styles.input_field}>
 
-                <View style={styles.horizon} width={"100%"}>
+                <View style={styles.horizon} width={"100%"} >
                     <TextInput
                         keyboardType="email-address"
                         style={styles.input}
@@ -90,40 +86,39 @@ const ChangeEmail = ({ navigation }) => {
                         <Text style={styles.h2}>중복확인</Text>
                     </Pressable>
                 </View>
-            </View>
 
-            <Pressable
-                style={styles._button3} backgroundColor={"#A7C8E7"}
-                onPress={() => {
-                    updateEmail(newEmail, token);
-                    //navigation.navigate("Root")
-                }}
-            >
-                <Text style={styles.h2}>변경</Text>
-            </Pressable>
+                <Pressable
+                    style={styles._button3} backgroundColor={"#A7C8E7"}
+                    onPress={() => {
+                        updateEmail(newEmail, token);
+                    }}
+                >
+                    <Text style={styles.h2}>변경</Text>
+                </Pressable>
+            </View>
 
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    t1: {  //질문 (~~을 입력해주세요)
+    t1: { 
         fontSize: 20,
         margin: 10,
-        marginBottom: 0,
+        marginBottom: 15,
         fontWeight: 'bold'
     },
     input_field: {
-        marginBottom: "5%",
+        height:100,
     },
-    h2: {  //중복확인
+    h2: {
         fontSize: 18,
     },
     horizon: {
         flexDirection: "row",
-        marginBottom: "140%",
+        marginBottom: "6%",
     },
-    input: {  //입력
+    input: {  
         height: 60,
         borderRadius: 16,
         borderColor: "#ffffff",

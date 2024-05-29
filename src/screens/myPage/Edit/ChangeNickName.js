@@ -67,10 +67,8 @@ const ChangeNickName = ({ navigation }) => {
 
 
     return (
-        <View
-            style={{ backgroundColor: '#ECECEC', height: '100%' }}>
+        <View>
             <Text style={styles.t1}>💡변경하려는 닉네임을 입력해주세요</Text>
-
 
             <View style={styles.input_field}>
 
@@ -123,13 +121,15 @@ const styles = StyleSheet.create({
     input_field: {
         marginTop: "3%",
         marginBottom: "5%",
+        height:100,
+        // borderWidth:1,
     },
     h2: {
         fontSize: 18,
     },
     horizon: {
         flexDirection: "row",
-        marginBottom: "140%",
+        marginBottom: "6%",
     },
     input: {
         height: 60,
