@@ -343,7 +343,7 @@ const Home = () => {
         </View>
     );
     
-
+//홈화면 스타일 수정
     return (
         <ScrollView
     contentContainerStyle={{ flexGrow: 1, backgroundColor: 'white' }}
