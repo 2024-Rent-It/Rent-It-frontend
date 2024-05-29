@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Image, TouchableOpacity, StyleSheet, Text, Alert} from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import krr from "../../../assets/images/k.png";
+// import krr from "../../../assets/images/k.png";
+import { Ionicons } from '@expo/vector-icons';
 import { View } from "react-native";
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
@@ -11,26 +12,23 @@ const MyPage = ({ navigation }) => {
     const { userNickname } = useAuth();
 
     const handleLogout = () => {
-    logout(); // 로그아웃 함수 호출
-    Alert.alert('로그아웃 성공', '로그아웃되었습니다.');
-    navigation.navigate('Onboarding')
-  };
+        logout(); // 로그아웃 함수 호출
+        Alert.alert('로그아웃 성공', '로그아웃되었습니다.');
+        navigation.navigate('Onboarding')
+    };
 
     return (
-        <View style={{ height: '100%',backgroundColor: 'white', padding: 30 }} >
+        <View style={{ height: '100%', backgroundColor: 'white', padding: 30 }} >
 
             <View style={{ flexDirection: 'row' }} >
 
-                <Image source={krr} style={styles.ProfileImage} />
-                <TouchableOpacity onPress={() => alert('clicked!')}>
-                    <MaterialCommunityIcons name="plus-circle" size={24} color="black" />
-                </TouchableOpacity>
+                <Ionicons name="person-circle-outline" size={55} color="black" />
 
                 <StyledText style={{ flex: 1 }}>
                     {userNickname}
                 </StyledText>
 
-                <TouchableOpacity onPress={() => navigation.navigate('EditInfo')}
+                <TouchableOpacity onPress={() => navigation.navigate('정보 수정')}
                     style={styles.Edit}
                 >
                     <Text style={{ fontSize: 15, alignItems: 'center', fontWeight: 'bold' }}>
@@ -102,14 +100,6 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity onPress={() => navigation.navigate('LocationService')}
-                    style={{ paddingVertical: 6 }}
-                >
-                    <Text style={styles.text}>
-                        위치기반 서비스 이용약관
-                    </Text>
-                </TouchableOpacity> */}
-
                 <TouchableOpacity onPress={() => navigation.navigate('버전 정보')}
                     style={{ paddingVertical: 6 }}
                 >
@@ -120,7 +110,7 @@ const MyPage = ({ navigation }) => {
 
             </View>
 
-            <View style={[styles.container,{ borderBottomWidth: 0 }]}>
+            <View style={[styles.container, { borderBottomWidth: 0 }]}>
 
                 <TouchableOpacity onPress={() => navigation.navigate('공지사항')}
                     style={{ paddingVertical: 6 }}
@@ -172,12 +162,6 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         fontSize: 17,
-    },
-    ProfileImage: {
-        aspectRatio: 1,
-        width: '18%',
-        height: '18%',
-        borderRadius:40,
     },
     Edit: {
         width: 100,

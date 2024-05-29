@@ -111,9 +111,9 @@ const SharedStack = ({ tabName }) => (
                 <Stack.Screen name="마이페이지" component={MyPage} />
                 {/* 상단 */}
                 <>
-                    <Stack.Screen name="EditInfo" component={EditInfo} />
+                    <Stack.Screen name="정보 수정" component={EditInfo} />
                     <>
-                        <Stack.Screen name="MyInfo" component={MyInfo} />
+                        <Stack.Screen name="내 정보" component={MyInfo} />
                         <>
                             <Stack.Screen
                                 name="ChangeNickName"
@@ -130,7 +130,7 @@ const SharedStack = ({ tabName }) => (
                         </>
                     </>
                     <Stack.Screen
-                        name="LocationSetting"
+                        name="지역 설정"
                         component={LocationSetting}
                     />
                 </>
