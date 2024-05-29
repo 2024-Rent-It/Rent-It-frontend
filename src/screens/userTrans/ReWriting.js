@@ -93,7 +93,7 @@ const EditPost = ({ route }) => {
             });
             if (response.ok) {
                 Alert.alert('제품이 성공적으로 업데이트되었습니다.');
-                navigation.navigate('HomeTab');
+                navigation.navigate('내 상품 관리');
             } else {
                 throw new Error('제품 업데이트에 실패했습니다.');
             }
