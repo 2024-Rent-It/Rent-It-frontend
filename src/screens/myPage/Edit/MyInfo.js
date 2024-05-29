@@ -3,36 +3,6 @@ import { StyleSheet } from 'react-native';
 import React from "react";
 import { useAuth } from '../../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 
-const styles = StyleSheet.create({
-    edit: {
-        backgroundColor: 'white',
-        borderRadius: '20',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 5,
-    },
-    InfoList: {
-        borderBottomWidth: 0.2,
-        padding: 10,
-        flexDirection:'row',
-        height:60,
-    },
-    InfoText:{
-        margin:3,
-        width:'88%',
-    },
-    InfoTitle: {
-        fontSize: 20,
-    },
-    InfoDetail: {
-
-    },
-    EditButton:{
-        fontSize:20,
-        marginTop:10,
-        fontWeight:'bold',
-    },
-});
 
 const MyInfo = ({ navigation }) => {
     const { userNickname } = useAuth();
@@ -81,3 +51,33 @@ const MyInfo = ({ navigation }) => {
 };
 
 export default MyInfo;
+
+const styles = StyleSheet.create({
+    edit: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 5,
+    },
+    InfoList: {
+        borderBottomWidth: 0.2,
+        padding: 10,
+        flexDirection:'row',
+        height:60,
+    },
+    InfoText:{
+        margin:3,
+        width:'88%',
+    },
+    InfoTitle: {
+        fontSize: 20,
+    },
+    InfoDetail: {
+
+    },
+    EditButton:{
+        fontSize:20,
+        marginTop:10,
+        fontWeight:'bold',
+    },
+});
