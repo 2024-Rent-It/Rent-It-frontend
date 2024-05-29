@@ -18,7 +18,7 @@ const EditPost = ({ route }) => {
     const [description, setDescription] = useState('');
     const [selectedImages, setSelectedImages] = useState([]);
     const [showCategoryList, setShowCategoryList] = useState(false);
-    const [showDurationList, setShowDurationList] = useState(false); // 추가
+    const [showDurationList, setShowDurationList] = useState(false);
 
     useEffect(() => {
         fetchProductData(productId);
@@ -36,7 +36,9 @@ const EditPost = ({ route }) => {
             setPrice(productData.price.toString());
             setDuration(productData.duration);
             setDescription(productData.description);
-            setSelectedImages(productData.images);
+            if (productData.productImages) {
+                setSelectedImages(productData.productImages.map(image => ({ uri: `${BASE_URL}/images/${image}`, existing: true })));
+            }
         } catch (error) {
             console.error('제품 데이터를 가져오는 중 오류 발생:', error);
         }
@@ -51,7 +53,7 @@ const EditPost = ({ route }) => {
         });
 
         if (!result.cancelled && result.assets) {
-            setSelectedImages([...selectedImages, ...result.assets]);
+            setSelectedImages([...selectedImages, ...result.assets.map(asset => ({ uri: asset.uri, existing: false }))]);
             console.log(result.assets); // 이미지 URI 확인용
         }
     };
@@ -70,13 +72,16 @@ const EditPost = ({ route }) => {
             formData.append('price', price);
             formData.append('duration', duration);
             formData.append('description', description);
-            selectedImages.forEach((image, index) => {
-                formData.append(`images`, {
-                    uri: image.uri,
-                    name: image.uri.split('/').pop(),
-                    type: `image/${image.uri.split('.').pop()}`,
+            if (selectedImages.length > 0) { // 이미지가 선택된 경우에만 추가
+                selectedImages.forEach((image, index) => {
+                    formData.append('images', {
+                        uri: image.uri,
+                        name: image.uri.split('/').pop(),
+                        type: `image/${image.uri.split('.').pop()}`,
+                    });
                 });
-            });
+            }
+            console.log("전송되는 FormData:", formData);
             const response = await fetch(`${BASE_URL}/products/${productId}`, {
                 method: 'PUT',
                 headers: {
