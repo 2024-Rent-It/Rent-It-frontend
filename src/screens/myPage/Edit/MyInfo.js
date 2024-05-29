@@ -19,7 +19,7 @@ const MyInfo = ({ navigation }) => {
                             <Text style={styles.InfoTitle}>닉네임</Text>
                             <Text style={styles.InfoDetail}>{userNickname}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('ChangeNickName')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('닉네임 변경')}>
                             <Text style={styles.EditButton}>변경</Text>
                         </TouchableOpacity>
                     </View>
@@ -29,7 +29,7 @@ const MyInfo = ({ navigation }) => {
                             <Text style={styles.InfoTitle}>비밀번호</Text>
                             <Text style={styles.InfoDetail}>****</Text>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('ChangePw')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('비밀번호 확인')}>
                             <Text style={styles.EditButton}>변경</Text>
                         </TouchableOpacity>
                     </View>
@@ -39,7 +39,7 @@ const MyInfo = ({ navigation }) => {
                             <Text style={styles.InfoTitle}>이메일</Text>
                             <Text style={styles.InfoDetail}>{userEmail}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('ChangeEmail')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('이메일 변경')}>
                             <Text style={styles.EditButton}>변경</Text>
                         </TouchableOpacity>
                     </View>

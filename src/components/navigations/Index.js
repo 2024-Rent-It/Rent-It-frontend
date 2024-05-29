@@ -116,15 +116,15 @@ const SharedStack = ({ tabName }) => (
                         <Stack.Screen name="내 정보" component={MyInfo} />
                         <>
                             <Stack.Screen
-                                name="ChangeNickName"
+                                name="닉네임 변경"
                                 component={ChangeNickName}
                             />
                             <Stack.Screen
-                                name="ChangePw"
+                                name="비밀번호 확인"
                                 component={ChangePw}
                             />
                             <Stack.Screen
-                                name="ChangeEmail"
+                                name="이메일 변경"
                                 component={ChangeEmail}
                             />
                         </>
@@ -259,7 +259,7 @@ function RootNavigator() {
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
             <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
-            <Stack.Screen name="ChangePW2" component={ChangePw2} />
+            <Stack.Screen name="비밀번호 변경" component={ChangePw2} />
             <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
             <Stack.Screen name="ChatingScreen" component={ChatingScreen} />
