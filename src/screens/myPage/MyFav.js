@@ -86,7 +86,7 @@ const MyFav = ({ navigation }) => {
           </TouchableOpacity>
           <Image source={{ uri: `${BASE_URL}/images/${item.product.productImages}` }}style={styles.image} />
           <Text style={styles.name}>{item.product.title}</Text>
-          <Text style={styles.price}>{item.product.price}</Text>
+          <Text style={styles.price}>{item.product.price}원</Text>
         </View>
       </TouchableOpacity>
     );
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor:'white',
   },
   listContainer: {
     justifyContent: 'space-around',
