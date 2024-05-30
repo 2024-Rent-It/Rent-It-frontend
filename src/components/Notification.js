@@ -13,16 +13,19 @@ const Notification = ({ navigation }) => {
 
 
 
-  // const [notifications, setNotifications] = useState([
+  // const [keywordNotifications, setkeywordNotifications] = useState([
   //   { id: 1, type: '활동 알람', message: '상품 가격이 내려갔습니다.', productId: 1, priceChange: '-1,000원', keyword: '', timestamp: new Date() },
   //   { id: 2, type: '키워드 알람', message: '내가 등록한 키워드를 포함한 상품이 등록되었습니다.', productId: 1, priceChange: '-1,000원', keyword: '케론인', timestamp: new Date() },
   // ]);
 
-  const [notifications, setNotifications] = useState([]);
+  const [keywordNotifications, setKeywordNotifications] = useState([]);
   // [{"createdAt": "2024-05-27T23:23:58.903585", "id": 4, "keyword": "의자", "message": "\"의자\" 상품이 등록되었습니다! 확인하러 가 볼까요?", "productId": 21, "type": "키워드 알람"}]
+
+  const [priceDropNotifications, setPriceDropNotifications] = useState([]);
 
   useEffect(() => {
     fetchKeywordNotifications();
+    fetchPriceDropNotifications();
   }, []);
 
   const fetchKeywordNotifications = async () => {
@@ -32,7 +35,7 @@ const Notification = ({ navigation }) => {
           'Authorization': `Bearer ${token}`,
         }
       });
-      setNotifications([...response.data]);
+      setKeywordNotifications([...response.data]);
 
       console.log("확인하자", response.data);
 
@@ -40,7 +43,25 @@ const Notification = ({ navigation }) => {
     } catch (error) {
       console.error('알림 데이터 받아오는 에러:', error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+    }
+  };
+  const fetchPriceDropNotifications = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/price-drop-notification`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      setPriceDropNotifications([...response.data]);
+
+      console.log("확인하자", response.data);
+
+
+    } catch (error) {
+      console.error('알림 데이터 받아오는 에러:', error);
+    } finally {
+      // setIsLoading(false);
     }
   };
   // = async () => {
@@ -54,12 +75,12 @@ const Notification = ({ navigation }) => {
   //         if (response.ok) {
   //             const data = await response.data;
   //             console.log("키워드 알림 보자", data);
-  //             setKeywordNotifications(data);
+  //             setKeywordkeywordNotifications(data);
   //         } else {
-  //             console.error('Failed to fetch notifications');
+  //             console.error('Failed to fetch keywordNotifications');
   //         }
   //     } catch (error) {
-  //         console.error('Error fetching notifications:', error);
+  //         console.error('Error fetching keywordNotifications:', error);
   //     }
   // };
 
@@ -78,13 +99,13 @@ const Notification = ({ navigation }) => {
 
 
 
-  const NotificationItem = ({ notification, keywordNotifications }) => (
+  const NotificationItem = ({ notification}) => (
 
     <View style={styles.notificationContainer}>
 
       <Pressable
         onPress={() => {
-          navigation.navigate('상세 화면', { id: notification.id });
+          navigation.navigate('상세 화면', { id: notification.productId });
         }}>
 
         <View style={[styles.imageContainer, { alignItems: 'center', justifyContent: 'center' }]}>
@@ -94,15 +115,15 @@ const Notification = ({ navigation }) => {
       </Pressable>
 
       <View style={styles.infoContainer}>
-        {notification.type === '활동 알람' && (
+        {notification.type === '가격 하락 알람' && (
           <>
             <Pressable
               onPress={() => {
-                navigation.navigate('상세 화면', { id: notification.id });
+                navigation.navigate('상세 화면', { id: notification.productId });
               }}>
               <Text style={styles.message}>{notification.message}</Text>
-              <Text style={styles.priceChange}>{notification.priceChange}</Text>
-              <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text>
+              <Text style={styles.priceChange}>₩{notification.priceDropAmount}⬇️</Text>
+              {/* <Text style={styles.daysAgo}>{`${notification.daysAgo}일 전`}</Text> */}
             </Pressable>
           </>
         )}
@@ -129,18 +150,18 @@ const Notification = ({ navigation }) => {
   const ActivityNoti = () => (
 
     <ScrollView style={styles.notiBackground}>
-      {notifications.map(notification => (
-        notification.type === '활동 알람' && <NotificationItem key={notification.id} notification={notification} />
+      {priceDropNotifications.map(notification => (
+        notification.type === '가격 하락 알람' && <NotificationItem key={notification.id} notification={notification} />
       ))}
     </ScrollView>
   );
 
   const KeywordNoti = ({ navigation }) => (
     <ScrollView style={styles.notiBackground}>
-      {/* {notifications.map(notification => (
+      {/* {keywordNotifications.map(notification => (
         notification.type === '키워드 알람' && <NotificationItem key={notification.id} notification={notification} />
       ))} */}
-      {notifications.length === 0 ? (
+      {keywordNotifications.length === 0 ? (
         <View style={styles.keywordEmpty}>
 
           <Text style={styles.t1}>
@@ -148,7 +169,7 @@ const Notification = ({ navigation }) => {
           </Text>
         </View>
       ) : (
-        notifications.map(notification => (
+        keywordNotifications.map(notification => (
           notification.type === '키워드 알람' && <NotificationItem key={notification.id} notification={notification} />
         ))
       )}
