@@ -1,3 +1,69 @@
+/*
+import React, { useState } from 'react';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    TextInput,
+} from 'react-native';
+
+function MessageInput({ postMessage }) {
+    const [messageInput, setMessageInput] = useState('');
+    
+    const onMessageSend = () => {
+        postMessage(messageInput);
+        setMessageInput('');
+    };
+
+    return (
+        <View style={styles.messageInputOuterView}>
+            <View style={styles.messageInputInnerView}>
+                <TextInput
+                    style={styles.messageTextInput}
+                    placeholder="메시지 보내기..."
+                    value={messageInput}
+                    onChangeText={setMessageInput}
+                />
+                <TouchableOpacity
+                    style={styles.messageSendButton}
+                    onPress={onMessageSend}
+                >
+                    <FontAwesome name="send" size={18} color={'gray'} />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    messageInputOuterView: {
+        padding: 8,
+        backgroundColor: 'white',
+    },
+    messageInputInnerView: {
+        paddingVertical: 6,
+        paddingLeft: 16,
+        paddingRight: 6,
+        borderRadius: 50,
+        flexDirection: 'row',
+        backgroundColor: '#f2f2f2',
+    },
+    messageTextInput: {
+        flexGrow: 1,
+        fontSize: 16,
+    },
+    messageSendButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 50,
+        backgroundColor: '#DDEAF6',
+    },
+});
+
+export default MessageInput;
+
+*/
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, KeyboardAvoidingView, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
