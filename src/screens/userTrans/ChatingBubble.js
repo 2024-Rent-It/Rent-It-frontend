@@ -1,7 +1,8 @@
+//채팅망 말풍선 코드
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-function MessageBubble({ message, isOwnMessage, isMessageTop, isMessageBottom }) {
+function ChatingBubble({ message, isOwnMessage, isMessageTop, isMessageBottom }) {
     return (
         <View
             style={[
@@ -63,4 +64,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MessageBubble;
+export default ChatingBubble;

@@ -12,7 +12,7 @@ import { View } from 'react-native';
 import MyFav from '../../screens/myPage/MyFav';
 import Writing from '../../screens/userTrans/Writing';
 import Home from '../../screens/Home';
-import Chating from '../../screens/userTrans/Chating';
+import message from '../../screens/userTrans/ChatScreen/message.js';
 import MyPage from '../../screens/myPage/MyPage';
 import MyRent from '../../screens/myPage/MyRent';
 import MyThing from '../../screens/myPage/MyThing';
@@ -44,7 +44,7 @@ import KeywordRegis from '../KeywordRegis.js';
 import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 import TraderInput from '../../screens/myPage/TraderInput.js';
 import EditPost from '../../screens/userTrans/ReWriting.js';
-import ChatingScreen from '../../screens/userTrans/ChatingScreen.js'
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -103,7 +103,7 @@ const SharedStack = ({ tabName }) => (
             </>
         ) : null}
         {tabName === 'ChattingTab' ? (
-            <Stack.Screen name="채팅" component={Chating} />
+            <Stack.Screen name="채팅" component={message} />
             
         ) : null}
         {tabName === 'MyPageTab' ? (
@@ -262,7 +262,7 @@ function RootNavigator() {
             <Stack.Screen name="비밀번호 변경" component={ChangePw2} />
             <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
-            <Stack.Screen name="ChatingScreen" component={ChatingScreen} />
+            
         </Stack.Navigator>
     );
 }
