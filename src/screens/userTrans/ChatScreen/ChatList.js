@@ -83,19 +83,20 @@ export default function MessageRoomScreen() {
                                 </TouchableOpacity>
                             )}
                         />
-                        <TouchableOpacity
-                            style={styles.newMessageButton}
-                            onPress={() => navigation.navigate('NewMessage', { currentUserId: currentUser.id })}
-                        >
-                            <FontAwesome5 name="send" color={'gray'} size={18} style={{ marginRight: 16 }} />
-                            <Text style={styles.newMessageText}>새 대화</Text>
-                        </TouchableOpacity>
+                        
                     </>
                 )}
             </View>
         </SafeAreaView>
     );
 }
+/**<TouchableOpacity
+                            style={styles.newMessageButton}
+                            onPress={() => navigation.navigate('NewMessage', { currentUserId: currentUser.id })}
+                        >
+                            <FontAwesome5 name="send" color={'gray'} size={18} style={{ marginRight: 16 }} />
+                            <Text style={styles.newMessageText}>새 대화</Text>
+                        </TouchableOpacity> */
 
 const styles = StyleSheet.create({
     pageView: {
