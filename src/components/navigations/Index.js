@@ -12,7 +12,7 @@ import { View } from 'react-native';
 import MyFav from '../../screens/myPage/MyFav';
 import Writing from '../../screens/userTrans/Writing';
 import Home from '../../screens/Home';
-import message from '../../screens/userTrans/ChatScreen/message.js';
+import Chat from '../../screens/userTrans/ChatScreen/ChatList.js';
 import MyPage from '../../screens/myPage/MyPage';
 import MyRent from '../../screens/myPage/MyRent';
 import MyThing from '../../screens/myPage/MyThing';
@@ -103,7 +103,7 @@ const SharedStack = ({ tabName }) => (
             </>
         ) : null}
         {tabName === 'ChattingTab' ? (
-            <Stack.Screen name="채팅" component={message} />
+            <Stack.Screen name="채팅" component={Chat} />
             
         ) : null}
         {tabName === 'MyPageTab' ? (

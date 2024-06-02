@@ -10,10 +10,14 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { Image, FlatList, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { ChatingInput } from '../../../screens/userTrans/ChatingInput.js';
 import { ChatingBubble } from '../../../screens/userTrans/ChatingBubble.js';
+import { useNavigation } from '@react-navigation/native';
 // import { io } from 'socket.io-client';
+
+
 
 // Screen
 export default function MessageScreen() {
+    const navigation = useNavigation();
     // Check is focused
     const focused = useIsFocused();
     // Refs
