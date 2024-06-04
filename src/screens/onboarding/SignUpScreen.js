@@ -166,8 +166,8 @@ const SignUpTest = () => {
             });
             const responseData = await response.json();
             if (response.ok) {
-                const { nickname, email, location, token } = responseData.data;
-                login(token, nickname, email, location); // 로그인 함수 호출하여 토큰 저장
+                const { id, nickname, email, location, token } = responseData.data;
+                login(id, token, nickname, email, location); // 로그인 함수 호출하여 토큰 저장
                 Alert.alert('로그인 성공', responseData.message);
                 navigation.navigate('Root'); // Root 화면으로 이동
             } else {
