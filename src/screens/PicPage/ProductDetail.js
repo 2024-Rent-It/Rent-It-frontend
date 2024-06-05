@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 
 const ProductDetailPage = ({ route, navigation }) => {
-  const { token, userNickname } = useAuth(); // 로그인된 사용자 토큰 가져오기
+  const { token, userNickname, userId } = useAuth(); // 로그인된 사용자 토큰 가져오기
   const { id } = route.params;
   console.log("넘어갈 때 들어오는 Id값", id);
 
@@ -58,7 +58,7 @@ const ProductDetailPage = ({ route, navigation }) => {
     try {
       const response = await axios.get(`${BASE_URL}/products/${id}`);
       setProduct(response.data);
-      console.log(product);
+      console.log("상품 정보 확인",product);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -127,6 +127,30 @@ const ProductDetailPage = ({ route, navigation }) => {
     }
   };
 
+  const handleChatPress = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/chat/room`, {
+        sellerId: product.seller_id,
+        buyerId: userId,
+        productId: id,
+      });
+
+      if (response.status === 201) {
+        const roomId = response.data.data; // 'data'가 응답의 구조에 따라 달라질 수 있습니다.
+        navigation.navigate('Message', {
+          roomId: roomId,
+          roomProduct: product,
+        });
+      } else {
+        console.error('Failed to join chat room:', response);
+        Alert.alert('Error', '채팅방 만들기에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error occurred while joining chat room:', error);
+      Alert.alert('Error', 'An error occurred while trying to join the chat room.');
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Image source={{ uri: `${BASE_URL}/images/${product.productImages}` }} style={{ width: '100%', height: '45%' }} />
@@ -169,7 +193,7 @@ const ProductDetailPage = ({ route, navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: '1%' }}>
           <TouchableOpacity
             style={{ backgroundColor: '#A7C8E7', paddingHorizontal: 130, paddingVertical: 15, borderRadius: 35, marginTop: '3%', }}
-            onPress={() => navigation.navigate('ChatingScreen')}
+            onPress={handleChatPress}
           >
             <Text style={{ color: '#000000', fontSize: 20, fontWeight: 'bold', }}>채팅 보내기</Text>
           </TouchableOpacity>

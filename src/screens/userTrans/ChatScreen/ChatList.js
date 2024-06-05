@@ -62,6 +62,7 @@ const ChatRoomList = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate('Message', {
                     roomId: item.id,
+                    roomProduct: item.product
                   });
                 }}
               >

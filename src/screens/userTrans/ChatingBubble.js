@@ -2,7 +2,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-function ChatingBubble({ message, isOwnMessage, isMessageTop, isMessageBottom }) {
+export function ChatingBubble({ message, isOwnMessage, isMessageTop, isMessageBottom }) {
     return (
         <View
             style={[
@@ -21,7 +21,7 @@ function ChatingBubble({ message, isOwnMessage, isMessageTop, isMessageBottom })
                         : styles.receivedBubbleText,
                 ]}
             >
-                {message.data.text}
+                {message.message}
             </Text>
         </View>
     );
@@ -63,5 +63,3 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
-
-export default ChatingBubble;

@@ -44,7 +44,7 @@ import KeywordRegis from '../KeywordRegis.js';
 import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 import TraderInput from '../../screens/myPage/TraderInput.js';
 import EditPost from '../../screens/userTrans/ReWriting.js';
-
+import MessageScreen from '../../screens/userTrans/ChatScreen/message.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,20 +64,26 @@ const SharedStack = ({ tabName }) => (
                     component={Home}
                     options={({ navigation }) => ({
                         headerRight: () => (
-                            <View style={{ flexDirection: 'row', marginRight: 15 }}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    marginRight: 15,
+                                }}
+                            >
                                 <AntDesign
                                     name="bells"
                                     size={24}
                                     color="black"
                                     style={{ marginRight: 20 }}
                                     onPress={() => navigation.navigate('알림')}
-
                                 />
                                 <AntDesign
                                     name="search1"
                                     size={24}
                                     color="black"
-                                    onPress={() => navigation.navigate('SearchScreen')}
+                                    onPress={() =>
+                                        navigation.navigate('SearchScreen')
+                                    }
                                 />
                             </View>
                         ),
@@ -103,8 +109,10 @@ const SharedStack = ({ tabName }) => (
             </>
         ) : null}
         {tabName === 'ChattingTab' ? (
-            <Stack.Screen name="채팅" component={Chat} />
-            
+            <>
+                <Stack.Screen name="채팅" component={Chat} />
+                <Stack.Screen name="Message" component={MessageScreen} />
+            </>
         ) : null}
         {tabName === 'MyPageTab' ? (
             <>
@@ -141,11 +149,11 @@ const SharedStack = ({ tabName }) => (
                 <Stack.Screen name="게시글 수정" component={EditPost} />
                 <Stack.Screen name="대여 내역" component={MyRent} />
                 {/* 서비스 정보 */}
+                <Stack.Screen name="이용 약관" component={TermsOfService} />
                 <Stack.Screen
-                    name="이용 약관"
-                    component={TermsOfService}
+                    name="개인정보 처리방침"
+                    component={PrivacyPolicy}
                 />
-                <Stack.Screen name="개인정보 처리방침" component={PrivacyPolicy} />
                 {/* <Stack.Screen
                     name="LocationService"
                     component={LocationService}
@@ -161,7 +169,7 @@ const SharedStack = ({ tabName }) => (
 function TabNavigator() {
     return (
         <Tab.Navigator
-            initialRouteName="HomeTab"
+            initialRouteName="HomeTab_Stack"
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -195,7 +203,7 @@ function TabNavigator() {
                 {() => <SharedStack tabName={'WritingTab'} />}
             </Tab.Screen>
             <Tab.Screen
-                name="HomeTab"
+                name="HomeTab_Stack"
                 options={{
                     tabBarIcon: () => (
                         <AntDesign name="home" size={24} color="grey" />
@@ -249,7 +257,10 @@ function RootNavigator() {
             />
             <Stack.Screen name="상세 화면" component={ProductDetailPage} />
             <Stack.Screen name="판매자 정보" component={SellerInfo} />
-            <Stack.Screen name="예약 전환을 위한 정보 입력" component={TraderInput} />
+            <Stack.Screen
+                name="예약 전환을 위한 정보 입력"
+                component={TraderInput}
+            />
             {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
             {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
@@ -262,7 +273,6 @@ function RootNavigator() {
             <Stack.Screen name="비밀번호 변경" component={ChangePw2} />
             <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
-            
         </Stack.Navigator>
     );
 }

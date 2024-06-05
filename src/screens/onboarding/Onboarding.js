@@ -50,16 +50,15 @@ export default function Onboarding({navigation}) {
     // 앱이 시작될 때 AsyncStorage에서 데이터 로드
     const loadAuthData = async () => {
       try {
-        console.log("토큰있냐",savedToken, savedNickname, savedEmail, savedLocation);
-
+        console.log("토큰있냐",savedToken, savedNickname, savedEmail, savedLocation, savedUserId);
+        const savedUserId = await AsyncStorage.getItem('userId');
         const savedToken = await AsyncStorage.getItem('token');
         const savedNickname = await AsyncStorage.getItem('userNickname');
         const savedEmail = await AsyncStorage.getItem('userEmail');
         const savedLocation = await AsyncStorage.getItem('userLocation');
-        // const savedUserID = await AsyncStorage.getItem('userID');
 
         if (savedToken) {
-          login(savedToken, savedNickname, savedEmail, savedLocation); // 로그인 함수 호출하여 토큰 저장
+          login(savedUserId, savedToken, savedNickname, savedEmail, savedLocation); // 로그인 함수 호출하여 토큰 저장
           navigation.navigate('Root'); // Root 화면으로 이동
         }
 

@@ -1,444 +1,258 @@
-// //사용자가 메시지를 입력할 수 있는 MessageInput 컴포넌트와 이를 통해 메시지를 보낼 수 있는 기능이 있음
-// //받은 메시지를 표시하기 위해 MessageBubble 컴포넌트가 사용됨
-// //사용자가 선택한 대화에 대한 메시지를 서버에서 가져오는 기능이 있음
-// //사용자가 선택한 대화에 대한 새로운 메시지를 실시간으로 받아올 수 있도록 Socket.IO를 사용하여 구현됨
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    SafeAreaView,
+    View,
+    Text,
+    FlatList,
+    TouchableOpacity,
+    Image,
+    StyleSheet,
+    KeyboardAvoidingView,
+} from 'react-native';
+import { Entypo } from '@expo/vector-icons';
+import {
+    useIsFocused,
+    useNavigation,
+    useRoute,
+} from '@react-navigation/native';
+import axios from 'axios';
+import SockJS from 'sockjs-client';
+import { Client, Stomp } from '@stomp/stompjs';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useAuth } from '../../../contexts/AuthContext';
+import { ChatingInput } from '../../../screens/userTrans/ChatingInput.js';
+import { ChatingBubble } from '../../../screens/userTrans/ChatingBubble.js';
+import { BASE_URL } from '../../../constants/api';
+import { TextDecoder, TextEncoder } from 'text-encoding';
 
-// import { Entypo } from '@expo/vector-icons';
-// import { useEffect, useRef, useState } from 'react';
-// import { useIsFocused } from '@react-navigation/native';
-// import { useHeaderHeight } from '@react-navigation/elements';
-// import { Image, FlatList, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-// import { ChatingInput } from '../../../screens/userTrans/ChatingInput.js';
-// import { ChatingBubble } from '../../../screens/userTrans/ChatingBubble.js';
-// import { useNavigation } from '@react-navigation/native';
-// // import { io } from 'socket.io-client';
+export default function MessageScreen() {
+    const { userId } = useAuth();
+    const route = useRoute();
+    const { roomId, roomProduct } = route.params; // Assume that the roomId is passed as a parameter
+    const [messages, setMessages] = useState([]);
+    // const [product, setProduct] = useState({});
+    const chatBoxRef = useRef(null);
+    const stompClient = useRef(null);
+    // const stompClient  = useRef<Client | null>(null);
+    const isFocused = useIsFocused();
+    const navigation = useNavigation();
+    const headerHeight = useHeaderHeight();
+    const [receiverId, setReceiverId] = useState("");
 
+    // Fetch existing messages when the component mounts
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/chat/room/${roomId}`);
+                // console.log("출력",response);
+                const { sortedMessages, seller, buyer } = response.data.data;
+                setMessages(sortedMessages);
+                // setProduct(roomProduct);
+                setReceiverId(userId == seller.id ? buyer.id : seller.id);
+            } catch (error) {
+                console.error('Failed to fetch messages:', error);
+            }
+        };
 
-
-// // Screen
-// export default function MessageScreen() {
-//     const navigation = useNavigation();
-//     // Check is focused
-//     const focused = useIsFocused();
-//     // Refs
-//     const chatBoxRef = useRef(null);
-
-//     // States
-//     const [messages, setMessages] = useState([]);
-//     // Functions
-//     const postMessage = async (messageInput) => {
-//         // Your postMessage function logic here
-//     };
-
-//     const getConversation = async () => {
-//         // Inner function for check data
-//         const isDataConversation = (data) => !!data.id;
-//         // Fetch Conversation
-//         fetchData('GET', `message/conversation/with/${recipient_id}`, {
-//             Authorization: sender_id, // Authorization required
-//         }).then((data) => {
-//             // Check data
-//             if (isDataConversation(data)) {
-//                 // Set conversation id
-//                 router.setParams({ conversation_id: data.id });
-//                 // Set header title
-//                 navigation.setOptions({
-//                     title: data.users.filter((u) => u.id !== sender_id)[0].name,
-//                 });
-//             }
-//         });
-//     };
-
-//     const getMessages = async () => {
-//         return fetchData('GET', `message/conversation/${conversation_id}`).then(
-//             (data) => {
-//                 setMessages(data);
-//                 return data;
-//             }
-//         );
-//     };
-
-//     const getNewMessage = async () => {
-//         await fetch(
-//             `${Networks.protocol}://${Networks.hostname}:${Networks.port}/message`,
-//             {
-//                 method: 'GET',
-//                 headers: {
-//                     Accept: 'application/json',
-//                     'Content-Type': 'application/json',
-//                 },
-//             }
-//         )
-//             .then((res) => {
-//                 const a = res.json();
-//                 console.log('a', a);
-//                 return a;
-//             })
-//             .then((json) => {
-//                 console.log(json);
-//             });
-//     };
-//     // Effects
-//     useEffect(() => {
-//         // Set header for use goBack()
-//         navigation.setOptions({
-//             headerLeft: () => (
-//                 <TouchableOpacity onPress={() => navigation.goBack()}>
-//                     <Entypo name="chevron-thin-left" size={24} />
-//                 </TouchableOpacity>
-//             ),
-//         });
-//     }, [navigation]);
-//     useEffect(() => {
-//         // get conversation data
-//         if (sender_id && recipient_id) {
-//             getConversation();
-//         }
-//     }, [sender_id, recipient_id]);
-//     useEffect(() => {
-//         // get messages
-//         if (conversation_id) {
-//             getMessages();
-//         }
-//     }, [conversation_id]);
-//     useEffect(() => {
-//         // Socket io init
-//         const socket = io(API_URL);
-//         if (focused) {
-//             // Join socket.io Room
-//             socket.emit('joinRoom', { conversation_id });
-//             // Subscribe newMessage event
-//             socket.on('newMessage', (message) => {
-//                 console.log('event');
-//                 // Update messages if message is from away
-//                 setMessages((prev) => [message, ...prev]);
-//                 // If message sent by current user, go top (inversed-bottom)
-//                 if (message.sender_id === sender_id) {
-//                     setTimeout(() => {
-//                         chatBoxRef.current?.scrollToOffset({
-//                             animated: true,
-//                             offset: 0,
-//                         });
-//                     }, 0);
-//                 }
-//             });
-//         }
-//         return () => {
-//             // Leave socket.io Room
-//             socket.emit('leaveRoom', { conversation_id });
-//             // Unsubscribe newMessage event
-//             socket.off('newMessage');
-//             // Distroy socket connection
-//             socket.disconnect();
-//         };
-//     }, [focused, conversation_id]);
-//     // Render
-//     return (
-//         <SafeAreaView style={styles.pageView}>
-//             <KeyboardAvoidingView
-//                 style={styles.keyboardAvoidingView}
-//                 behavior="padding"
-//                 keyboardVerticalOffset={headerHeight}
-//             >
-//                 <View style={styles.rectangle}>
-//                     <Image
-//                         style={styles.productImage}
-//                         source={{
-//                             uri: `${BASE_URL}/images/${product.productImages}`,
-//                         }}
-//                     />
-//                     <View style={styles.productInfo}>
-//                         <Text style={styles.productTitle}>{product.title}</Text>
-//                         <Text style={styles.productPrice}>
-//                             {`₩${product.price
-//                                 .toString()
-//                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
-//                         </Text>
-//                     </View>
-//                 </View>
-//                 <FlatList
-//                     ref={chatBoxRef}
-//                     style={styles.chatBoxContainer}
-//                     data={messages}
-//                     keyExtractor={({ id }) => id}
-//                     contentContainerStyle={{ gap: 4 }}
-//                     maintainVisibleContentPosition={{
-//                         minIndexForVisible: 0,
-//                         autoscrollToTopThreshold: 0,
-//                     }}
-//                     renderItem={({ item, index }) => (
-//                         <ChatingBubble
-//                             message={item}
-//                             isOwnMessage={sender_id === item.sender_id}
-//                             isMessageTop={
-//                                 messages[index + 1]?.sender_id !== item.sender_id
-//                             }
-//                             isMessageBottom={
-//                                 messages[index - 1]?.sender_id !== item.sender_id
-//                             }
-//                         />
-//                     )}
-//                     inverted
-//                     // refreshing
-//                 />
-//                 <ChatingInput postMessage={postMessage} />
-//             </KeyboardAvoidingView>
-//         </SafeAreaView>
-//     );
-// }
+        fetchMessages();
+    }, [roomId]);
 
 
+    // // Set up WebSocket connection when the component mounts
+    // useEffect(() => {
+    //     const socketUrl = `ws://43.200.30.91:8080/ws`;
 
-// const styles = StyleSheet.create({
-//     pageView: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//     },
-//     keyboardAvoidingView: {
-//         flexGrow: 1,
-//     },
-//     chatBoxContainer: {
-//         flex: 1,
-//         paddingHorizontal: 8,
-//     },
-//     rectangle: {
-//         height: 100, // 적절한 높이 조정
-//         width: 330,
-//         backgroundColor: '#DDEAF6',
-//         alignSelf: 'center',
-//         borderRadius: 30,
-//     },
-// });
+    //     stompClient.current = new Client({
+    //         webSocketFactory: () => new SockJS(socketUrl),
+    //         onConnect: () => {
+    //             stompClient.current.subscribe(`/topic/chat/${userId}`, (message) => {
+    //                 const newMessage = JSON.parse(message.body);
+    //                 setMessages((prevMessages) => [newMessage, ...prevMessages]);
+    //                 if (newMessage.senderId === userId) {
+    //                     chatBoxRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    //                 }
+    //             });
+    //         },
+    //         onStompError: (error) => {
+    //             console.error('Stomp error:', error);
+    //         },
+    //     });
 
-// /**
-//  * //사용자가 메시지를 입력할 수 있는 MessageInput 컴포넌트와 이를 통해 메시지를 보낼 수 있는 기능이 있음
-// //받은 메시지를 표시하기 위해 MessageBubble 컴포넌트가 사용됨
-// //사용자가 선택한 대화에 대한 메시지를 서버에서 가져오는 기능이 있음
-// //사용자가 선택한 대화에 대한 새로운 메시지를 실시간으로 받아올 수 있도록 Socket.IO를 사용하여 구현됨
+    //     stompClient.current.activate();
 
-// import Ionicons from '@expo/vector-icons/Ionicons';
-// import {
-//     FlatList,
-//     StyleSheet,
-//     SafeAreaView,
-//     TouchableOpacity,
-//     KeyboardAvoidingView,
-//     InteractionManager,
-//     Text,
-//     View,
-// } from 'react-native';
-// //import { io } from 'socket.io-client';
-// import { Entypo } from '@expo/vector-icons';
-// import { useEffect, useRef, useState } from 'react';
-// import { useIsFocused } from '@react-navigation/native';
-// import { useHeaderHeight } from '@react-navigation/elements';
-// import { ChatingInput } from '/Users/heojuwon/Rent-It-frontend/src/screens/userTrans/ChatingBubble.js';
-// import { ChatingBubble } from '/Users/heojuwon/Rent-It-frontend/src/screens/userTrans/ChatingInput.js';
-// import { API_URL, Networks, fetchData } from '/Users/heojuwon/Rent-It-frontend/src/screens/userTrans/Networks.js';
-// import { router, useLocalSearchParams, useNavigation } from 'expo-router';
+    //     return () => {
+    //         stompClient.current.deactivate();
+    //     };
+    // }, [userId]);
 
-// // Screen
-// export default function MessageScreen() {
-//     // Check is focused
-//     const focused = useIsFocused();
-//     // Refs
-//     const chatBoxRef = useRef(null);
+    // Set up WebSocket connection when the component mounts
+    useEffect(() => {
+        const socketUrl = `http://43.200.30.91:8080/ws`;
+        Object.assign(global, {
+            TextEncoder: TextEncoder,
+            TextDecoder: TextDecoder,
+        });
+        stompClient.current = new Client({
+            brokerURL: socketUrl,
+            reconnectDelay: 5000,
+            heartbeatIncoming: 2000,
+            heartbeatOutgoing: 2000,
+            onConnect: () => {
+                console.log('Connected to WebSocket server');
+                stompClient.current.subscribe(
+                    `/topic/chat/${userId}`,
+                    (message) => {
+                        const newMessage = JSON.parse(message.body);
+                        setMessages((prevMessages) => [
+                            newMessage,
+                            ...prevMessages,
+                        ]);
+                        if (newMessage.senderId === userId) {
+                            chatBoxRef.current?.scrollToOffset({
+                                animated: true,
+                                offset: 0,
+                            });
+                        }
+                    }
+                );
+            },
+            onStompError: (error) => {
+                console.log('Stomp error:', error);
+            },
+        });
+        stompClient.current.activate();
+        return () => {
+            stompClient.current.deactivate();
+        };
+    });
 
-//     // Router
-//     const navigation = useNavigation();
-//     const headerHeight = useHeaderHeight(); // for keyboardVerticalOffset
-//     const { sender_id, recipient_id, conversation_id } = useLocalSearchParams();
-//     // States
-//     const [messages, setMessages] = useState([]);
-//     // Functions
-//     const getConversation = async () => {
-//         // Inner function for check data
-//         const isDataConversation = (data) => !!data.id;
-//         // Fetch Conversation
-//         fetchData('GET', `message/conversation/with/${recipient_id}`, {
-//             Authorization: sender_id, // Authorization required
-//         }).then((data) => {
-//             // Check data
-//             if (isDataConversation(data)) {
-//                 // Set conversation id
-//                 router.setParams({ conversation_id: data.id });
-//                 // Set header title
-//                 navigation.setOptions({
-//                     title: data.users.filter((u) => u.id !== sender_id)[0].name,
-//                 });
-//             }
-//         });
-//     };
+    // Send message function
+    // const postMessage = async (messageText) => {
+    //     const message = {
+    //         message: messageText,
+    //         senderId: userId,
+    //         receiverId: receiverId, // Set the receiverId based on the chat room details
+    //         roomId: roomId
+    //     };
+    //     console.log("메세지 확인", message);
 
-//     const postMessage = async (messageInput) => {
-//         fetchData(
-//             'POST',
-//             'message',
-//             { Authorization: sender_id },
-//             JSON.stringify({
-//                 sender_id,
-//                 conversation_id,
-//                 data: { text: messageInput },
-//             })
-//         );
-//     };
+    //     stompClient.current.publish({
+    //         destination: '/app/chat/send',
+    //         body: JSON.stringify(message),
+    //     });
+    // };
+    const postMessage = async (messageText) => {
+        const message = {
+            message: messageText,
+            senderId: userId,
+            receiverId: receiverId, // Set the receiverId based on the chat room details
+            roomId: roomId,
+        };
 
-//     const getMessages = async () => {
-//         return fetchData('GET', `message/conversation/${conversation_id}`).then(
-//             (data) => {
-//                 setMessages(data);
-//                 return data;
-//             }
-//         );
-//     };
+        if (stompClient.current) {
+            stompClient.current.publish({
+                destination: '/app/chat/send',
+                body: JSON.stringify(message),
+            });
+            const currentTime = new Date().toISOString();
 
-//     const getNewMessage = async () => {
-//         await fetch(
-//             `${Networks.protocol}://${Networks.hostname}:${Networks.port}/message`,
-//             {
-//                 method: 'GET',
-//                 headers: {
-//                     Accept: 'application/json',
-//                     'Content-Type': 'application/json',
-//                 },
-//             }
-//         )
-//             .then((res) => {
-//                 const a = res.json();
-//                 console.log('a', a);
-//                 return a;
-//             })
-//             .then((json) => {
-//                 console.log(json);
-//             });
-//     };
-//     // Effects
-//     useEffect(() => {
-//         // Set header for use goBack()
-//         navigation.setOptions({
-//             headerLeft: () => (
-//                 <TouchableOpacity onPress={() => navigation.goBack()}>
-//                     <Entypo name="chevron-thin-left" size={24} />
-//                 </TouchableOpacity>
-//             ),
-//         });
-//     }, [navigation]);
-//     useEffect(() => {
-//         // get conversation data
-//         if (sender_id && recipient_id) {
-//             getConversation();
-//         }
-//     }, [sender_id, recipient_id]);
-//     useEffect(() => {
-//         // get messages
-//         if (conversation_id) {
-//             getMessages();
-//         }
-//     }, [conversation_id]);
-//     useEffect(() => {
-//         // Socket io init
-//         const socket = io(API_URL);
-//         if (focused) {
-//             // Join socket.io Room
-//             socket.emit('joinRoom', { conversation_id });
-//             // Subscribe newMessage event
-//             socket.on('newMessage', (message) => {
-//                 console.log('event');
-//                 // Update messages if message is from away
-//                 setMessages((prev) => [message, ...prev]);
-//                 // If message sent by current user, go top (inversed-bottom)
-//                 if (message.sender_id === sender_id) {
-//                     setTimeout(() => {
-//                         chatBoxRef.current?.scrollToOffset({
-//                             animated: true,
-//                             offset: 0,
-//                         });
-//                     }, 0);
-//                 }
-//             });
-//         }
-//         return () => {
-//             // Leave socket.io Room
-//             socket.emit('leaveRoom', { conversation_id });
-//             // Unsubscribe newMessage event
-//             socket.off('newMessage');
-//             // Distroy socket connection
-//             socket.disconnect();
-//         };
-//     }, [focused, conversation_id]);
-//     // Render
-//     return (
-//         <SafeAreaView style={styles.pageView}>
-//             <KeyboardAvoidingView
-//                 style={styles.keyboardAvoidingView}
-//                 behavior="padding"
-//                 keyboardVerticalOffset={headerHeight}
-//             >
-//                 <View style={styles.rectangle}>
-//                     <Image
-//                         style={styles.productImage}
-//                         source={{
-//                             uri: `${BASE_URL}/images/${product.productImages}`,
-//                         }}
-//                     />
-//                     <View style={styles.productInfo}>
-//                         <Text style={styles.productTitle}>{product.title}</Text>
-//                         <Text style={styles.productPrice}>
-//                             {`₩${product.price
-//                                 .toString()
-//                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
-//                         </Text>
-//                     </View>
-//                 </View>
-//                 <FlatList
-//                     ref={chatBoxRef}
-//                     style={styles.chatBoxContainer}
-//                     data={messages}
-//                     keyExtractor={({ id }) => id}
-//                     contentContainerStyle={{ gap: 4 }}
-//                     maintainVisibleContentPosition={{
-//                         minIndexForVisible: 0,
-//                         autoscrollToTopThreshold: 0,
-//                     }}
-//                     renderItem={({ item, index }) => (
-//                         <ChatingBubble
-//                             message={item}
-//                             isOwnMessage={sender_id === item.sender_id}
-//                             isMessageTop={
-//                                 messages[index + 1]?.sender_id !== item.sender_id
-//                             }
-//                             isMessageBottom={
-//                                 messages[index - 1]?.sender_id !== item.sender_id
-//                             }
-//                         />
-//                     )}
-//                     inverted
-//                     // refreshing
-//                 />
-//                 <ChatingInput postMessage={postMessage} />
-//             </KeyboardAvoidingView>
-//         </SafeAreaView>
-//     );
-// }
 
-// const styles = StyleSheet.create({
-//     pageView: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//     },
-//     keyboardAvoidingView: {
-//         flexGrow: 1,
-//     },
-//     chatBoxContainer: {
-//         flex: 1,
-//         paddingHorizontal: 8,
-//     },
-//     rectangle: {
-//         height: 100, // 적절한 높이 조정
-//         width: 330,
-//         backgroundColor: '#DDEAF6',
-//         alignSelf: 'center',
-//         borderRadius: 30,
-//     },
-// });
-//  */
+            const newMessage = {
+                message: messageText, // 메시지 텍스트 설정
+                sendTime: currentTime, // 현재 시간 설정
+                sender: { id: userId } // 보낸 사람 설정 (userId를 사용)
+            };
+            setMessages((prevMessages) => [newMessage, ...prevMessages]);
+            if (newMessage.sender.id === userId) {
+                chatBoxRef.current?.scrollToOffset({
+                    animated: true,
+                    offset: 0,
+                });
+            }
+        }
+    };
+
+    // Set up navigation options
+    useEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Entypo name="chevron-thin-left" size={24} />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
+    return (
+        <SafeAreaView style={styles.pageView}>
+            <KeyboardAvoidingView
+                style={styles.keyboardAvoidingView}
+                behavior="padding"
+                keyboardVerticalOffset={headerHeight}
+            >
+                <View style={styles.rectangle}>
+                    <Image
+                        style={styles.productImage}
+                        source={{ uri: `${BASE_URL}/images/${roomProduct.productImagess}` }}
+                    />
+                    <View style={styles.productInfo}>
+                        <Text style={styles.productTitle}>{roomProduct.title}</Text>
+                        <Text style={styles.productPrice}>
+                            {`₩${roomProduct.price}`}
+                        </Text>
+                    </View>
+                </View>
+                <FlatList
+                    ref={chatBoxRef}
+                    style={styles.chatBoxContainer}
+                    data={messages}
+                    keyExtractor={(item, index) => `${item.sender?.id}-${item.sendTime}-${index}`}
+                    contentContainerStyle={{ gap: 4 }}
+                    maintainVisibleContentPosition={{ minIndexForVisible: 0, autoscrollToTopThreshold: 0 }}
+                    renderItem={({ item, index }) => {
+                        // console.log('Item:', item);
+                        // console.log('Index:', index);
+                        return (
+                            <ChatingBubble
+                                message={item}
+                                isOwnMessage={userId === item.sender?.id}
+                                isMessageTop={
+                                    messages[index + 1]?.sender?.id !== item.sender?.id
+                                }
+                                isMessageBottom={
+                                    messages[index - 1]?.sender?.id !== item.sender?.id
+                                }
+                            />
+                        );
+                    }}
+                    inverted
+                />
+                <ChatingInput postMessage={postMessage} />
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+    );
+}
+
+const styles = StyleSheet.create({
+    productImage: {
+        marginTop: 50
+    },
+    pageView: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    keyboardAvoidingView: {
+        flexGrow: 1,
+    },
+    chatBoxContainer: {
+        flex: 1,
+        paddingHorizontal: 8,
+    },
+    rectangle: {
+        height: 100, // 적절한 높이 조정
+        width: 330,
+        backgroundColor: '#DDEAF6',
+        alignSelf: 'center',
+        borderRadius: 30,
+    },
+});
