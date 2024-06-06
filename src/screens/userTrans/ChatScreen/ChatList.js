@@ -6,7 +6,7 @@ import { BASE_URL } from '../../../constants/api';
 
 
 const ChatRoomList = ({ navigation }) => {
-    const { userId } = useAuth();
+  const { userId, userNickname } = useAuth()
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const currentUser = {
@@ -37,8 +37,8 @@ const ChatRoomList = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-        // 화면이 focus될 때마다 데이터를 다시 가져옴
-        fetchChatRooms();
+      // 화면이 focus될 때마다 데이터를 다시 가져옴
+      fetchChatRooms();
     });
 
     // 컴포넌트가 언마운트 될 때 unsubscribe 수행
@@ -81,7 +81,7 @@ const ChatRoomList = ({ navigation }) => {
                 </View>
                 <View>
                   <Text style={styles.userNameText}>
-                    {item.seller.nickname}
+                    {userNickname === item.seller.nickname ? item.buyer.nickname : item.seller.nickname}
                   </Text>
                   <Text style={styles.lastMessageText}>
                     {item.lastMessage}
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   },
   lastMessageText: {
     color: 'grey',
+    paddingTop: 7,
   },
 });
 

@@ -206,14 +206,17 @@ const styles = StyleSheet.create({
     productInfo: {
         marginLeft: 100, 
         marginTop: 25,
+        padding:2,
     },
     productTitle: {
+        paddingLeft:2,
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 4,
     },
     productPrice: {
         fontSize: 16,
+        padding:3,
     },
     pageView: {
         flex: 1,
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
     rectangle: {
         marginTop:10,
         height: 100, // 적절한 높이 조정
-        width: 330,
+        width: 350,
         backgroundColor: '#DDEAF6',
         alignSelf: 'center',
         borderRadius: 30,
