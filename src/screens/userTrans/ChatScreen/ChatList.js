@@ -13,30 +13,37 @@ const ChatRoomList = ({ navigation }) => {
     id: userId, // 로그인한 사용자 ID
   };
 
+  const fetchChatRooms = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/chat/room`, {
+        params: { memberId: currentUser.id }
+      });
+      const chatRooms = response.data.data;
+
+      // 각 채팅방의 마지막 메시지를 가져오는 작업
+      const chatRoomsWithLastMessage = await Promise.all(chatRooms.map(async (room) => {
+        const roomDetailResponse = await axios.get(`${BASE_URL}/chat/room/${room.id}/last-message`);
+        const lastMessage = roomDetailResponse.data.data ? roomDetailResponse.data.data.message : '메시지가 없습니다';
+        return { ...room, lastMessage };
+      }));
+
+      setConversations(chatRoomsWithLastMessage.reverse());
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchChatRooms = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/chat/room`, {
-          params: { memberId: currentUser.id }
-        });
-        const chatRooms = response.data.data;
+    const unsubscribe = navigation.addListener('focus', () => {
+        // 화면이 focus될 때마다 데이터를 다시 가져옴
+        fetchChatRooms();
+    });
 
-        // 각 채팅방의 마지막 메시지를 가져오는 작업
-        const chatRoomsWithLastMessage = await Promise.all(chatRooms.map(async (room) => {
-          const roomDetailResponse = await axios.get(`${BASE_URL}/chat/room/${room.id}/last-message`);
-          const lastMessage = roomDetailResponse.data.data ? roomDetailResponse.data.data.message : '메시지가 없습니다';
-          return { ...room, lastMessage };
-        }));
-
-        setConversations(chatRoomsWithLastMessage);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChatRooms();
+    // 컴포넌트가 언마운트 될 때 unsubscribe 수행
+    return unsubscribe;
+    // fetchChatRooms();
   }, []);
 
   if (loading) {

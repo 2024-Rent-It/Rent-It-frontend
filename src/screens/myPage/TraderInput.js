@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Pressable } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
-
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 
 const TraderInput = ({ navigation, route }) => {
-    const { productId, updateProductStatus, productInfo, handleStatusChange } = route.params;
+    const { productId, updateProductStatus, handleStatusChange } = route.params;
     const [buyerName, setTraderName] = useState('');
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [status, setStatus] = useState('');
     const [showStartPicker, setShowStartPicker] = useState(false);
     const [showEndPicker, setShowEndPicker] = useState(false);
+    const [chatPeople, setChatPeople] = useState([]);
 
     const onChangeStart = (event, selectedDate) => {
         // const currentDate = selectedDate || startDate;
@@ -26,6 +28,24 @@ const TraderInput = ({ navigation, route }) => {
             setStartDate(currentDate);
         }
     };
+    useEffect(() => {
+        fetchChatPeople();
+        console.log("채팅한 사람들 확인", chatPeople);
+
+    }, [productId]);
+    const fetchChatPeople = async () => {
+        try {
+            console.log("상품 id 확인",productId);
+            // console.log("상품 정보 확인",productInfo);
+            const response = await axios.get(`${BASE_URL}/buyers/${productId}`);
+            setChatPeople([...response.data]);
+
+        } catch (error) {
+            console.error('Error fetching chatpeople:', error);
+        } finally {
+            //   setIsLoading(false);
+        }
+    };
 
     const onChangeEnd = (event, selectedDate) => {
         const currentDate = selectedDate || endDate;
@@ -34,15 +54,15 @@ const TraderInput = ({ navigation, route }) => {
     };
 
 
-    useEffect(() => {
-        if (productInfo) {
-            const { buyerName, startDate, endDate } = productInfo;
-            setTraderName(buyerName);
-            setStartDate(startDate);
-            setEndDate(endDate);
-            setStatus('렌트중');
-        }
-    }, [productInfo]);
+    // useEffect(() => {
+    //     if (productInfo) {
+    //         const { buyerName, startDate, endDate } = productInfo;
+    //         setTraderName(buyerName);
+    //         setStartDate(startDate);
+    //         setEndDate(endDate);
+    //         setStatus('렌트중');
+    //     }
+    // }, [productInfo]);
 
     // 확인 버튼 이벤트 핸들러
     const confirmRental = () => {

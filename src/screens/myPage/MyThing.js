@@ -65,9 +65,10 @@ const MyThing = ({ navigation }) => {
     //     navigation.navigate('예약 전환을 위한 정보 입력', { productId: id });
     // };
     //예약가능->예약중 (TraderInput.js로 이동)
-    const closeAndNavigate = (id, traderName, startDate, endDate) => {
+    const closeAndNavigate = (id) => {
         setModalVisible(false);
-        navigation.navigate('예약 전환을 위한 정보 입력', { productId: id, updateProductStatus, handleStatusChange, productInfo: { traderName, startDate, endDate } });
+        navigation.navigate('예약 전환을 위한 정보 입력', { productId: id, updateProductStatus, handleStatusChange});
+        // console.log("예약 전환 위한 정보 확인", id, traderName, startDate, endDate);
     };
 
     const updateProductStatus = (id, buyerName, startDate, endDate) => {
@@ -282,7 +283,7 @@ const MyThing = ({ navigation }) => {
                             <View style={styles.modalView}>
                                 <Pressable
                                     style={styles.modalButtonTop}
-                                    onPress={closeAndNavigate}>
+                                    onPress={() => closeAndNavigate(selectedProduct.id)}>
                                     <Text style={styles.modalText}>렌트 중</Text>
                                 </Pressable>
                                 <TouchableOpacity

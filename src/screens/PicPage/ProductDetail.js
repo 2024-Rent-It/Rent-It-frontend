@@ -136,11 +136,15 @@ const ProductDetailPage = ({ route, navigation }) => {
       });
 
       if (response.status === 201) {
-        const roomId = response.data.data; // 'data'가 응답의 구조에 따라 달라질 수 있습니다.
-        navigation.navigate('Message', {
+        const roomId = response.data.data; 
+        // navigation.navigate('Message', {
+        //   roomId: roomId,
+        //   roomProduct: product,
+        // });
+        navigation.navigate('ChattingTab', { screen: 'Message', params: {
           roomId: roomId,
           roomProduct: product,
-        });
+      }});
       } else {
         console.error('Failed to join chat room:', response);
         Alert.alert('Error', '채팅방 만들기에 실패했습니다.');

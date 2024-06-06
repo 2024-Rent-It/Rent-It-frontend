@@ -28,18 +28,15 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
 export default function MessageScreen() {
     const { userId } = useAuth();
     const route = useRoute();
-    const { roomId, roomProduct } = route.params; // Assume that the roomId is passed as a parameter
+    const { roomId, roomProduct } = route.params;
     const [messages, setMessages] = useState([]);
-    // const [product, setProduct] = useState({});
     const chatBoxRef = useRef(null);
     const stompClient = useRef(null);
-    // const stompClient  = useRef<Client | null>(null);
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const headerHeight = useHeaderHeight();
     const [receiverId, setReceiverId] = useState("");
 
-    // Fetch existing messages when the component mounts
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -49,6 +46,8 @@ export default function MessageScreen() {
                 setMessages(sortedMessages);
                 // setProduct(roomProduct);
                 setReceiverId(userId == seller.id ? buyer.id : seller.id);
+                console.log("상품 확인하자",roomProduct);
+                console.log("상품 이미지",`${BASE_URL}/images/${roomProduct.productImages[0]}`);
             } catch (error) {
                 console.error('Failed to fetch messages:', error);
             }
@@ -58,36 +57,9 @@ export default function MessageScreen() {
     }, [roomId]);
 
 
-    // // Set up WebSocket connection when the component mounts
-    // useEffect(() => {
-    //     const socketUrl = `ws://43.200.30.91:8080/ws`;
-
-    //     stompClient.current = new Client({
-    //         webSocketFactory: () => new SockJS(socketUrl),
-    //         onConnect: () => {
-    //             stompClient.current.subscribe(`/topic/chat/${userId}`, (message) => {
-    //                 const newMessage = JSON.parse(message.body);
-    //                 setMessages((prevMessages) => [newMessage, ...prevMessages]);
-    //                 if (newMessage.senderId === userId) {
-    //                     chatBoxRef.current?.scrollToOffset({ animated: true, offset: 0 });
-    //                 }
-    //             });
-    //         },
-    //         onStompError: (error) => {
-    //             console.error('Stomp error:', error);
-    //         },
-    //     });
-
-    //     stompClient.current.activate();
-
-    //     return () => {
-    //         stompClient.current.deactivate();
-    //     };
-    // }, [userId]);
-
-    // Set up WebSocket connection when the component mounts
     useEffect(() => {
-        const socketUrl = `http://43.200.30.91:8080/ws`;
+        const socketUrl = `${BASE_URL}/ws`;
+        // const socketUrl = `http://43.200.30.91:8080/ws`;
         Object.assign(global, {
             TextEncoder: TextEncoder,
             TextDecoder: TextDecoder,
@@ -126,21 +98,6 @@ export default function MessageScreen() {
         };
     });
 
-    // Send message function
-    // const postMessage = async (messageText) => {
-    //     const message = {
-    //         message: messageText,
-    //         senderId: userId,
-    //         receiverId: receiverId, // Set the receiverId based on the chat room details
-    //         roomId: roomId
-    //     };
-    //     console.log("메세지 확인", message);
-
-    //     stompClient.current.publish({
-    //         destination: '/app/chat/send',
-    //         body: JSON.stringify(message),
-    //     });
-    // };
     const postMessage = async (messageText) => {
         const message = {
             message: messageText,
@@ -172,7 +129,7 @@ export default function MessageScreen() {
         }
     };
 
-    // Set up navigation options
+    
     useEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -190,10 +147,13 @@ export default function MessageScreen() {
                 behavior="padding"
                 keyboardVerticalOffset={headerHeight}
             >
-                <View style={styles.rectangle}>
+                <TouchableOpacity style={styles.rectangle} 
+                onPress={() => {
+                    navigation.navigate('상세 화면', { id: roomProduct.id });
+                }}>
                     <Image
                         style={styles.productImage}
-                        source={{ uri: `${BASE_URL}/images/${roomProduct.productImagess}` }}
+                        source={{ uri: `${BASE_URL}/images/${roomProduct.productImages[0]}` }}
                     />
                     <View style={styles.productInfo}>
                         <Text style={styles.productTitle}>{roomProduct.title}</Text>
@@ -201,7 +161,7 @@ export default function MessageScreen() {
                             {`₩${roomProduct.price}`}
                         </Text>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <FlatList
                     ref={chatBoxRef}
                     style={styles.chatBoxContainer}
@@ -235,7 +195,25 @@ export default function MessageScreen() {
 
 const styles = StyleSheet.create({
     productImage: {
-        marginTop: 50
+        position: 'absolute', 
+        left: 10, 
+        top: 10, 
+        width: 80, 
+        height: 80, 
+        backgroundColor: '#fff', 
+        borderRadius: 30,
+    },
+    productInfo: {
+        marginLeft: 100, 
+        marginTop: 25,
+    },
+    productTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 4,
+    },
+    productPrice: {
+        fontSize: 16,
     },
     pageView: {
         flex: 1,
@@ -249,6 +227,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     rectangle: {
+        marginTop:10,
         height: 100, // 적절한 높이 조정
         width: 330,
         backgroundColor: '#DDEAF6',
