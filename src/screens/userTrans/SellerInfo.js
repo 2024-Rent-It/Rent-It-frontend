@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Pressable, ScrollView 
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
 import { useAuth } from '../../contexts/AuthContext';
-
+import { Ionicons } from '@expo/vector-icons';
 
 
 const SellerInfo = ({ navigation, route }) => {
@@ -12,7 +12,7 @@ const SellerInfo = ({ navigation, route }) => {
     const [user, setUser] = useState({
         name: sellerName,
         location: sellerLocation,
-        profileImage: require('../../../assets/images/k.png')
+        // profileImage: require('../../../assets/images/k.png')
     });
     useEffect(() => {
         getProductsBySeller();
@@ -97,7 +97,7 @@ const SellerInfo = ({ navigation, route }) => {
                 <View style={styles.userContainer}>
                     <TouchableOpacity
                         style={styles.imageContainer}>
-                        <Image source={user.profileImage} style={styles.image} />
+                        <Ionicons name="person-circle-outline" size={55} color="black" />
                     </TouchableOpacity>
 
                     <View style={styles.infoContainer}>
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30, // 반지름을 반으로 설정하여 원형 모양의 이미지로 변경
-        backgroundColor: 'lightgray',
     },
     image: {
         width: '100%',
