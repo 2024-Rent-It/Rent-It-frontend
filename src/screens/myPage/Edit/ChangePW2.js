@@ -26,7 +26,7 @@ const ChangePw2 = ({ navigation }) => {
                 }
             });
             Alert.alert('변경이 완료 되었습니다.');
-            navigation.navigate("Root");
+            navigation.navigate("홈");
         } catch (error) {
             console.error('에러 발생',error);
             if (error.response) {

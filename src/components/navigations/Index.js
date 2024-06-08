@@ -253,7 +253,7 @@ function RootNavigator() {
                 component={Onboarding}
             />
             <Stack.Screen name="회원가입" component={SignUp} />
-            <Stack.Screen name="AddressScreen" component={AddressScreen} />
+            <Stack.Screen name="지역 검색" component={AddressScreen} />
             <Stack.Screen
                 name="홈"
                 component={TabNavigator}

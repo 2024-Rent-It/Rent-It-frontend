@@ -53,7 +53,7 @@ const ChangeNickName = ({ navigation }) => {
             setUserNickname(updatedNickname);
             // console.log(response.data);
 
-            navigation.navigate("Root")
+            navigation.navigate("홈")
         } catch (error) {
             console.error('닉네임 변경 실패:', error);
             if (error.response) {
