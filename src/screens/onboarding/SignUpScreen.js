@@ -125,7 +125,7 @@ const SignUpTest = () => {
 
             Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
             handleLogin();
-            navigation.navigate("Root")
+            navigation.navigate("홈")
 
             //   navigation.navigate('')
 
@@ -169,7 +169,7 @@ const SignUpTest = () => {
                 const { id, nickname, email, location, token } = responseData.data;
                 login(id, token, nickname, email, location); // 로그인 함수 호출하여 토큰 저장
                 Alert.alert('로그인 성공', responseData.message);
-                navigation.navigate('Root'); // Root 화면으로 이동
+                navigation.navigate('홈'); // Root 화면으로 이동
             } else {
                 Alert.alert('로그인 실패', responseData.message);
             }

@@ -57,10 +57,10 @@ const SharedStack = ({ tabName }) => (
         {tabName === 'WritingTab' ? (
             <Stack.Screen name="글쓰기" component={Writing} />
         ) : null}
-        {tabName === 'HomeTab' ? (
+        {tabName === '홈' ? (
             <>
                 <Stack.Screen
-                    name="HomeTab"
+                    name="홈"
                     component={Home}
                     options={({ navigation }) => ({
                         headerRight: () => (
@@ -82,7 +82,7 @@ const SharedStack = ({ tabName }) => (
                                     size={24}
                                     color="black"
                                     onPress={() =>
-                                        navigation.navigate('SearchScreen')
+                                        navigation.navigate('검색')
                                     }
                                 />
                             </View>
@@ -92,7 +92,7 @@ const SharedStack = ({ tabName }) => (
 
                 <>
                     <Stack.Screen
-                        name="SearchScreen"
+                        name="검색"
                         component={SearchScreen}
                     />
 
@@ -210,7 +210,7 @@ function TabNavigator() {
                     ),
                 }}
             >
-                {() => <SharedStack tabName={'HomeTab'} />}
+                {() => <SharedStack tabName={'홈'} />}
             </Tab.Screen>
             <Tab.Screen
                 name="ChattingTab"
@@ -251,11 +251,11 @@ function RootNavigator() {
             <Stack.Screen name="회원가입" component={SignUp} />
             <Stack.Screen name="AddressScreen" component={AddressScreen} />
             <Stack.Screen
-                name="Root"
+                name="홈"
                 component={TabNavigator}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="상세 화면" component={ProductDetailPage} />
+            <Stack.Screen name="상세 화면" component={ProductDetailPage}ㅌㄴ/>
             <Stack.Screen name="판매자 정보" component={SellerInfo} />
             <Stack.Screen
                 name="예약 전환을 위한 정보 입력"
@@ -269,7 +269,7 @@ function RootNavigator() {
 
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="EmailLogin" component={EmailLogin} />
-            <Stack.Screen name="NoticeDetail" component={NoticeDetail} />
+            <Stack.Screen name="공지사항 상세" component={NoticeDetail} />
             <Stack.Screen name="비밀번호 변경" component={ChangePw2} />
             <Stack.Screen name="알림" component={Notification} />
             <Stack.Screen name="Gomain" component={Gomain} />
