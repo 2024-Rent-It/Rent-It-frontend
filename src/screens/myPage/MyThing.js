@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 
 const Tab = createMaterialTopTabNavigator();
