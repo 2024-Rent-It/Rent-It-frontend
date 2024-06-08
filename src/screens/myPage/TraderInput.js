@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api.js';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const TraderInput = ({ navigation, route }) => {
     const { productId, updateProductStatus, handleStatusChange } = route.params;
@@ -15,6 +15,8 @@ const TraderInput = ({ navigation, route }) => {
     const [showStartPicker, setShowStartPicker] = useState(false);
     const [showEndPicker, setShowEndPicker] = useState(false);
     const [chatPeople, setChatPeople] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
 
     const onChangeStart = (event, selectedDate) => {
         // const currentDate = selectedDate || startDate;
@@ -35,7 +37,7 @@ const TraderInput = ({ navigation, route }) => {
     }, [productId]);
     const fetchChatPeople = async () => {
         try {
-            console.log("상품 id 확인",productId);
+            console.log("상품 id 확인", productId);
             // console.log("상품 정보 확인",productInfo);
             const response = await axios.get(`${BASE_URL}/buyers/${productId}`);
             setChatPeople([...response.data]);
@@ -79,8 +81,8 @@ const TraderInput = ({ navigation, route }) => {
 
         // const formattedStartDate = formatDateString(startDate);
         // const formattedEndDate = formatDateString(endDate);
-        const formattedStartDate = formatDateString(startDate)+'T00:00:00'; 
-        const formattedEndDate = formatDateString(endDate)+'T00:00:00';
+        const formattedStartDate = formatDateString(startDate) + 'T00:00:00';
+        const formattedEndDate = formatDateString(endDate) + 'T00:00:00';
         // const formattedStartDate = startDate.toISOString(); 
         // const formattedEndDate = endDate.toISOString();
         handleStatusChange('렌트중', buyerName, formattedStartDate, formattedEndDate)
@@ -97,21 +99,31 @@ const TraderInput = ({ navigation, route }) => {
         // console.log("여기까진 갠찮다 이거야...TraderInput이다F")
     };
 
+    const pickerItems = chatPeople.map(person => ({
+        label: person,
+        value: person
+    }));
+
     return (
         <View
-            style={{ backgroundColor: '#ECECEC',height:'150%' }}>
+            style={{ backgroundColor: '#ECECEC', height: '150%' }}>
 
             <Text style={styles.t1}>거래하는 상대방의 닉네임을 입력해주세요</Text>
 
 
-            <TextInput
-                style={styles.input}
-                width={'60%'}
-                placeholder="닉네임 입력"
-                onChangeText={(text) => {
-                    setTraderName(text);
-                }}
+            <DropDownPicker
+                open={open}
+                value={value}
+                items={pickerItems}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setTraderName}
+                placeholder="닉네임 선택"
+                onChangeValue={(value) => setTraderName(value)}
+                style={styles.dropDownPicker}
+                dropDownContainerStyle={styles.dropDownContainer}
             />
+
             <Text style={styles.t1}>대여 시작일과 반납일을 기입해주세요</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
@@ -146,7 +158,7 @@ const TraderInput = ({ navigation, route }) => {
                         <Pressable onPress={() => {
                             setShowEndPicker(true)
 
-                            }}>
+                        }}>
                             <DateTimePicker
                                 value={endDate || new Date()} // 이 부분은 실제로 선택된 날짜나, 기본 날짜를 나타냅니다.
                                 mode="date"
@@ -316,6 +328,29 @@ const styles = StyleSheet.create({
     dateText: {
         fontSize: 17,
         // backgroundColor:'#D9D9D9'
+    },
+    dropDownPicker: {
+        marginBottom: 20,
+        backgroundColor:'red',
+        width: '60%',
+        height: 60,
+        borderRadius: 16,
+        borderColor: "#ffffff",
+        borderWidth: 1,
+        fontSize: 18,
+        paddingHorizontal: 15,
+        paddingVertical: 18,
+        marginBottom: 10,
+        backgroundColor: "#ffffff",
+        marginLeft: "4%",
+    },
+    dropDownContainer:{
+        backgroundColor: '#ffffff',
+        borderColor: '#ffffff',
+        borderRadius: 16,
+        marginTop: 5,
+        width: '60%',
+        marginLeft: '4%',
     },
 });
 
