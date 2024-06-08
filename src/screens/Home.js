@@ -269,7 +269,7 @@ const Home = () => {
                                 }}
                                 onPress={() => {
                                     console.log('Selected category:', item.title); // 로그 추가
-                                    navigation.navigate('ProductDetail2', {
+                                    navigation.navigate('카테고리', {
                                         category: item.title, location: userLocation // 선택된 카테고리를 전달
                                     });
                                 }}
@@ -278,7 +278,7 @@ const Home = () => {
                                     title={item.title}
                                     onPress={() => {
                                         console.log('Selected category:', item.title); // 로그 추가
-                                        navigation.navigate('ProductDetail2', {
+                                        navigation.navigate('카테고리', {
                                             category: item.title, location: userLocation// 선택된 카테고리를 전달
                                         });
                                     }}

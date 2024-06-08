@@ -84,7 +84,7 @@ const ProductDetail2 = ({ route }) => {
     };
 
     const navigateToProductDetail = (product) => {
-      navigation.navigate('ProductDetail', {id: product.id});
+      navigation.navigate('상세 화면', {id: product.id});
     };
 
     const renderProductItem2 = () => (
