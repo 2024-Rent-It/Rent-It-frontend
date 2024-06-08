@@ -49,7 +49,7 @@ const ChangeEmail = ({ navigation }) => {
             Alert.alert('변경되었습니다.');
             const updatedEmail = response.data.data.email;
             setUserEmail(updatedEmail);
-            navigation.navigate("홈")
+            navigation.navigate("마이페이지")
         } catch (error) {
             console.error('이메일 변경 실패:', error);
             if (error.response) {
