@@ -31,7 +31,7 @@ import SignUp from '../../screens/onboarding/SignUpScreen.js';
 import LoginScreen from '../../screens/onboarding/LoginScreen';
 import AddressScreen from '../../screens/onboarding/AddressScreen';
 import ProductDetailPage from '../../screens/PicPage/ProductDetail.js';
-import ProductDetailPage2 from '../../screens/IconPage/ProductDetail2.js';
+import ProductDetail2 from '../../screens/IconPage/ProductDetail2.js';
 import Product from '../../screens/Product.js';
 import EmailLogin from '../../screens/onboarding/EmailLogin.js';
 import ChangePw2 from '../../screens/myPage/Edit/ChangePW2.js';
@@ -97,8 +97,8 @@ const SharedStack = ({ tabName }) => (
                     />
 
                     <Stack.Screen
-                        name="ProductDetail2"
-                        component={ProductDetailPage2}
+                        name="카테고리"
+                        component={ProductDetail2}
                     />
 
                     <Stack.Screen
