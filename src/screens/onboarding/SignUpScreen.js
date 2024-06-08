@@ -319,7 +319,7 @@ const SignUpTest = () => {
                                     style={styles._button}
                                     width={"34%"}
                                     onPress={() => {
-                                        navigation.navigate('AddressScreen');
+                                        navigation.navigate('지역 검색');
                                         // checkNickname(account);
 
                                     }}

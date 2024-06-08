@@ -63,7 +63,7 @@ const LocationSetting = ({ navigation }) => {
                         style={styles._button}
                         width={"34%"}
                         onPress={() => {
-                            navigation.navigate('AddressScreen');
+                            navigation.navigate('지역 검색');
                         }}
                     >
                         <Text style={styles.h2}>🧭 지역 검색</Text>
