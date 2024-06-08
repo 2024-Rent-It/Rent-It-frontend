@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
+import { Alert, StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -12,7 +12,7 @@ const LocationSetting = ({ navigation }) => {
     const { setUserLocation } = useAuth(); // setUserLocation 함수 가져오기
     const { city } = route.params || {}; // 동네 정보(city)를 받아옴
 
-    const updateLocation = async (newNickname, token) => {
+    const updateLocation = async (token) => {
         const updateLocationPath = '/member/update-location';
 
         try {
@@ -28,7 +28,7 @@ const LocationSetting = ({ navigation }) => {
             const updatedLocation = response.data.data.location;
             setUserLocation(updatedLocation);
 
-            navigation.navigate("홈")
+            navigation.navigate("마이페이지")
         } catch (error) {
             console.error('지역 변경 실패:', error);
             if (error.response) {
@@ -73,6 +73,7 @@ const LocationSetting = ({ navigation }) => {
                 <Pressable
                     style={styles._button3} backgroundColor={"#A7C8E7"}
                     onPress={() => {
+                        updateLocation(token)
                         //navigation.navigate("Root")
                     }}
                 >
