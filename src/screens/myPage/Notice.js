@@ -92,7 +92,7 @@ const Notice = ({ navigation }) => {
     }, []);
 
     const renderItem = ({ item }) => (
-        <Pressable onPress={() => navigation.navigate('NoticeDetail', { id:item.id, title: item.title, date: item.date })}>
+        <Pressable onPress={() => navigation.navigate('공지사항 상세', { id:item.id, title: item.title, date: item.date })}>
             <View style={styles.item}>
             <View style={styles.titleContainer}>
                  <Text style={styles.title}>{item.title}</Text>

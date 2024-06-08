@@ -59,7 +59,7 @@ export default function Onboarding({navigation}) {
 
         if (savedToken) {
           login(savedUserId, savedToken, savedNickname, savedEmail, savedLocation); // 로그인 함수 호출하여 토큰 저장
-          navigation.navigate('Root'); // Root 화면으로 이동
+          navigation.navigate('홈'); // Root 화면으로 이동
         }
 
        
