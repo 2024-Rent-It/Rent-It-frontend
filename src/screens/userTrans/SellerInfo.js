@@ -110,7 +110,7 @@ const SellerInfo = ({ navigation, route }) => {
             </View>
 
             <View>
-                <Text style={styles.h1}>{user.name}님이 렌트 중인 상품
+                <Text style={styles.h1}>{user.name}님이 등록한 상품
                 </Text>
             </View>
             <ScrollView>

@@ -45,6 +45,7 @@ import SellerInfo from '../../screens/userTrans/SellerInfo.js';
 import TraderInput from '../../screens/myPage/TraderInput.js';
 import EditPost from '../../screens/userTrans/ReWriting.js';
 import MessageScreen from '../../screens/userTrans/ChatScreen/message.js';
+import AddressScreen2 from '../../screens/myPage/Edit/AdressScreen2.js';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -145,6 +146,12 @@ const SharedStack = ({ tabName }) => (
                         name="지역 설정"
                         component={LocationSetting}
                     />
+                    <>
+                        <Stack.Screen
+                            name="변경할 지역 검색"
+                            component={AddressScreen2}
+                        />
+                    </>
                 </>
 
                 {/* 나의 거래 */}
@@ -259,7 +266,7 @@ function RootNavigator() {
                 component={TabNavigator}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="상세 화면" component={ProductDetailPage}ㅌㄴ/>
+            <Stack.Screen name="상세 화면" component={ProductDetailPage} ㅌㄴ />
             <Stack.Screen name="판매자 정보" component={SellerInfo} />
             <Stack.Screen
                 name="예약 전환을 위한 정보 입력"

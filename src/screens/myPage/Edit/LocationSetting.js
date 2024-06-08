@@ -28,7 +28,7 @@ const LocationSetting = ({ navigation }) => {
             const updatedLocation = response.data.data.location;
             setUserLocation(updatedLocation);
 
-            navigation.navigate("Root")
+            navigation.navigate("홈")
         } catch (error) {
             console.error('지역 변경 실패:', error);
             if (error.response) {
@@ -63,7 +63,7 @@ const LocationSetting = ({ navigation }) => {
                         style={styles._button}
                         width={"34%"}
                         onPress={() => {
-                            navigation.navigate('지역 검색');
+                            navigation.navigate('변경할 지역 검색');
                         }}
                     >
                         <Text style={styles.h2}>🧭 지역 검색</Text>
