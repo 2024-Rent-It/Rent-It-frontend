@@ -283,7 +283,7 @@ function RootNavigator() {
             <Stack.Screen name="공지사항 상세" component={NoticeDetail} />
             {/* <Stack.Screen name="비밀번호 변경" component={ChangePw2} /> */}
             <Stack.Screen name="알림" component={Notification} />
-            <Stack.Screen name="Gomain" component={Gomain} />
+            <Stack.Screen name="Welcome" component={Gomain} />
         </Stack.Navigator>
     );
 }

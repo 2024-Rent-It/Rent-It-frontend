@@ -30,7 +30,7 @@ const LoginScreen = () => {
         const { id, nickname, email, location, token } = responseData.data;
         console.log('로그인 정보 확인', responseData.data)
         login(id, token, nickname, email, location); // 로그인 함수 호출하여 토큰 저장
-        Alert.alert('로그인 성공', responseData.message);
+        // Alert.alert('로그인 성공', responseData.message);
         navigation.navigate('홈'); // Root 화면으로 이동
       } else {
         Alert.alert('로그인 실패', responseData.message);

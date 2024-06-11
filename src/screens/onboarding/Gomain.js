@@ -6,7 +6,7 @@ const GoMain = () => {
   const navigation = useNavigation(); // navigation 객체 가져오기
 
   const handleNavigateHome = () => {
-    navigation.navigate('Root'); // Root 화면으로 이동
+    navigation.navigate('홈'); // Root 화면으로 이동
 
   };
 
