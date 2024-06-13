@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BASE_URL } from '../../constants/api.js';
 import axios from 'axios';
@@ -150,8 +150,9 @@ const ProductDetailPage = ({ route, navigation }) => {
         Alert.alert('Error', '채팅방 만들기에 실패했습니다.');
       }
     } catch (error) {
+      Alert.alert('자신과의 채팅방은 만들 수 없습니다.', '회원님이 등록한 상품입니다!');
       console.error('Error occurred while joining chat room:', error);
-      Alert.alert('Error', 'An error occurred while trying to join the chat room.');
+      // Alert.alert('Error', 'An error occurred while trying to join the chat room.');
     }
   };
 
