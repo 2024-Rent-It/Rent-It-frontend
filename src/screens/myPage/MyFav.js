@@ -16,7 +16,11 @@ const MyFav = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    getAllMyFav(); // 제품 정보 가져오기
+    const unsubscribe = navigation.addListener('focus', () => {
+      // 화면이 focus될 때마다 데이터를 다시 가져옴
+      getAllMyFav(); // 제품 정보 가져오기
+  });
+    
 }, []);
   const getAllMyFav = async () => {
     try {
