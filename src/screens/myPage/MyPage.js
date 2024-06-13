@@ -6,15 +6,30 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { View } from "react-native";
 import { useAuth } from '../../contexts/AuthContext'; // AuthContext 파일의 useAuth 훅 가져오기
+import axios from 'axios';
+import { BASE_URL } from '../../constants/api.js';
 
 const MyPage = ({ navigation }) => {
     const { logout } = useAuth(); // 로그아웃 함수 가져오기
     const { userNickname } = useAuth();
 
-    const handleLogout = () => {
-        logout(); // 로그아웃 함수 호출
-        Alert.alert('로그아웃 성공', '로그아웃되었습니다.');
-        navigation.navigate('Onboarding')
+    const handleLogout = async () => {
+        try {
+            await axios.delete(`${BASE_URL}/tokens/delete`, {
+                params: {
+                    nickname: userNickname
+                }
+            });
+            console.log('기기 토큰 삭제 됨');
+
+            logout(); // 로그아웃 함수 호출
+            Alert.alert('로그아웃 성공', '로그아웃되었습니다.');
+
+            navigation.navigate('Onboarding');
+        } catch (error) {
+            console.error('기기 토큰 삭제 에러', error);
+            Alert.alert('로그아웃 실패', '기기 토큰 삭제 중 오류가 발생했습니다.');
+        }
     };
 
     return (

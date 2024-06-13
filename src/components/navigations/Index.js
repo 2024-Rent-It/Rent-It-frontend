@@ -272,8 +272,8 @@ function RootNavigator() {
                 name="예약 전환을 위한 정보 입력"
                 component={TraderInput}
             />
-            {/* <Stack.Screen name='서비스 이용약관' component={TermsOfService} /> */}
-            {/* <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} /> */}
+            <Stack.Screen name='이용 약관' component={TermsOfService} />
+            <Stack.Screen name='개인정보 처리방침' component={PrivacyPolicy} />
             {/* <Stack.Screen name='회원가입' component={SignUp} /> */}
             {/* <Stack.Screen name='회원가입스크린' component={SignUpScreen} /> */}
             <Stack.Screen name="로그인" component={LoginScreen} />

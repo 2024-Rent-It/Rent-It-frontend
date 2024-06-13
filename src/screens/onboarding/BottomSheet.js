@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Animated, Pressabl
 import { useNavigation } from '@react-navigation/native';
 import { Platform } from 'react-native';
 
-const BottomSheet = ({ setStatus}) => {
+const BottomSheet = ({ setStatus }) => {
     const slide = React.useRef(new Animated.Value(300)).current;
     const navigation = useNavigation();
 
@@ -61,8 +61,8 @@ const BottomSheet = ({ setStatus}) => {
                         <Text
                             style={styles.modalText2}
                             onPress={() => {
-                                navigation.navigate('Root')
-                                // navigation.navigate('서비스 이용약관')
+                                // navigation.navigate('Root')
+                                navigation.navigate('이용 약관')
 
                             }}
                         >
