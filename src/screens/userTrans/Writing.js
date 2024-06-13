@@ -97,7 +97,7 @@ const WritePost = () => {
                 setDuration('');
                 setDescription('');
                 setSelectedImages([]);
-                navigation.navigate('HomeTab');
+                navigation.navigate('HomeTab_Stack');
             } else
             {
                 // 오류 처리
