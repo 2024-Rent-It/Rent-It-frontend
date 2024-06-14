@@ -12,6 +12,8 @@ import { BASE_URL } from '../../constants/api.js';
 const MyPage = ({ navigation }) => {
     const { logout } = useAuth(); // 로그아웃 함수 가져오기
     const { userNickname } = useAuth();
+    const { token } = useAuth(); // 로그인된 사용자 토큰 가져오기
+
 
     const handleLogout = async () => {
         try {
@@ -31,6 +33,35 @@ const MyPage = ({ navigation }) => {
             Alert.alert('로그아웃 실패', '기기 토큰 삭제 중 오류가 발생했습니다.');
         }
     };
+    
+    const handleWithdrawal = async () => {
+        Alert.alert(
+            '회원 탈퇴',
+            '정말 탈퇴하시겠습니까?',
+            [
+                { text: '아니요', style: 'cancel' },
+                { text: '네', onPress: async () => {
+                    try {
+                        await axios.delete(`${BASE_URL}/member`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                            }
+                        });
+                        console.log('회원탈퇴됨');
+                        logout();
+                        Alert.alert('회원 탈퇴 성공', '회원 탈퇴 되었습니다.');
+
+                        navigation.navigate('Onboarding');
+                    } catch (error) {
+                        console.error('회원탈퇴 에러', error);
+                        Alert.alert('회원 탈퇴 실패', '오류가 발생했습니다.');
+                    }
+                }}
+            ],
+            { cancelable: false }
+        );
+    };
+    
 
     return (
         <View style={{ height: '100%', backgroundColor: 'white', padding: 30 }} >
@@ -143,7 +174,7 @@ const MyPage = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyRent')}
+                <TouchableOpacity onPress={handleWithdrawal}
                     style={{ paddingVertical: 6 }}
                 >
                     <Text style={styles.text}>
