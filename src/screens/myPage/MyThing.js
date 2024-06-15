@@ -31,9 +31,13 @@ const MyThing = ({ navigation }) => {
     // ]);
 
     useEffect(() => {
-        fetchData();
-    }, [userNickname]);
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData();
+        });
 
+        return unsubscribe;
+    }, [navigation]);
+    
     const fetchData = async () => {
         try {
             console.log(userNickname)
