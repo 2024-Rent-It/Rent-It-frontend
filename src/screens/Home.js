@@ -132,10 +132,17 @@ const Home = () => {
     const itemWidth = (width - 20 - (numColumns - 1) * 10) / numColumns; // 아이템의 너비 계산
     
     useEffect(() => {
-        getProductsByLocation();
+        const unsubscribe = navigation.addListener('focus', () => {
+            getProductsByLocation();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
         registerForPushNotificationsAsync(userNickname)
-        .then((token) => setExpoPushToken(token ?? ''))
-        .catch((error) => setExpoPushToken(`${error}`));
+            .then((token) => setExpoPushToken(token ?? ''))
+            .catch((error) => setExpoPushToken(`${error}`));
     }, []);
 
     const getProductsByLocation = async () => {
