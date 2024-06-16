@@ -112,7 +112,20 @@ const SharedStack = ({ tabName }) => (
         {tabName === 'ChattingTab' ? (
             <>
                 <Stack.Screen name="채팅" component={Chat} />
-                <Stack.Screen name="Message" component={MessageScreen} />
+                <Stack.Screen 
+                    name="Message" 
+                    component={MessageScreen} 
+                    options={({ navigation }) => ({ // 수정된 부분 시작
+                        headerLeft: () => (
+                            <AntDesign
+                                name="arrowleft"
+                                size={24}
+                                color="black"
+                                onPress={() => navigation.goBack()} // '뒤로 가기'를 눌렀을 때 `navigation.goBack()`을 호출하도록 수정
+                            />
+                        ),
+                    })} // 수정된 부분 끝
+                />
             </>
         ) : null}
         {tabName === 'MyPageTab' ? (
